@@ -12,3 +12,6 @@ down: # unmount dev environment
 
 init-be: # inits php app
 	docker exec -it $(BE_NAME)_1 composer install
+
+test: # runs all tests
+	docker exec -it $(BE_NAME)_1 vendor/bin/phpunit tests/
