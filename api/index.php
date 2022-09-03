@@ -1,9 +1,6 @@
-<html>
-	<body>
-		<p>Ratamahhata, this works</p>
 <?php
-	echo "this is from php\n";
-    echo phpinfo();
-?>
-	</body>
-</html>
+
+$response = require_once './config/bootstrap.php';
+$response->send();
+
+echo '<pre>' . print_r($response,1) . '</pre>';
