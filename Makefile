@@ -17,4 +17,4 @@ enter-be: # execs shell inside php container
 	docker exec -it $(BE_NAME)_1 /bin/bash
 
 test: # runs all tests
-	docker exec -it $(BE_NAME)_1 vendor/bin/phpunit tests/
+	docker exec -it $(BE_NAME)_1 vendor/bin/phpunit tests/ --colors=always
