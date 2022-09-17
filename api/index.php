@@ -1,6 +1,8 @@
 <?php
 
-$response = require_once './config/bootstrap.php';
-$response->send();
-
-echo '<pre>' . print_r($response,1) . '</pre>';
+try {
+    $response = require_once './config/bootstrap.php';
+    $response->send();
+} catch (Throwable $throwable) {
+    echo $throwable->getMessage();
+}
