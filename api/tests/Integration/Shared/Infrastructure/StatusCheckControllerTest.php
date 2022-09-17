@@ -1,6 +1,6 @@
 <?php
 
-namespace test\integration\Shared\Infrastructure;
+namespace Test\Integration\Shared\Infrastructure;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
