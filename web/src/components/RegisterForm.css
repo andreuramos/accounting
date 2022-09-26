@@ -1,0 +1,10 @@
+.RegisterForm {
+    border: solid 1px var(--dark-color);
+    display: flex;
+    flex-direction: column;
+    margin: 0 2em;
+}
+
+.SubmitButton {
+    cursor: pointer;
+}
