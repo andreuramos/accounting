@@ -2,22 +2,13 @@
 
 require_once './vendor/autoload.php';
 
-use App\Shared\Infrastructure\StatusCheckController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
 
-//TODO: move this routes to routes.php
-$routes = new RouteCollection();
-
-$routes->add('status', new Route(
-    '/status',
-    ['controller' => StatusCheckController::class]
-));
+$routes = require('routes.php');
 
 $request = Request::createFromGlobals();
 
