@@ -6,7 +6,8 @@
   },
   "require": {
     "symfony/routing": "*",
-    "symfony/http-foundation": "*"
+    "symfony/http-foundation": "*",
+    "symfony/messenger": "^6.1"
   },
   "require-dev": {
     "phpunit/phpunit": "^9.5",
