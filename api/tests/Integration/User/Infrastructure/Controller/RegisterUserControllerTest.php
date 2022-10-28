@@ -3,6 +3,7 @@
 namespace Test\Integration\User\Infrastructure\Controller;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 use PHPUnit\Framework\TestCase;
 
 class RegisterUserControllerTest extends TestCase
@@ -20,6 +21,23 @@ class RegisterUserControllerTest extends TestCase
         ]);
 
         $this->assertEquals(200, $response->getStatusCode());
+    }
+
+    public function test_fails_if_no_email()
+    {
+        $client = new Client();
+
+        try {
+            $response = $client->request('POST', 'http://nginx/register', [
+                'body' => json_encode([], JSON_THROW_ON_ERROR)
+            ]);
+
+            $responseCode = $response->getStatusCode();
+        } catch (ClientException $exception) {
+            $responseCode = $exception->getCode();
+        }
+
+        $this->assertEquals(400, $responseCode);
     }
 
     public function test_fails_if_email_already_in_use()

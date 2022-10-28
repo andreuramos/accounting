@@ -9,6 +9,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 
 class RegisterUserControllerTest extends TestCase
 {
@@ -41,6 +42,18 @@ class RegisterUserControllerTest extends TestCase
 
         $this->assertEquals(200, $response->getStatusCode());
     }
+
+    public function test_it_returns_400_when_no_email(): void
+    {
+        $request = $this->prophesize(Request::class);
+        $request->getContent()
+            ->willReturn(json_encode([]));
+        $controller = $this->buildController();
+
+        $this->expectException(MissingMandatoryParametersException::class);
+        $controller($request->reveal());
+    }
+
 
     private function buildController(): RegisterUserController
     {
