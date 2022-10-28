@@ -15,7 +15,14 @@ class RegisterUserController
 
     public function __invoke(Request $request): Response
     {
-        $command = new RegisterUserCommand();
+        $request_content = json_decode(
+            $request->getContent(),
+            true,
+            512,
+            JSON_THROW_ON_ERROR
+        );
+        $email = $request_content['email'];
+        $command = new RegisterUserCommand($email);
 
         $this->bus->dispatch($command);
 

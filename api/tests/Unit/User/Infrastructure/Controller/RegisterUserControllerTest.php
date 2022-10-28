@@ -24,14 +24,20 @@ class RegisterUserControllerTest extends TestCase
 
     public function test_it_returns_200_response(): void
     {
-        $command = new RegisterUserCommand();
+        $email = 'email@email.com';
+        $command = new RegisterUserCommand($email);
         $this->bus->dispatch($command)
             ->shouldBeCalled()
-            ->willReturn(new Envelope(new RegisterUserCommand()));
+            ->willReturn(new Envelope($command));
         $controller = $this->buildController();
-        $request = new Request();
+        $request = $this->prophesize(Request::class);
+        $requestBody = [
+            'email' => $email
+        ];
+        $request->getContent()
+            ->willReturn(json_encode($requestBody));
 
-        $response = $controller($request);
+        $response = $controller($request->reveal());
 
         $this->assertEquals(200, $response->getStatusCode());
     }
