@@ -22,7 +22,7 @@ try {
     $response = $controller($request);
 } catch (RouteNotFoundException $exception) {
     $response = new Response("APP ERROR: Not found " . $exception->getMessage(), Response::HTTP_NOT_FOUND);
-} catch (Exception $exception) {
+} catch (Throwable $exception) {
     $response = new Response("APP ERROR: " . $exception->getMessage(), Response::HTTP_BAD_REQUEST);
 }
 
