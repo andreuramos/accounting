@@ -3,14 +3,14 @@
 namespace App\User\Infrastructure\Controller;
 
 use App\User\Application\Command\RegisterUserCommand;
+use App\User\Domain\Service\UserRegisterer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 
 class RegisterUserController
 {
-    public function __construct(private readonly MessageBusInterface $bus)
+    public function __construct(private readonly UserRegisterer $userRegisterer)
     {
     }
 
@@ -22,7 +22,7 @@ class RegisterUserController
         $email = $requestContent['email'];
         $command = new RegisterUserCommand($email);
 
-        $this->bus->dispatch($command);
+        $this->userRegisterer->execute($command);
 
         return new Response("OK", 200);
     }
