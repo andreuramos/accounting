@@ -8,8 +8,6 @@ use App\User\Infrastructure\Controller\RegisterUserController;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Messenger\Envelope;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 
 class RegisterUserControllerTest extends TestCase
