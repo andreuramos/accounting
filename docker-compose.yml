@@ -10,6 +10,16 @@ services:
     links:
       - php
 
+  mysql:
+    image: mysql:latest
+    ports:
+      - "3036:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "container-root-password"
+      MYSQL_DATABASE: "accounting-db"
+    volumes:
+      - mysql:/var/lib/mysql
+
   php:
     build: ./api
     volumes:
@@ -23,3 +33,6 @@ services:
       - ./web:/web
     environment:
       - CHOKIDAR_USEPOLLING=true
+
+volumes:
+  mysql:
