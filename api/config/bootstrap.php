@@ -10,7 +10,8 @@ use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
 
 $routes = require('routes.php');
-$definitions = require('definitions/interfaces.php');
+$interfaces = require('definitions/interfaces.php');
+$objects = require('definitions/objects.php');
 
 $request = Request::createFromGlobals();
 
@@ -19,8 +20,10 @@ $context->fromRequest($request);
 $matcher  = new UrlMatcher($routes, $context);
 
 $containerBuilder = new ContainerBuilder();
-$containerBuilder->addDefinitions($definitions);
+$containerBuilder->addDefinitions($interfaces);
+$containerBuilder->addDefinitions($objects);
 $container = $containerBuilder->build();
+
 try {
     $parameters = $matcher->match($context->getPathInfo());
     $controller = $container->get($parameters['controller']);
