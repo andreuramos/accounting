@@ -24,15 +24,17 @@ services:
     build: ./api
     volumes:
       - ./api:/api
+    links:
+      - mysql
 
-  node:
-    build: ./web
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./web:/web
-    environment:
-      - CHOKIDAR_USEPOLLING=true
+#  node:
+#    build: ./web
+#    ports:
+#      - "3000:3000"
+#    volumes:
+#      - ./web:/web
+#    environment:
+#      - CHOKIDAR_USEPOLLING=true
 
 volumes:
   mysql:
