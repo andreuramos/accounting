@@ -8,14 +8,18 @@ use PHPUnit\Framework\TestCase;
 
 class RegisterUserControllerTest extends TestCase
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->client = new Client();
+    }
+
     public function test_registers_a_user()
     {
-        $client = new Client();
-
-        $response = $client->request('POST','http://nginx/register', [
+        $response = $this->client->request('POST','http://nginx/register', [
             'body' => json_encode([
                 'name' => 'some name',
-                'email' => 'existing@email.com',
+                'email' => 'noexisting@email.com',
                 'password' => 'encodedPassword',
             ], JSON_THROW_ON_ERROR)
         ]);
@@ -25,10 +29,8 @@ class RegisterUserControllerTest extends TestCase
 
     public function test_fails_if_no_email()
     {
-        $client = new Client();
-
         try {
-            $response = $client->request('POST', 'http://nginx/register', [
+            $response = $this->client->request('POST', 'http://nginx/register', [
                 'body' => json_encode([], JSON_THROW_ON_ERROR)
             ]);
 
@@ -43,10 +45,8 @@ class RegisterUserControllerTest extends TestCase
     public function test_fails_if_email_already_in_use()
     {
         $this->markTestSkipped('WIP');
-        $client = new Client();
-
         try {
-            $client->request('POST', 'http://nginx/register', [
+            $this->client->request('POST', 'http://nginx/register', [
                 'body' => json_encode([
                     'name' => 'other name',
                     'email' => 'existing@email.com',
@@ -58,5 +58,11 @@ class RegisterUserControllerTest extends TestCase
         } catch (\Exception $e) {
             dd($e);
         }
+    }
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
+
     }
 }
