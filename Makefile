@@ -22,3 +22,9 @@ init-fe:
 
 test: # runs all tests
 	docker exec -it $(BE_NAME)_1 vendor/bin/phpunit tests/ --colors=always
+
+create-migration:
+	docker exec -u 1000 -it $(BE_NAME)_1 vendor/bin/phinx create $(name) --configuration=config/phinx.php
+
+migrate:
+	docker exec -u 1000 -it $(BE_NAME)_1 vendor/bin/phinx migrate --configuration=config/phinx.php -e development
