@@ -30,11 +30,11 @@ jobs:
           ${{ runner.os }}-php-
 
     - name: Install dependencies
-      run: composer install --prefer-dist --no-progress
+      run: cd api && composer install --prefer-dist --no-progress
 
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
 
     - name: run phpunit
-      run: vendor/bin/phpunit tests/ --colors=always
+      run: cd api && vendor/bin/phpunit tests/ --colors=always
 
