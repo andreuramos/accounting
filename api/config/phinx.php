@@ -20,11 +20,11 @@ return
         ],
         'development' => [
             'adapter' => 'mysql',
-            'host' => 'mysql',
-            'name' => 'accounting-db',
-            'user' => 'accounting',
-            'pass' => 'accpwd',
-            'port' => '3306',
+            'host' => env('DB_HOST'),
+            'name' => env('DB_NAME'),
+            'user' => env('DB_USER'),
+            'pass' => env('DB_PWD'),
+            'port' => env('DB_PORT'),
             'charset' => 'utf8',
         ],
         'testing' => [
