@@ -20,7 +20,7 @@ class RegisterUserControllerTest extends TestCase
 
     public function test_registers_a_user()
     {
-        $response = $this->client->request('POST','http://nginx/register', [
+        $response = $this->client->request('POST', 'http://nginx/register', [
             'body' => json_encode([
                 'name' => 'some name',
                 'email' => self::SUCCESS_EMAIL,
@@ -67,6 +67,7 @@ class RegisterUserControllerTest extends TestCase
     public function tearDown(): void
     {
         parent::tearDown();
-
+        $pdo = $this->container->get(\PDO::class);
+        $pdo->query('DELETE FROM user WHERE email="' . self::SUCCESS_EMAIL . '";');
     }
 }
