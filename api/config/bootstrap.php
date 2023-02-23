@@ -2,7 +2,7 @@
 
 require_once './vendor/autoload.php';
 
-use DI\ContainerBuilder;
+use App\Shared\Infrastructure\ContainerFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
@@ -10,8 +10,6 @@ use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
 
 $routes = require('routes.php');
-$interfaces = require('definitions/interfaces.php');
-$objects = require('definitions/objects.php');
 
 $request = Request::createFromGlobals();
 
@@ -19,10 +17,7 @@ $context = new RequestContext();
 $context->fromRequest($request);
 $matcher  = new UrlMatcher($routes, $context);
 
-$containerBuilder = new ContainerBuilder();
-$containerBuilder->addDefinitions($interfaces);
-$containerBuilder->addDefinitions($objects);
-$container = $containerBuilder->build();
+$container = ContainerFactory::create();
 
 try {
     $parameters = $matcher->match($context->getPathInfo());
