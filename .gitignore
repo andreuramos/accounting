@@ -1,6 +1,6 @@
 .idea
 api/vendor/*
 api/composer.lock
+api/.env
 web/node_modules/*
 web/package-lock.json
-.env
