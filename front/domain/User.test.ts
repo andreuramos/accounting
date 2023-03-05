@@ -16,7 +16,7 @@ test(`user cannot be created without a password`, () => {
 })
 
 test(`user cannot be created with a wrong email`, () => {
-    const wrongEmail = '1234'
+    const wrongEmail = 'wrongEmail'
     const anyPassword = '1234'
 
     expect(() => new User(wrongEmail, anyPassword)).toThrowError()
