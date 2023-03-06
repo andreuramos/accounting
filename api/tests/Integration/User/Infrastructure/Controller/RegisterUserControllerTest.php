@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class RegisterUserControllerTest extends TestCase
 {
-    const SUCCESS_EMAIL = 'noexisting@email.com';
+    const SUCCESS_EMAIL = 'some@email.com';
 
     public function setUp(): void
     {
@@ -48,20 +48,23 @@ class RegisterUserControllerTest extends TestCase
 
     public function test_fails_if_email_already_in_use()
     {
-        $this->markTestSkipped('WIP');
+        $this->client->request('POST', 'http://nginx/register', [
+            'body' => json_encode(['email' => self::SUCCESS_EMAIL,], JSON_THROW_ON_ERROR)
+        ]);
         try {
-            $this->client->request('POST', 'http://nginx/register', [
+            $response = $this->client->request('POST', 'http://nginx/register', [
                 'body' => json_encode([
                     'name' => 'other name',
-                    'email' => 'existing@email.com',
+                    'email' => self::SUCCESS_EMAIL,
                     'password' => 'IdonTk4r3.com'
                 ], JSON_THROW_ON_ERROR)
             ]);
-
-            $this->fail('Allowed already existing email user to register');
-        } catch (\Exception $e) {
-            dd($e);
+            $responseCode = $response->getStatusCode();
+        } catch (ClientException $exception) {
+            $responseCode = $exception->getCode();
         }
+
+        $this->assertEquals(400, $responseCode);
     }
 
     public function tearDown(): void
