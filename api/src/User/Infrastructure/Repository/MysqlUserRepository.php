@@ -26,6 +26,18 @@ class MysqlUserRepository implements UserRepositoryInterface
 
     public function getByEmail(Email $email): ?User
     {
-        return null;
+        $emailStr = $email->toString();
+        $stmt = $this->PDO->prepare(
+            "SELECT user.* FROM user WHERE email = :email;"
+        );
+        $stmt->bindParam(':email', $emailStr);
+        $stmt->execute();
+        $result = $stmt->fetch();
+
+        if (empty($result)) {
+            return null;
+        }
+
+        return new User(new Email($result['email']));
     }
 }
