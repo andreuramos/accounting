@@ -4,6 +4,7 @@ namespace App\User\Infrastructure\Repository;
 
 use App\User\Domain\Entity\User;
 use App\User\Domain\Model\UserRepositoryInterface;
+use App\User\Domain\ValueObject\Email;
 use PDO;
 
 class MysqlUserRepository implements UserRepositoryInterface
@@ -21,5 +22,10 @@ class MysqlUserRepository implements UserRepositoryInterface
         $stmt->execute();
 
         return 0;
+    }
+
+    public function getByEmail(Email $email): ?User
+    {
+        return null;
     }
 }
