@@ -32,10 +32,10 @@ return
             'charset' => 'utf8',
         ],
         'testing' => [
-            'adapter' => 'mysql',
+            'adapter' => 'sqlite',
             'host' => 'localhost',
-            'name' => 'testing_db',
-            'user' => 'root',
+            'name' => 'tmp/testing_db',
+            'user' => '',
             'pass' => '',
             'port' => '3306',
             'charset' => 'utf8',

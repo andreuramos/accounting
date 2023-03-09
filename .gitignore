@@ -2,5 +2,6 @@
 api/vendor/*
 api/composer.lock
 api/.env
+api/tmp/
 web/node_modules/*
 web/package-lock.json
