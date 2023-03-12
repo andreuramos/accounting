@@ -1,5 +1,5 @@
 .idea
-api/vendor/*
+api/vendor/
 api/composer.lock
 api/.env
 api/tmp/
