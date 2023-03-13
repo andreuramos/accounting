@@ -1,5 +1,5 @@
 .idea
-api/config/definitions/shared-values.yml
+api/config/definitions/shared-values.json
 api/tmp/
 api/vendor/
 api/.env

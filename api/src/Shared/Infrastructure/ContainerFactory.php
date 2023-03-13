@@ -13,7 +13,8 @@ class ContainerFactory
     {
         $interfaces = require(self::DEFINITIONS_FOLDER . 'interfaces.php');
         $objects = require(self::DEFINITIONS_FOLDER . 'objects.php');
-        $values = require(self::DEFINITIONS_FOLDER . 'shared-values.yml');
+        $jsonValues = file_get_contents(self::DEFINITIONS_FOLDER . 'shared-values.json');
+        $values = json_decode($jsonValues, true);
 
         $builder = new ContainerBuilder();
         $builder->addDefinitions($interfaces);

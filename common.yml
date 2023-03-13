@@ -1,2 +1,0 @@
-# Shared config between FE & BE
-email_regex: "^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"
