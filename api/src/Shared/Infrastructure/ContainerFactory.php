@@ -13,10 +13,12 @@ class ContainerFactory
     {
         $interfaces = require(self::DEFINITIONS_FOLDER . 'interfaces.php');
         $objects = require(self::DEFINITIONS_FOLDER . 'objects.php');
+        $values = require(self::DEFINITIONS_FOLDER . 'shared-values.yml');
 
         $builder = new ContainerBuilder();
         $builder->addDefinitions($interfaces);
         $builder->addDefinitions($objects);
+        $builder->addDefinitions($values);
 
         return $builder->build();
     }

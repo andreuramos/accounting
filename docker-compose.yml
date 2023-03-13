@@ -24,6 +24,7 @@ services:
     build: ./api
     volumes:
       - ./api:/api
+      - ./common.yml:/api/config/definitions/shared-values.yml
     links:
       - mysql
 

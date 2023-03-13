@@ -1,7 +1,8 @@
 .idea
-api/vendor/
-api/composer.lock
-api/.env
+api/config/definitions/shared-values.yml
 api/tmp/
+api/vendor/
+api/.env
+api/composer.lock
 web/node_modules/*
 web/package-lock.json
