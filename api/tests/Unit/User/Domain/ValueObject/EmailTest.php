@@ -21,20 +21,20 @@ class EmailTest extends TestCase
     {
         $this->expectException(InvalidEmailException::class);
 
-        new Email('EmailWithNoAtSign.com', self::EMAIL_REGEX);
+        new Email('EmailWithNoAtSign.com');
     }
 
     public function test_no_dot_email_cannot_be_instantiated()
     {
         $this->expectException(InvalidEmailException::class);
 
-        new Email('emailWith@noDot', self::EMAIL_REGEX);
+        new Email('emailWith@noDot');
     }
 
     public function test_special_character_email_cannot_be_instantiated()
     {
         $this->expectException(InvalidEmailException::class);
 
-        new Email('strange!@email.com', self::EMAIL_REGEX);
+        new Email('strange!@email.com');
     }
 }
