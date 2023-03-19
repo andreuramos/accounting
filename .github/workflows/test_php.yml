@@ -23,8 +23,6 @@ jobs:
     - name: Init BE
       run: docker exec -t accounting_php_1 composer install
 
-    - name: check nginx container visibility
-      run: curl http://nginx/status
 #    - name: Validate composer.json and composer.lock
 #      run: cd api/ && composer validate --strict
 #
