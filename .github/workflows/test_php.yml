@@ -23,6 +23,8 @@ jobs:
     - name: Init BE
       run: docker exec -t accounting_php_1 composer install
 
+    - name: docker network inspect
+      run: docker network inspect backend-network
 #    - name: Validate composer.json and composer.lock
 #      run: cd api/ && composer validate --strict
 #
