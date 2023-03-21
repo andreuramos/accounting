@@ -12,7 +12,7 @@ class StatusCheckControllerTest extends TestCase
     {
         $client = new Client();
         try {
-            $response = $client->get('accounting_nginx_1/status');
+            $response = $client->get('accounting_nginx_1:8080/status');
             $this->assertEquals(200, $response->getStatusCode());
         } catch (RequestException $e) {
             $this->fail($e->getMessage());
