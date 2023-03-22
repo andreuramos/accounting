@@ -1,4 +1,4 @@
-import { ValueObject } from '@domain/shared'
+import { ValueObject } from './shared'
 
 interface EmailProps {
     value: string

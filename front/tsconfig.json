@@ -19,6 +19,8 @@
     "paths": {
       "@domain": ["domain"],
       "@domain/*": ["domain/*"],
+      "@infrastructure": ["infrastructure"],
+      "@infrastructure/*": ["infrastructure/*"],
     }
   },
   "include": [

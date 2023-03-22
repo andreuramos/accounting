@@ -7,7 +7,7 @@ interface UserProps {
     password: Password
 }
 
-export default class User extends Entity<UserProps> {
+export class User extends Entity<UserProps> {
     private constructor(props: UserProps) {
         super(props)
     }

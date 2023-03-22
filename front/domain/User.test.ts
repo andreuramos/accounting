@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import User from '@domain/User'
+import { User } from '@domain/User'
 import { Email } from './Email'
 import { Password } from './Password'
 
