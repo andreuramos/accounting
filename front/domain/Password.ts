@@ -13,11 +13,11 @@ export class Password extends ValueObject<PasswordProps> {
         return this.props.value
     }
 
-    public static create(props: PasswordProps) {
-        if (!props.value) {
+    public static create(password: string) {
+        if (!password) {
             throw 'Password cannot be empty.'
         }
         
-        return new Password(props)
+        return new Password({ value: password })
     }
 }
