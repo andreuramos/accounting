@@ -1,10 +1,10 @@
-import { ValueObject } from './ValueObject'
+import { ValueObject } from '@domain/shared'
 
 interface EmailProps {
     value: string
 }
 
-export default class Email extends ValueObject<EmailProps> {
+export class Email extends ValueObject<EmailProps> {
     private constructor(props: EmailProps) {
         super(props)
     }

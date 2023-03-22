@@ -1,30 +1,18 @@
-import { beforeEach, expect, test } from 'vitest'
+import { describe, expect, test } from 'vitest'
 import User from '@domain/User'
+import { Email } from './Email'
+import { Password } from './Password'
 
-test(`user cannot be created without an email`, () => {
-    const wrongEmail = ''
-    const anyPassword = '1234'
 
-    expect(() => new User(wrongEmail, anyPassword)).toThrowError()
-})
+describe('User entity', () => {
 
-test(`user cannot be created without a password`, () => {
-    const anyEmail = 'foo@bar.com'
-    const wrongPassword = ''
+    test(`user can be created with an email and password.`, () => {
+        const correctEmail = 'foo@bar.com'
+        const email = Email.create(correctEmail)
+        const correctPassword = Password.create('1234')
 
-    expect(() => new User(anyEmail, wrongPassword)).toThrowError()
-})
+        const user = User.create(email, correctPassword)
 
-test(`user cannot be created with a wrong email`, () => {
-    const wrongEmail = 'wrongEmail'
-    const anyPassword = '1234'
-
-    expect(() => new User(wrongEmail, anyPassword)).toThrowError()
-})
-
-test(`user can be created meeting all the above requirements`, () => {
-    const correctEmail = 'foo@bar.com'
-    const correctPassword = '1234'
-    
-    expect(() => new User(correctEmail, correctPassword)).not.toThrowError()
+        expect(user.email).toBe(correctEmail)
+    })
 })
