@@ -12,7 +12,7 @@ class SharedDomainControllerTest extends TestCase
     {
         $client = new Client();
         try {
-            $response = $client->get('http://nginx:8080/domain');
+            $response = $client->get('http://nginx/domain');
             $this->assertEquals(200, $response->getStatusCode());
         } catch (RequestException $e) {
             $this->fail($e->getMessage());
