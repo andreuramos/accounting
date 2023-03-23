@@ -1,6 +1,6 @@
-import User from './User'
+import { User } from './User'
 
 export default interface UserRepository {
-    list(): Array<User>
-    add(user: User): void
+    add(user: User): Promise<void>
+    findByEmail(id: string): Promise<User | null>
 }
