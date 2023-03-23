@@ -6,13 +6,13 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use PHPUnit\Framework\TestCase;
 
-class StatusCheckControllerTest extends TestCase
+class SharedDomainControllerTest extends TestCase
 {
-    public function testStatusCheckReturns200()
+    public function testSharedDomainReturns200()
     {
         $client = new Client();
         try {
-            $response = $client->get('nginx/status');
+            $response = $client->get('http://nginx/domain');
             $this->assertEquals(200, $response->getStatusCode());
         } catch (RequestException $e) {
             $this->fail($e->getMessage());
