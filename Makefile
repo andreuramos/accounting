@@ -20,9 +20,14 @@ enter-be: # execs shell inside php container
 init-fe:
 	docker exec -it $(FE_NAME)_1
 
-test: # runs all tests
-	docker exec -u 1000 -it $(BE_NAME)_1 vendor/bin/phinx migrate --configuration=config/phinx.php -e testing
-	docker exec -it $(BE_NAME)_1 vendor/bin/phpunit tests/ --colors=always
+test: test-unit test-integration
+
+test-integration: # runs all tests
+	docker exec -u 1000 $(BE_NAME)_1 vendor/bin/phinx migrate --configuration=config/phinx.php -e testing
+	docker exec $(BE_NAME)_1 vendor/bin/phpunit --colors=always --testsuite integration
+
+test-unit:
+	docker exec $(BE_NAME)_1 vendor/bin/phpunit --colors=always --testsuite unit
 
 create-migration:
 	docker exec -u 1000 -it $(BE_NAME)_1 vendor/bin/phinx create $(name) --configuration=config/phinx.php
