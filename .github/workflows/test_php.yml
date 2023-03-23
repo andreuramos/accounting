@@ -23,8 +23,6 @@ jobs:
     - name: Init BE
       run: docker exec -t accounting_php_1 composer install
 
-    - name: docker network inspect
-      run: docker network inspect accounting_backend-network
 #    - name: Validate composer.json and composer.lock
 #      run: cd api/ && composer validate --strict
 #
@@ -44,5 +42,5 @@ jobs:
     # Docs: https://getcomposer.org/doc/articles/scripts.md
 
     - name: run phpunit
-      run: cd api && vendor/bin/phpunit tests/ --colors=always
+      run: make test-unit
 
