@@ -1,12 +1,13 @@
 import { describe, expect, test } from 'vitest'
 import { Password } from './Password'
 
+const PASSWORD_MIN_LENGTH = 4
 
 describe(`Pasword ObjectValue`, () => {
-    test(`password cannot be empty`, () => {
-        const emptyPassword = ''
+    test(`password needs to have at least ${PASSWORD_MIN_LENGTH} characters`, () => {
+        const emptyPassword = '123'
 
-        expect(() => Password.create(emptyPassword)).toThrowError('Password cannot be empty.')
+        expect(() => Password.create(emptyPassword)).toThrowError('Password needs to have at least 4 characters.')
     })
 
     test(`password can be created meeting the above requirements`, () => {
