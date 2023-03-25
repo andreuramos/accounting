@@ -27,12 +27,15 @@
       "@domain/*": ["domain/*"],
       "@infrastructure": ["infrastructure"],
       "@infrastructure/*": ["infrastructure/*"],
+      "@helpers": ["helpers"],
+      "@helpers/*": ["helpers/*"],
     }
   },
   "include": [
     "src",
     "domain",
-    "application"
+    "application",
+    "helpers"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

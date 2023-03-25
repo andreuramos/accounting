@@ -1,3 +1,4 @@
+import { Guard, GuardArgumentCollection } from '@helpers/Guard'
 import { Email } from './Email'
 import { Password } from './Password'
 import { Entity } from './shared/Entity'
@@ -17,9 +18,17 @@ export class User extends Entity<UserProps> {
     }
 
     public static create(email: Email, password: Password) {
-        if (!email || !password) {
+        const guardedProps: GuardArgumentCollection = [
+            { argument: email, argumentName: 'email'},
+            { argument: password, argumentName: 'password'}
+        ]
+
+        const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps)
+
+        if (!guardResult.succeeded) {
             throw 'User needs an email and a password.'
         }
+
         return new User({ email, password })
     }
 }
