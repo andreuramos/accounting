@@ -10,12 +10,18 @@ type CreateUserDTO = {
 export class CreateUser {
     constructor(private userRepository: UserRepository) { }
 
-    execute(req: CreateUserDTO) {
+    async execute(req: CreateUserDTO) {
         const email = Email.create(req.email)
         const password = Password.create(req.password)
 
         const user = User.create(email, password)
 
-        this.userRepository.add(user)
+        const userAlreadyExists = await this.userRepository.exists(user.email)
+
+        if (userAlreadyExists) {
+            throw 'User already exists.'
+        }
+
+        await this.userRepository.add(user)
     }
 }
