@@ -21,6 +21,9 @@ export class Password extends ValueObject<PasswordProps> {
     }
 
     public static create(password: string) {
+        // Valorar throw dins Guard.
+        // Mirar guard clauses
+        // Melón Errores
         const guardResult = Guard.againstNullOrUndefined(password, 'password')
         if (!guardResult.succeeded) {
             throw guardResult.message
@@ -29,7 +32,7 @@ export class Password extends ValueObject<PasswordProps> {
         if (!this.isAppropriateLength(password)) {
             throw `Password needs to have at least ${Password.MIN_LENGTH} characters.`
         }
-        
+
         return new Password({ value: password })
     }
 }
