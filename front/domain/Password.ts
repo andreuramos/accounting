@@ -1,4 +1,4 @@
-import { Guard } from '@helpers/Guard'
+import { Guard } from '@domain/shared/Guard'
 import { ValueObject } from './shared'
 
 interface PasswordProps {

@@ -1,4 +1,4 @@
-import { Guard, GuardArgumentCollection } from '@helpers/Guard'
+import { Guard, GuardArgumentCollection } from '@domain/shared/Guard'
 import { Email } from './Email'
 import { Password } from './Password'
 import { Entity } from './shared/Entity'
