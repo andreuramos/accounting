@@ -1,8 +1,6 @@
 import { describe, expect, test } from 'vitest'
 import { mock } from 'vitest-mock-extended'
-import { User } from '@domain'
 import UserRepository from '@domain/UserRepository'
-import InMemoryUserRepository from '@infrastructure/InMemoryUserRepository'
 import { CreateUser } from './CreateUser'
 
 
@@ -17,27 +15,24 @@ describe(`CreateUser use case`, () => {
         expect(repo.add).toHaveBeenCalledOnce()
     })
 
-    test(`prevents user creation when already exists.`, async () => {
+    test(`returns error when user already exists.`, async () => {
         const repo = mock<UserRepository>()
         repo.exists.mockReturnValue(Promise.resolve(true))
         const theUser = { email: 'foo@bar.com', password: '1234' }
         const createUser = new CreateUser(repo)
 
-        expect(createUser.execute(theUser)).rejects.toEqual('User already exists.')
+        const result = await createUser.execute(theUser)
+
+        expect(result.value.errorValue()).toBe('User already exists.')
     })
 
-
-
-    // This is a repo test
-    test(`user is added.`, async () => {
-        const repo = new InMemoryUserRepository()
+    test('returns no error when user is created.', async () => {
+        const repo = mock<UserRepository>()
         const theUser = { email: 'foo@bar.com', password: '1234' }
         const createUser = new CreateUser(repo)
 
-        await createUser.execute(theUser)
-        const createdUser = await repo.findByEmail(theUser.email)
+        const result = await createUser.execute(theUser)
 
-        expect(createdUser).instanceOf(User)
-        expect(createdUser!.email).toBe(theUser.email)
+        expect(result.value.errorValue()).toBeNull()
     })
 })

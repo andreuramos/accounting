@@ -1,5 +1,6 @@
 import { Guard } from '@domain/shared/Guard'
 import { ValueObject } from './shared'
+import { Result } from './shared/Result'
 
 interface PasswordProps {
     value: string
@@ -20,19 +21,19 @@ export class Password extends ValueObject<PasswordProps> {
         return value.length >= Password.MIN_LENGTH
     }
 
-    public static create(password: string) {
+    public static create(password: string): Result<Password> {
         // Valorar throw dins Guard.
         // Mirar guard clauses
         // Melón Errores
         const guardResult = Guard.againstNullOrUndefined(password, 'password')
         if (!guardResult.succeeded) {
-            throw guardResult.message
+            return Result.fail<Password>(guardResult.message)
         }
 
         if (!this.isAppropriateLength(password)) {
-            throw `Password needs to have at least ${Password.MIN_LENGTH} characters.`
+            return Result.fail<Password>(`Password needs to have at least ${Password.MIN_LENGTH} characters.`)
         }
 
-        return new Password({ value: password })
+        return Result.ok<Password>(new Password({ value: password }))
     }
 }

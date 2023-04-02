@@ -1,4 +1,5 @@
 import { ValueObject } from './shared'
+import { Result } from './shared/Result'
 
 interface EmailProps {
     value: string
@@ -13,10 +14,10 @@ export class Email extends ValueObject<EmailProps> {
         return this.props.value
     }
 
-    public static create(email: string): Email {
+    public static create(email: string): Result<Email> {
         if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
-            return new Email({ value: email })
+            return Result.ok<Email>(new Email({ value: email }))
         }
-        throw 'Email has wrong structure.'
+        return Result.fail<Email>('Email has wrong structure.')
     }
 }

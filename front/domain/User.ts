@@ -2,6 +2,7 @@ import { Guard, GuardArgumentCollection } from '@domain/shared/Guard'
 import { Email } from './Email'
 import { Password } from './Password'
 import { Entity } from './shared/Entity'
+import { Result } from './shared/Result'
 
 interface UserProps {
     email: Email
@@ -26,9 +27,11 @@ export class User extends Entity<UserProps> {
         const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps)
 
         if (!guardResult.succeeded) {
-            throw 'User needs an email and a password.'
+            return Result.fail<User>(guardResult.message)
         }
 
-        return new User({ email, password })
+        const user = new User({ email, password })
+
+        return Result.ok<User>(user)
     }
 }
