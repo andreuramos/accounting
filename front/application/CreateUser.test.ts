@@ -17,18 +17,18 @@ describe(`CreateUser use case`, () => {
         expect(repo.add).toHaveBeenCalledOnce()
     })
 
-    // This is an integration test
     test(`prevents user creation when already exists.`, async () => {
-        const repo = new InMemoryUserRepository()
+        const repo = mock<UserRepository>()
+        repo.exists.mockReturnValue(Promise.resolve(true))
         const theUser = { email: 'foo@bar.com', password: '1234' }
         const createUser = new CreateUser(repo)
 
-        await createUser.execute(theUser)
-
-        expect(() => createUser.execute(theUser)).rejects.toEqual('User already exists.')
+        expect(createUser.execute(theUser)).rejects.toEqual('User already exists.')
     })
 
-    // This is an integration test
+
+
+    // This is a repo test
     test(`user is added.`, async () => {
         const repo = new InMemoryUserRepository()
         const theUser = { email: 'foo@bar.com', password: '1234' }
