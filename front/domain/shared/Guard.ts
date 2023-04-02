@@ -9,7 +9,6 @@ interface GuardArgument {
 }
 
 export type GuardArgumentCollection = Array<GuardArgument>
-// Posar aquest guard a domini
 export class Guard {
     public static againstNullOrUndefined (argument: any, argumentName: string): GuardResult {
         if (argument === null || argument === undefined) {
