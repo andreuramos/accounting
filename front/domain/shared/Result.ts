@@ -5,7 +5,7 @@ export class Result<T> {
     public error: T | string
     private _value: T
 
-    private constructor(isSuccess: boolean, error?: T | string | null, value?: T) {
+    protected constructor(isSuccess: boolean, error?: T | string, value?: T) {
         if (isSuccess && error) {
           throw new Error('InvalidOperation: A result cannot be successful and contain an error')
         }

@@ -23,7 +23,17 @@ describe(`CreateUser use case`, () => {
 
         const result = await createUser.execute(theUser)
 
-        expect(result.value.errorValue()).toBe('User already exists.')
+        expect(result.value.errorValue().message).toBe('User already exists.')
+    })
+
+    test(`returns error when email is invalid.`, async () => {
+        const repo = mock<UserRepository>()
+        const theUser = { email: 'invalidEmail', password: '1234' }
+        const createUser = new CreateUser(repo)
+
+        const result = await createUser.execute(theUser)
+
+        expect(result.value.errorValue().message).toBe('Email is not valid.')
     })
 
     test('returns no error when user is created.', async () => {

@@ -23,6 +23,8 @@
     "paths": {
       "@domain": ["domain"],
       "@domain/*": ["domain/*"],
+      "@application": ["application"],
+      "@application/*": ["application/*"],
       "@infrastructure": ["infrastructure"],
       "@infrastructure/*": ["infrastructure/*"],
       "@helpers": ["helpers"],

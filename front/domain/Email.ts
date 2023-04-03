@@ -14,10 +14,18 @@ export class Email extends ValueObject<EmailProps> {
         return this.props.value
     }
 
-    public static create(email: string): Result<Email> {
+    private static isValid(email: string): boolean {
         if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
-            return Result.ok<Email>(new Email({ value: email }))
+            return true
         }
-        return Result.fail<Email>('Email has wrong structure.')
+        return false
+    }
+
+    public static create(email: string): Result<Email> {
+
+        if (!this.isValid(email)) {
+            return Result.fail<Email>('Email is not valid.')
+        }
+        return Result.ok<Email>(new Email({ value: email }))
     }
 }

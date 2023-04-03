@@ -2,12 +2,12 @@ import { describe, expect, test } from 'vitest'
 import { Email } from './Email'
 
 describe(`Email ValueObject`, () => {
-    test(`email cannot have wrong structure`, () => {
+    test(`fails to create an invalid email`, () => {
         const wrongEmail = 'wrongEmail'
 
         const emailOrError = Email.create(wrongEmail)
 
-        expect(emailOrError.errorValue()).toBe('Email has wrong structure.')
+        expect(emailOrError.errorValue()).toBe('Email is not valid.')
     })
 
     test(`email can be created meeting the above requirements`, () => {
