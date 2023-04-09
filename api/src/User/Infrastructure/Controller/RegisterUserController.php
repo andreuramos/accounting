@@ -3,14 +3,14 @@
 namespace App\User\Infrastructure\Controller;
 
 use App\User\Application\Command\RegisterUserCommand;
-use App\User\Domain\Service\UserRegisterer;
+use App\User\Application\UseCase\RegisterUserUseCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 
 class RegisterUserController
 {
-    public function __construct(private readonly UserRegisterer $userRegisterer)
+    public function __construct(private readonly RegisterUserUseCase $registerUserUseCase)
     {
     }
 
@@ -23,7 +23,7 @@ class RegisterUserController
         $password = $requestContent['password'];
         $command = new RegisterUserCommand($email, $password);
 
-        $this->userRegisterer->execute($command);
+        ($this->registerUserUseCase)($command);
 
         return new Response("OK", 200);
     }

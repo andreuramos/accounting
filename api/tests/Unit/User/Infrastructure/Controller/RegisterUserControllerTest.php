@@ -3,6 +3,7 @@
 namespace Test\Unit\User\Infrastructure\Controller;
 
 use App\User\Application\Command\RegisterUserCommand;
+use App\User\Application\UseCase\RegisterUserUseCase;
 use App\User\Domain\Service\UserRegisterer;
 use App\User\Infrastructure\Controller\RegisterUserController;
 use PHPUnit\Framework\TestCase;
@@ -14,12 +15,12 @@ class RegisterUserControllerTest extends TestCase
 {
     use ProphecyTrait;
 
-    private $userRegisterer;
+    private $registerUserUseCase;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->userRegisterer = $this->prophesize(UserRegisterer::class);
+        $this->registerUserUseCase = $this->prophesize(RegisterUserUseCase::class);
     }
 
     public function test_it_returns_200_response(): void
@@ -27,7 +28,7 @@ class RegisterUserControllerTest extends TestCase
         $email = 'email@email.com';
         $password = 'desiredPassw0rd';
         $command = new RegisterUserCommand($email, $password);
-        $this->userRegisterer->execute($command)
+        $this->registerUserUseCase->__invoke($command)
             ->shouldBeCalled();
         $controller = $this->buildController();
         $request = $this->prophesize(Request::class);
@@ -58,7 +59,7 @@ class RegisterUserControllerTest extends TestCase
     private function buildController(): RegisterUserController
     {
         return new RegisterUserController(
-            $this->userRegisterer->reveal()
+            $this->registerUserUseCase->reveal()
         );
     }
 }
