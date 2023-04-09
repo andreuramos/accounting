@@ -2,6 +2,7 @@
 
 namespace Test\Unit\User\Domain\Service;
 
+use App\Shared\Application\Service\HasherInterface;
 use App\User\Application\Command\RegisterUserCommand;
 use App\User\Domain\Entity\User;
 use App\User\Domain\Exception\UserAlreadyExistsException;
@@ -17,25 +18,34 @@ class UserRegistererTest extends TestCase
     use ProphecyTrait;
 
     private $userRepository;
+    private $passwordHasher;
 
     public function setUp(): void
     {
         parent::setUp();
         $this->userRepository = $this->prophesize(UserRepositoryInterface::class);
+        $this->passwordHasher = $this->prophesize(HasherInterface::class);
     }
 
     public function test_saves_built_user()
     {
         $email = 'some@email.com';
         $password = 'somePass';
+        $hashedPassword = "hashedPassword";
         $command = new RegisterUserCommand($email, $password);
-        $user = new User(new Email($email), $password);
         $this->userRepository->getByEmail(new Email($email))
             ->shouldBeCalled()
             ->willReturn(null);
+        $this->passwordHasher->hash($password)
+            ->shouldBeCalled()
+            ->willReturn($hashedPassword);
+        $user = new User(new Email($email), $hashedPassword);
         $this->userRepository->save($user)
             ->shouldBeCalled();
-        $service = new UserRegisterer($this->userRepository->reveal());
+        $service = new UserRegisterer(
+            $this->userRepository->reveal(),
+            $this->passwordHasher->reveal()
+        );
 
         $service->execute($command);
     }
@@ -53,7 +63,10 @@ class UserRegistererTest extends TestCase
             ->willReturn($user);
         $this->userRepository->save(Argument::any())
             ->shouldNotBeCalled();
-        $service = new UserRegisterer($this->userRepository->reveal());
+        $service = new UserRegisterer(
+            $this->userRepository->reveal(),
+            $this->passwordHasher->reveal()
+        );
 
         $service->execute($command);
     }
