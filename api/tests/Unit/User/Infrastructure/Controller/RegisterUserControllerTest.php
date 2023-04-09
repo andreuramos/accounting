@@ -25,13 +25,15 @@ class RegisterUserControllerTest extends TestCase
     public function test_it_returns_200_response(): void
     {
         $email = 'email@email.com';
-        $command = new RegisterUserCommand($email);
+        $password = 'desiredPassw0rd';
+        $command = new RegisterUserCommand($email, $password);
         $this->userRegisterer->execute($command)
             ->shouldBeCalled();
         $controller = $this->buildController();
         $request = $this->prophesize(Request::class);
         $requestBody = [
-            'email' => $email
+            'email' => $email,
+            'password' => $password,
         ];
         $request->getContent()
             ->willReturn(json_encode($requestBody));

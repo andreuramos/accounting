@@ -20,7 +20,7 @@ class UserRegisterer
         if (null !== $this->userRepository->getByEmail($email)) {
             throw new UserAlreadyExistsException();
         }
-        $user = new User($email);
+        $user = new User($email, $command->password());
 
         $this->userRepository->save($user);
     }

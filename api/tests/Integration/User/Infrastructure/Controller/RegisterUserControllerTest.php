@@ -49,7 +49,11 @@ class RegisterUserControllerTest extends TestCase
     public function test_fails_if_email_already_in_use()
     {
         $this->client->request('POST', 'http://nginx/register', [
-            'body' => json_encode(['email' => self::SUCCESS_EMAIL,], JSON_THROW_ON_ERROR)
+            'body' => json_encode(
+                [
+                'email' => self::SUCCESS_EMAIL,
+                'password' => "anything",
+                ], JSON_THROW_ON_ERROR)
         ]);
         try {
             $response = $this->client->request('POST', 'http://nginx/register', [

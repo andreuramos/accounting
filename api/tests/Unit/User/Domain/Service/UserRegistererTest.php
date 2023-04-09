@@ -27,8 +27,9 @@ class UserRegistererTest extends TestCase
     public function test_saves_built_user()
     {
         $email = 'some@email.com';
-        $command = new RegisterUserCommand($email);
-        $user = new User(new Email($email));
+        $password = 'somePass';
+        $command = new RegisterUserCommand($email, $password);
+        $user = new User(new Email($email), $password);
         $this->userRepository->getByEmail(new Email($email))
             ->shouldBeCalled()
             ->willReturn(null);
@@ -44,8 +45,9 @@ class UserRegistererTest extends TestCase
         $this->expectException(UserAlreadyExistsException::class);
 
         $email = 'existing@email.com';
-        $command = new RegisterUserCommand($email);
-        $user = new User(new Email($email));
+        $password = "mypassword";
+        $command = new RegisterUserCommand($email, $password);
+        $user = new User(new Email($email), $password);
         $this->userRepository->getByEmail(new Email($email))
             ->shouldBeCalled()
             ->willReturn($user);

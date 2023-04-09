@@ -20,7 +20,8 @@ class RegisterUserController
         $this->guardRequestParams($requestContent);
 
         $email = $requestContent['email'];
-        $command = new RegisterUserCommand($email);
+        $password = $requestContent['password'];
+        $command = new RegisterUserCommand($email, $password);
 
         $this->userRegisterer->execute($command);
 
