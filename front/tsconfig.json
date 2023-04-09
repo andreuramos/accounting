@@ -7,7 +7,11 @@
     "skipLibCheck": true,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
-    "strict": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
     "moduleResolution": "Node",
@@ -19,14 +23,19 @@
     "paths": {
       "@domain": ["domain"],
       "@domain/*": ["domain/*"],
+      "@application": ["application"],
+      "@application/*": ["application/*"],
       "@infrastructure": ["infrastructure"],
       "@infrastructure/*": ["infrastructure/*"],
+      "@helpers": ["helpers"],
+      "@helpers/*": ["helpers/*"],
     }
   },
   "include": [
     "src",
     "domain",
-    "application"
+    "application",
+    "helpers"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

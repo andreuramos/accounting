@@ -11,8 +11,8 @@ describe('User entity', () => {
         const email = Email.create(correctEmail)
         const correctPassword = Password.create('1234')
 
-        const user = User.create(email, correctPassword)
+        const user = User.create(email.getValue(), correctPassword.getValue())
 
-        expect(user.email).toBe(correctEmail)
+        expect(user.getValue().email).toBe(correctEmail)
     })
 })
