@@ -16,9 +16,11 @@ class MysqlUserRepository implements UserRepositoryInterface
     public function save(User $user): int
     {
         $email = $user->email()->toString();
+        $password = $user->passwordHash();
 
-        $stmt = $this->PDO->prepare("INSERT INTO user (email) VALUES (:email)");
+        $stmt = $this->PDO->prepare("INSERT INTO user (email, password) VALUES (:email, :password)");
         $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':password', $password);
         $stmt->execute();
 
         return 0;
