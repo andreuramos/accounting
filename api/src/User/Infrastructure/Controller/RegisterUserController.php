@@ -43,5 +43,8 @@ class RegisterUserController
         if (!array_key_exists('email', $requestContent)) {
             throw new MissingMandatoryParametersException("email");
         }
+        if (!array_key_exists('password', $requestContent)) {
+            throw new MissingMandatoryParametersException("email");
+        }
     }
 }

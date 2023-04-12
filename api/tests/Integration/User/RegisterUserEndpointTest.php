@@ -26,7 +26,9 @@ class RegisterUserEndpointTest extends EndpointTest
     {
         try {
             $response = $this->client->request('POST', '/register', [
-                'body' => json_encode([], JSON_THROW_ON_ERROR)
+                'body' => json_encode([
+                    'password' => '2up3r23cr3t'
+                ], JSON_THROW_ON_ERROR)
             ]);
 
             $responseCode = $response->getStatusCode();
@@ -62,6 +64,20 @@ class RegisterUserEndpointTest extends EndpointTest
         $this->assertEquals(400, $responseCode);
     }
 
+    public function test_fails_if_no_password()
+    {
+        try {
+            $response = $this->client->request('POST', '/register', [
+                'body' => json_encode(['email' => 'some@email.com'], JSON_THROW_ON_ERROR)
+            ]);
+
+            $responseCode = $response->getStatusCode();
+        } catch (ClientException $exception) {
+            $responseCode = $exception->getCode();
+        }
+
+        $this->assertEquals(400, $responseCode);
+    }
     public function tearDown(): void
     {
         parent::tearDown();
