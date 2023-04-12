@@ -2,17 +2,15 @@
 
 namespace Test\Integration\Shared\Infrastructure;
 
-use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
-use PHPUnit\Framework\TestCase;
+use Test\Integration\EndpointTest;
 
-class SharedDomainControllerTest extends TestCase
+class SharedDomainControllerTest extends EndpointTest
 {
     public function testSharedDomainReturns200()
     {
-        $client = new Client();
         try {
-            $response = $client->get('http://nginx/domain');
+            $response = $this->client->get('/domain');
             $this->assertEquals(200, $response->getStatusCode());
         } catch (RequestException $e) {
             $this->fail($e->getMessage());

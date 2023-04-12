@@ -2,17 +2,15 @@
 
 namespace Test\Integration\Shared\Infrastructure;
 
-use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
-use PHPUnit\Framework\TestCase;
+use Test\Integration\EndpointTest;
 
-class StatusCheckControllerTest extends TestCase
+class StatusCheckControllerTest extends EndpointTest
 {
     public function testStatusCheckReturns200()
     {
-        $client = new Client();
         try {
-            $response = $client->get('nginx/status');
+            $response = $this->client->get('/status');
             $this->assertEquals(200, $response->getStatusCode());
         } catch (RequestException $e) {
             $this->fail($e->getMessage());

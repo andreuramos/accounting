@@ -2,25 +2,16 @@
 
 namespace Test\Integration\User\Infrastructure\Controller;
 
-use App\Shared\Infrastructure\ContainerFactory;
-use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
-use PHPUnit\Framework\TestCase;
+use Test\Integration\EndpointTest;
 
-class RegisterUserControllerTest extends TestCase
+class RegisterUserControllerTest extends EndpointTest
 {
     const SUCCESS_EMAIL = 'some@email.com';
 
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->client = new Client();
-        $this->container = ContainerFactory::create();
-    }
-
     public function test_registers_a_user()
     {
-        $response = $this->client->request('POST', 'http://nginx/register', [
+        $response = $this->client->request('POST', '/register', [
             'body' => json_encode([
                 'name' => 'some name',
                 'email' => self::SUCCESS_EMAIL,
@@ -34,7 +25,7 @@ class RegisterUserControllerTest extends TestCase
     public function test_fails_if_no_email()
     {
         try {
-            $response = $this->client->request('POST', 'http://nginx/register', [
+            $response = $this->client->request('POST', '/register', [
                 'body' => json_encode([], JSON_THROW_ON_ERROR)
             ]);
 
@@ -48,7 +39,7 @@ class RegisterUserControllerTest extends TestCase
 
     public function test_fails_if_email_already_in_use()
     {
-        $this->client->request('POST', 'http://nginx/register', [
+        $this->client->request('POST', '/register', [
             'body' => json_encode(
                 [
                 'email' => self::SUCCESS_EMAIL,
@@ -56,7 +47,7 @@ class RegisterUserControllerTest extends TestCase
                 ], JSON_THROW_ON_ERROR)
         ]);
         try {
-            $response = $this->client->request('POST', 'http://nginx/register', [
+            $response = $this->client->request('POST', '/register', [
                 'body' => json_encode([
                     'name' => 'other name',
                     'email' => self::SUCCESS_EMAIL,
