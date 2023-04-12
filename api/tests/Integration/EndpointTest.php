@@ -7,7 +7,7 @@ use DI\Container;
 use GuzzleHttp\Client;
 use PHPUnit\Framework\TestCase;
 
-class EndpointTest extends TestCase
+abstract class EndpointTest extends TestCase
 {
     protected Client $client;
     protected Container $container;
