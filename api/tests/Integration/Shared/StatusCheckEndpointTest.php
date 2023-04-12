@@ -1,11 +1,11 @@
 <?php
 
-namespace Test\Integration\Shared\Infrastructure;
+namespace Test\Integration\Shared;
 
 use GuzzleHttp\Exception\RequestException;
 use Test\Integration\EndpointTest;
 
-class StatusCheckControllerTest extends EndpointTest
+class StatusCheckEndpointTest extends EndpointTest
 {
     public function testStatusCheckReturns200()
     {

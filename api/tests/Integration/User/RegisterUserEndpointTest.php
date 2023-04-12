@@ -1,11 +1,11 @@
 <?php
 
-namespace Test\Integration\User\Infrastructure\Controller;
+namespace Test\Integration\User;
 
 use GuzzleHttp\Exception\ClientException;
 use Test\Integration\EndpointTest;
 
-class RegisterUserControllerTest extends EndpointTest
+class RegisterUserEndpointTest extends EndpointTest
 {
     const SUCCESS_EMAIL = 'some@email.com';
 

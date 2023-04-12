@@ -1,11 +1,11 @@
 <?php
 
-namespace Test\Integration\Shared\Infrastructure;
+namespace Test\Integration\Shared;
 
 use GuzzleHttp\Exception\RequestException;
 use Test\Integration\EndpointTest;
 
-class SharedDomainControllerTest extends EndpointTest
+class SharedDomainEndpointTest extends EndpointTest
 {
     public function testSharedDomainReturns200()
     {
