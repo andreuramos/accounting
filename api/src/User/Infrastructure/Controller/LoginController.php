@@ -13,7 +13,12 @@ class LoginController
         $requestContent = $this->getRequestBody($request);
         $this->guardRequiredParams($requestContent);
 
-        return new Response();
+        $result = [
+            "token" => "",
+            "refresh" => "",
+        ];
+
+        return new Response(json_encode($result), 200);
     }
 
     private function getRequestBody(Request $request): array
