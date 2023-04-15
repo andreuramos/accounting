@@ -8,6 +8,6 @@ class NativeHasher implements HasherInterface
 {
     public function hash(string $str): string
     {
-        return password_hash($str, PASSWORD_DEFAULT);
+        return md5($str . "salt");
     }
 }
