@@ -2,16 +2,35 @@
 
 namespace App\User\Infrastructure\Controller;
 
+use App\User\Application\Command\LoginCommand;
+use App\User\Application\UseCase\LoginUseCase;
+use App\User\Domain\Exception\InvalidCredentialsException;
+use App\User\Domain\ValueObject\Email;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 
 class LoginController
 {
+    public function __construct(private readonly LoginUseCase $loginUseCase)
+    {
+    }
+
     public function __invoke(Request $request): Response
     {
         $requestContent = $this->getRequestBody($request);
         $this->guardRequiredParams($requestContent);
+
+        $command = new LoginCommand(
+            new Email($requestContent['email']),
+            $requestContent['password']
+        );
+
+        try {
+            ($this->loginUseCase)($command);
+        } catch (InvalidCredentialsException $exception) {
+            return new Response("", 401);
+        }
 
         $result = [
             "token" => "",
