@@ -40,6 +40,9 @@ class MysqlUserRepository implements UserRepositoryInterface
             return null;
         }
 
-        return new User(new Email($result['email']));
+        return new User(
+            new Email($result['email']),
+            $result['password']
+        );
     }
 }
