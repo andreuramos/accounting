@@ -8,6 +8,7 @@ use Test\Integration\EndpointTest;
 class LoginEndpointTest extends EndpointTest
 {
     const EXISTING_EMAIL = "existing@email.com";
+    const EXISTING_EMAIL2 = "another@existing.net";
 
     public function test_status_200_if_correct_credentials(): void
     {
@@ -32,7 +33,18 @@ class LoginEndpointTest extends EndpointTest
 
     public function test_fails_if_wrong_credentials(): void
     {
-        $this->markTestIncomplete();
+        try {
+            $this->registerUser(self::EXISTING_EMAIL2, "correctPassword");
+            $response = $this->client->post('/login', [
+                'body' => json_encode([
+                    'email' => self::EXISTING_EMAIL2,
+                    'password' => "wrongPassword"
+                ], JSON_THROW_ON_ERROR)
+            ]);
+            $this->assertEquals(401, $response->getStatusCode());
+        } catch (RequestException $e) {
+            $this->assertEquals(401, $e->getCode());
+        }
     }
 
     private function registerUser(string $email, string $password)
