@@ -9,6 +9,7 @@ use App\User\Domain\ValueObject\Email;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
+use TheSeer\Tokenizer\Exception;
 
 class LoginController
 {
@@ -27,17 +28,18 @@ class LoginController
         );
 
         try {
-            ($this->loginUseCase)($command);
+            $result = ($this->loginUseCase)($command);
+
+            return new Response(json_encode([
+                "token" => $result->token,
+                "refresh" => $result->refresh,
+            ], JSON_THROW_ON_ERROR), 200);
         } catch (InvalidCredentialsException $exception) {
             return new Response("", 401);
+        } catch (Exception $anythingElse) {
+            return new Response("", 400);
         }
 
-        $result = [
-            "token" => "",
-            "refresh" => "",
-        ];
-
-        return new Response(json_encode($result), 200);
     }
 
     private function getRequestBody(Request $request): array

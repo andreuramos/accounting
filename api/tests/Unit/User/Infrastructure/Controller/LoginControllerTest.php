@@ -3,6 +3,7 @@
 namespace Test\Unit\User\Infrastructure\Controller;
 
 use App\User\Application\Command\LoginCommand;
+use App\User\Application\Result\LoginResult;
 use App\User\Application\UseCase\LoginUseCase;
 use App\User\Domain\Exception\InvalidCredentialsException;
 use App\User\Domain\ValueObject\Email;
@@ -42,7 +43,8 @@ class LoginControllerTest extends TestCase
             "password" => "mypass",
         ], JSON_THROW_ON_ERROR));
         $command = new LoginCommand(new Email("some@email.com"), "mypass");
-        $this->loginUseCase->__invoke($command)->shouldBeCalled();
+        $this->loginUseCase->__invoke($command)->shouldBeCalled()
+            ->willReturn(new LoginResult("", ""));
 
         $controller = $this->getController();
         $result = $controller($request->reveal());
