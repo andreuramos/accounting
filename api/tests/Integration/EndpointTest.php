@@ -18,4 +18,14 @@ abstract class EndpointTest extends TestCase
         $this->client = new Client(['base_uri' => 'http://nginx']);
         $this->container = ContainerFactory::create();
     }
+
+    protected function registerUser(string $email, string $password)
+    {
+        $this->client->post('/user',[
+            'body' => json_encode([
+                'email' => $email,
+                'password' => $password
+            ], JSON_THROW_ON_ERROR)
+        ]);
+    }
 }

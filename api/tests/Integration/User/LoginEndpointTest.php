@@ -60,16 +60,6 @@ class LoginEndpointTest extends EndpointTest
         }
     }
 
-    private function registerUser(string $email, string $password)
-    {
-        $this->client->post('/user',[
-            'body' => json_encode([
-                'email' => $email,
-                'password' => $password
-            ], JSON_THROW_ON_ERROR)
-        ]);
-    }
-
     public function tearDown(): void
     {
         parent::tearDown();

@@ -4,6 +4,7 @@ require_once './vendor/autoload.php';
 
 use App\Shared\Infrastructure\Controller\SharedDomainController;
 use App\Shared\Infrastructure\Controller\StatusCheckController;
+use App\User\Infrastructure\Controller\GetUserController;
 use App\User\Infrastructure\Controller\LoginController;
 use App\User\Infrastructure\Controller\RegisterUserController;
 use Symfony\Component\Routing\Route;
@@ -28,6 +29,10 @@ $routes->add('register', $registerRoute);
 $routes->add('status', new Route(
     '/status',
     ['controller' => StatusCheckController::class]
+));
+$routes->add('get-user', new Route(
+    '/user',
+    ['controller' => GetUserController::class]
 ));
 
 return $routes;
