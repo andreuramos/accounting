@@ -11,7 +11,7 @@ class RegisterUserEndpointTest extends EndpointTest
 
     public function test_registers_a_user()
     {
-        $response = $this->client->request('POST', '/register', [
+        $response = $this->client->request('POST', '/user', [
             'body' => json_encode([
                 'name' => 'some name',
                 'email' => self::SUCCESS_EMAIL,
@@ -25,7 +25,7 @@ class RegisterUserEndpointTest extends EndpointTest
     public function test_fails_if_no_email()
     {
         try {
-            $response = $this->client->request('POST', '/register', [
+            $response = $this->client->request('POST', '/user', [
                 'body' => json_encode([
                     'password' => '2up3r23cr3t'
                 ], JSON_THROW_ON_ERROR)
@@ -41,7 +41,7 @@ class RegisterUserEndpointTest extends EndpointTest
 
     public function test_fails_if_email_already_in_use()
     {
-        $this->client->request('POST', '/register', [
+        $this->client->request('POST', '/user', [
             'body' => json_encode(
                 [
                 'email' => self::SUCCESS_EMAIL,
@@ -49,7 +49,7 @@ class RegisterUserEndpointTest extends EndpointTest
                 ], JSON_THROW_ON_ERROR)
         ]);
         try {
-            $response = $this->client->request('POST', '/register', [
+            $response = $this->client->request('POST', '/user', [
                 'body' => json_encode([
                     'name' => 'other name',
                     'email' => self::SUCCESS_EMAIL,
@@ -67,7 +67,7 @@ class RegisterUserEndpointTest extends EndpointTest
     public function test_fails_if_no_password()
     {
         try {
-            $response = $this->client->request('POST', '/register', [
+            $response = $this->client->request('POST', '/user', [
                 'body' => json_encode(['email' => 'some@email.com'], JSON_THROW_ON_ERROR)
             ]);
 

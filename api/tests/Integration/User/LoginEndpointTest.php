@@ -62,7 +62,7 @@ class LoginEndpointTest extends EndpointTest
 
     private function registerUser(string $email, string $password)
     {
-        $this->client->post('/register',[
+        $this->client->post('/user',[
             'body' => json_encode([
                 'email' => $email,
                 'password' => $password

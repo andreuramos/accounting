@@ -20,7 +20,7 @@ $routes->add('login', new Route(
     ['controller' => LoginController::class]
 ));
 $registerRoute = new Route(
-    '/register',
+    '/user',
     ['controller' => RegisterUserController::class]
 );
 $registerRoute->setMethods('POST');
