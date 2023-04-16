@@ -1,5 +1,7 @@
 <?php
 
+use App\User\Infrastructure\Auth\JWTGenerator;
+
 require_once __DIR__ . '/../../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__.'/../..');
 $dotenv->load();
@@ -15,4 +17,8 @@ return [
         $dbUsername,
         $dbPassword
     ),
+    JWTGenerator::class => new JWTGenerator(
+        env('JWT_SIGNATURE_KEY'),
+        env('JWT_TTL'),
+    )
 ];
