@@ -3,6 +3,7 @@
 require_once './vendor/autoload.php';
 
 use App\Shared\Infrastructure\ContainerFactory;
+use App\User\Domain\Exception\InvalidCredentialsException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
@@ -25,6 +26,8 @@ try {
     $response = $controller($request);
 } catch (RouteNotFoundException $exception) {
     $response = new Response("APP ERROR: Not found " . $exception->getMessage(), Response::HTTP_NOT_FOUND);
+} catch (InvalidCredentialsException $exception) {
+    $response = new Response("APP ERROR: Unauthorized ", Response::HTTP_UNAUTHORIZED);
 } catch (Throwable $exception) {
     $response = new Response("APP ERROR: " . $exception->getMessage(), Response::HTTP_BAD_REQUEST);
 }

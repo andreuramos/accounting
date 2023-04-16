@@ -62,5 +62,6 @@ class LoginEndpointTest extends EndpointTest
         parent::tearDown();
         $pdo = $this->container->get(\PDO::class);
         $pdo->query('DELETE FROM user WHERE email="' . self::EXISTING_EMAIL . '";');
+        $pdo->query('DELETE FROM user WHERE email="' . self::EXISTING_EMAIL2 . '";');
     }
 }
