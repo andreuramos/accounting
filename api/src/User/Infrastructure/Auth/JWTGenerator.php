@@ -16,9 +16,10 @@ class JWTGenerator implements AuthTokenGeneratorInterface
 
     public function __invoke(User $user): JWTToken
     {
+        $expiration = (new \DateTime())->getTimestamp() + $this->ttl;
         $tokenPayload = [
             'user' => $user->email()->toString(),
-            'expiration' => $this->ttl,
+            'expiration' => $expiration,
         ];
 
         $encoded = JWT::encode($tokenPayload, $this->signatureKey, 'HS256');
