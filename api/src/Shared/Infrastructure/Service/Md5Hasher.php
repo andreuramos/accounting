@@ -4,7 +4,7 @@ namespace App\Shared\Infrastructure\Service;
 
 use App\Shared\Application\Service\HasherInterface;
 
-class NativeHasher implements HasherInterface
+class Md5Hasher implements HasherInterface
 {
     public function hash(string $str): string
     {
