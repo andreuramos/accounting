@@ -33,7 +33,9 @@ class LoginController
             return new Response(json_encode([
                 "token" => $result->token,
                 "refresh" => $result->refresh,
-            ], JSON_THROW_ON_ERROR), 200);
+            ], JSON_THROW_ON_ERROR), 200, [
+                'Content-Type' => 'application/json'
+            ]);
         } catch (InvalidCredentialsException $exception) {
             return new Response("", 401);
         } catch (Exception $anythingElse) {
