@@ -2,14 +2,12 @@
 
 namespace App\User\Infrastructure\Controller;
 
-use App\User\Infrastructure\Auth\ControllerAuthenticationTrait;
+use App\Shared\Infrastructure\Controller\AuthorizedController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class GetUserController
+class GetUserController extends AuthorizedController
 {
-    use ControllerAuthenticationTrait;
-
     public function __invoke(Request $request): Response
     {
         $this->auth($request);

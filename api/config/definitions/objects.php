@@ -1,5 +1,6 @@
 <?php
 
+use App\User\Infrastructure\Auth\JWTDecoder;
 use App\User\Infrastructure\Auth\JWTGenerator;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
@@ -20,5 +21,8 @@ return [
     JWTGenerator::class => new JWTGenerator(
         env('JWT_SIGNATURE_KEY'),
         env('JWT_TTL'),
-    )
+    ),
+    JWTDecoder::class => new JWTDecoder(
+        env('JWT_SIGNATURE_KEY')
+    ),
 ];
