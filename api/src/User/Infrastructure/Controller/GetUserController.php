@@ -25,6 +25,10 @@ class GetUserController extends AuthorizedController
 
         $result = ($this->getUserUseCase)($this->authUser->email());
 
-        return new Response(json_encode($result, JSON_THROW_ON_ERROR));
+        return new Response(
+            json_encode($result, JSON_THROW_ON_ERROR),
+            200,
+            ['Content-Type' => 'application/json']
+        );
     }
 }

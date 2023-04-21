@@ -59,6 +59,7 @@ class GetUserControllerTest extends TestCase
 
         $result = $controller($request);
 
+        $this->assertEquals("application/json", $result->headers->get('Content-Type'));
         $this->assertJson($result->getContent());
         $decodedResult = json_decode($result->getContent(), true);
         $this->assertArrayHasKey('email', $decodedResult);
