@@ -14,6 +14,7 @@ use App\User\Domain\Model\UserRepositoryInterface;
 use App\User\Domain\ValueObject\Email;
 use App\User\Infrastructure\Auth\JWTToken;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 class LoginUseCaseTest extends TestCase
@@ -75,6 +76,7 @@ class LoginUseCaseTest extends TestCase
         $this->hasher->hash("mypass")->willReturn("passHash");
         $this->authTokenGenerator->__invoke($user)->willReturn($token);
         $this->refreshTokenGenerator->__invoke($user)->willReturn($token);
+        $this->userRepository->save(Argument::type(User::class))->willReturn(1);
 
         $useCase = $this->getUseCase();
         $result = $useCase($command);
@@ -97,12 +99,35 @@ class LoginUseCaseTest extends TestCase
         $this->authTokenGenerator->__invoke($user)->willReturn($token);
         $refresh = new JWTToken("refresh.stuff.inside");
         $this->refreshTokenGenerator->__invoke($user)->willReturn($refresh);
+        $this->userRepository->save(Argument::type(User::class))->willReturn(1);
 
         $useCase = $this->getUseCase();
         $result = $useCase($command);
 
         $this->assertInstanceOf(LoginResult::class, $result);
         $this->assertEquals($refresh, $result->refresh);
+    }
+
+    public function test_stores_refresh_token()
+    {
+        $email = new Email("existing@email.com");
+        $user = new User(
+            $email,
+            "passHash"
+        );
+        $command = new LoginCommand($email, "mypass");
+        $refreshToken = new JWTToken("some.jwt.token");
+        $this->userRepository->getByEmail($email)->willReturn($user);
+        $this->hasher->hash("mypass")->willReturn("passHash");
+        $this->authTokenGenerator->__invoke($user)->willReturn($refreshToken);
+        $this->refreshTokenGenerator->__invoke($user)->willReturn($refreshToken);
+        $user->setRefreshToken($refreshToken);
+        $this->userRepository->save($user)
+            ->shouldBeCalled()
+            ->willReturn(1);
+
+        $useCase = $this->getUseCase();
+        $useCase($command);
     }
 
     private function getUseCase(): LoginUseCase
