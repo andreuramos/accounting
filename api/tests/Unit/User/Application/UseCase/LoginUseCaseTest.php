@@ -3,6 +3,7 @@
 namespace Test\Unit\User\Application\UseCase;
 
 use App\Shared\Application\Service\HasherInterface;
+use App\Shared\Domain\ValueObject\Id;
 use App\User\Application\Auth\RefreshTokenGeneratorInterface;
 use App\User\Application\Command\LoginCommand;
 use App\User\Application\Result\LoginResult;
@@ -50,6 +51,7 @@ class LoginUseCaseTest extends TestCase
     {
         $email = new Email("existing@email.com");
         $user = new User(
+            new Id(1),
             $email,
             "passHash"
         );
@@ -67,6 +69,7 @@ class LoginUseCaseTest extends TestCase
     {
         $email = new Email("existing@email.com");
         $user = new User(
+            new Id(1),
             $email,
             "passHash"
         );
@@ -89,6 +92,7 @@ class LoginUseCaseTest extends TestCase
     {
         $email = new Email("existing@email.com");
         $user = new User(
+            new Id(1),
             $email,
             "passHash"
         );
@@ -112,6 +116,7 @@ class LoginUseCaseTest extends TestCase
     {
         $email = new Email("existing@email.com");
         $user = new User(
+            new Id(1),
             $email,
             "passHash"
         );

@@ -2,17 +2,24 @@
 
 namespace App\User\Domain\Entity;
 
+use App\Shared\Domain\ValueObject\Id;
 use App\User\Application\Auth\AuthTokenInterface;
 use App\User\Domain\ValueObject\Email;
 
 class User
 {
-    private AuthTokenInterface $refreshToken;
+    private ?AuthTokenInterface $refreshToken = null;
 
     public function __construct(
+        private readonly Id $id,
         private readonly Email $email,
         private readonly string $passwordHash
     ) {
+    }
+
+    public function id(): Id
+    {
+        return $this->id;
     }
 
     public function email(): Email

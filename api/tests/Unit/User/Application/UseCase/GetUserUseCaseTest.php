@@ -2,6 +2,7 @@
 
 namespace Test\Unit\User\Application\UseCase;
 
+use App\Shared\Domain\ValueObject\Id;
 use App\User\Application\UseCase\GetUserUseCase;
 use App\User\Domain\Entity\User;
 use App\User\Domain\Model\UserRepositoryInterface;
@@ -24,7 +25,7 @@ class GetUserUseCaseTest extends TestCase
     public function test_returns_array_with_email_and_no_password()
     {
         $email = new Email("my@email.com");
-        $user = new User($email, "");
+        $user = new User(new Id(1), $email, "");
         $this->userRepository->getByEmail($email)
             ->willReturn($user);
         $useCase = new GetUserUseCase($this->userRepository->reveal());

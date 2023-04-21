@@ -3,6 +3,7 @@
 namespace App\User\Domain\Service;
 
 use App\Shared\Application\Service\HasherInterface;
+use App\Shared\Domain\ValueObject\Id;
 use App\User\Application\Command\RegisterUserCommand;
 use App\User\Domain\Entity\User;
 use App\User\Domain\Exception\UserAlreadyExistsException;
@@ -24,7 +25,11 @@ class UserRegisterer
             throw new UserAlreadyExistsException();
         }
         $hashedPassword = $this->hasher->hash($command->password());
-        $user = new User($email, $hashedPassword);
+        $user = new User(
+            new Id(null),
+            $email,
+            $hashedPassword
+        );
 
         $this->userRepository->save($user);
     }

@@ -3,6 +3,7 @@
 namespace Test\Unit\User\Domain\Service;
 
 use App\Shared\Application\Service\HasherInterface;
+use App\Shared\Domain\ValueObject\Id;
 use App\User\Application\Command\RegisterUserCommand;
 use App\User\Domain\Entity\User;
 use App\User\Domain\Exception\UserAlreadyExistsException;
@@ -39,7 +40,7 @@ class UserRegistererTest extends TestCase
         $this->passwordHasher->hash($password)
             ->shouldBeCalled()
             ->willReturn($hashedPassword);
-        $user = new User(new Email($email), $hashedPassword);
+        $user = new User(new Id(null), new Email($email), $hashedPassword);
         $this->userRepository->save($user)
             ->shouldBeCalled();
         $service = new UserRegisterer(
@@ -57,7 +58,7 @@ class UserRegistererTest extends TestCase
         $email = 'existing@email.com';
         $password = "mypassword";
         $command = new RegisterUserCommand($email, $password);
-        $user = new User(new Email($email), $password);
+        $user = new User(new Id(null), new Email($email), $password);
         $this->userRepository->getByEmail(new Email($email))
             ->shouldBeCalled()
             ->willReturn($user);

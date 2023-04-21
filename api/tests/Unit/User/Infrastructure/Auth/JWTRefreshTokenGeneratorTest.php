@@ -2,6 +2,7 @@
 
 namespace Test\Unit\User\Infrastructure\Auth;
 
+use App\Shared\Domain\ValueObject\Id;
 use App\User\Domain\Entity\User;
 use App\User\Domain\ValueObject\Email;
 use App\User\Infrastructure\Auth\JWTRefreshTokenGenerator;
@@ -13,7 +14,7 @@ class JWTRefreshTokenGeneratorTest extends TestCase
 {
     public function test_token_can_be_decoded()
     {
-        $user = new User(new Email("my@email.com"), "");
+        $user = new User(new Id(1), new Email("my@email.com"), "");
         $generator = new JWTRefreshTokenGenerator('key', 2592000);
 
         $refresh = $generator->__invoke($user);

@@ -2,6 +2,7 @@
 
 namespace Test\Unit\User\Infrastructure\Controller;
 
+use App\Shared\Domain\ValueObject\Id;
 use App\User\Application\UseCase\GetUserUseCase;
 use App\User\Domain\Entity\User;
 use App\User\Domain\Exception\InvalidCredentialsException;
@@ -49,7 +50,7 @@ class GetUserControllerTest extends TestCase
             'expiration' => (new \DateTime())->getTimestamp() + 60,
         ]);
         $email = new Email("some@email.com");
-        $user = new User($email,"");
+        $user = new User(new Id(1), $email,"");
         $this->userRepository->getByEmail($email)
             ->willReturn($user);
         $this->getUserUseCase->__invoke($email)->willReturn([

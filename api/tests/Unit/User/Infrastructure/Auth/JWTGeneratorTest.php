@@ -2,6 +2,7 @@
 
 namespace Test\Unit\User\Infrastructure\Auth;
 
+use App\Shared\Domain\ValueObject\Id;
 use App\User\Domain\Entity\User;
 use App\User\Domain\ValueObject\Email;
 use App\User\Infrastructure\Auth\JWTGenerator;
@@ -17,6 +18,7 @@ class JWTGeneratorTest extends TestCase
     public function test_token_can_be_decoded()
     {
         $user = new User(
+            new Id(1),
             new Email("email@address.com"),
             'someHash'
         );
