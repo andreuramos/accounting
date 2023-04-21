@@ -21,4 +21,11 @@ class User
     {
         return $this->passwordHash;
     }
+
+    public function toExposableArray(): array
+    {
+        return [
+            'email' => $this->email->toString()
+        ];
+    }
 }

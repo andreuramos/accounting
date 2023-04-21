@@ -2,12 +2,19 @@
 
 namespace App\User\Application\UseCase;
 
+use App\User\Domain\Model\UserRepositoryInterface;
 use App\User\Domain\ValueObject\Email;
 
 class GetUserUseCase
 {
-    public function __invoke(Email $userQuery): array
+    public function __construct(
+        private readonly UserRepositoryInterface $userRepository
+    ) {
+    }
+
+    public function __invoke(Email $email): array
     {
-        return [];
+        $user = $this->userRepository->getByEmail($email);
+        return $user->toExposableArray();
     }
 }
