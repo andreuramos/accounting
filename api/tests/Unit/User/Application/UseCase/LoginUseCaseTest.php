@@ -3,6 +3,7 @@
 namespace Test\Unit\User\Application\UseCase;
 
 use App\Shared\Application\Service\HasherInterface;
+use App\User\Application\Auth\RefreshTokenGeneratorInterface;
 use App\User\Application\Command\LoginCommand;
 use App\User\Application\Result\LoginResult;
 use App\User\Application\Auth\AuthTokenGeneratorInterface;
@@ -21,6 +22,7 @@ class LoginUseCaseTest extends TestCase
     private $userRepository;
     private $hasher;
     private $authTokenGenerator;
+    private $refreshTokenGenerator;
 
     public function setUp(): void
     {
@@ -28,6 +30,7 @@ class LoginUseCaseTest extends TestCase
         $this->userRepository = $this->prophesize(UserRepositoryInterface::class);
         $this->hasher = $this->prophesize(HasherInterface::class);
         $this->authTokenGenerator = $this->prophesize(AuthTokenGeneratorInterface::class);
+        $this->refreshTokenGenerator = $this->prophesize(RefreshTokenGeneratorInterface::class);
     }
 
     public function test_throws_exception_if_user_not_found()
@@ -71,6 +74,7 @@ class LoginUseCaseTest extends TestCase
         $this->userRepository->getByEmail($email)->willReturn($user);
         $this->hasher->hash("mypass")->willReturn("passHash");
         $this->authTokenGenerator->__invoke($user)->willReturn($token);
+        $this->refreshTokenGenerator->__invoke($user)->willReturn($token);
 
         $useCase = $this->getUseCase();
         $result = $useCase($command);
@@ -79,12 +83,35 @@ class LoginUseCaseTest extends TestCase
         $this->assertEquals($token, $result->token);
     }
 
+    public function test_returns_refresh_when_credentials_are_valid()
+    {
+        $email = new Email("existing@email.com");
+        $user = new User(
+            $email,
+            "passHash"
+        );
+        $command = new LoginCommand($email, "mypass");
+        $this->userRepository->getByEmail($email)->willReturn($user);
+        $this->hasher->hash("mypass")->willReturn("passHash");
+        $token = new JWTToken("some.jwt.token");
+        $this->authTokenGenerator->__invoke($user)->willReturn($token);
+        $refresh = new JWTToken("refresh.stuff.inside");
+        $this->refreshTokenGenerator->__invoke($user)->willReturn($refresh);
+
+        $useCase = $this->getUseCase();
+        $result = $useCase($command);
+
+        $this->assertInstanceOf(LoginResult::class, $result);
+        $this->assertEquals($refresh, $result->refresh);
+    }
+
     private function getUseCase(): LoginUseCase
     {
         return new LoginUseCase(
             $this->userRepository->reveal(),
             $this->hasher->reveal(),
-            $this->authTokenGenerator->reveal()
+            $this->authTokenGenerator->reveal(),
+            $this->refreshTokenGenerator->reveal()
         );
     }
 }

@@ -2,6 +2,7 @@
 
 use App\User\Infrastructure\Auth\JWTDecoder;
 use App\User\Infrastructure\Auth\JWTGenerator;
+use App\User\Infrastructure\Auth\JWTRefreshTokenGenerator;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__.'/../..');
@@ -25,4 +26,8 @@ return [
     JWTDecoder::class => new JWTDecoder(
         env('JWT_SIGNATURE_KEY')
     ),
+    JWTRefreshTokenGenerator::class => new JWTRefreshTokenGenerator(
+        env('JWT_SIGNATURE_KEY'),
+        env('JWT_REFRESH_TTL')
+    )
 ];

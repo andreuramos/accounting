@@ -3,6 +3,7 @@
 namespace App\User\Application\UseCase;
 
 use App\Shared\Application\Service\HasherInterface;
+use App\User\Application\Auth\RefreshTokenGeneratorInterface;
 use App\User\Application\Command\LoginCommand;
 use App\User\Application\Result\LoginResult;
 use App\User\Application\Auth\AuthTokenGeneratorInterface;
@@ -15,7 +16,8 @@ class LoginUseCase
     public function __construct(
         private readonly UserRepositoryInterface $userRepository,
         private readonly HasherInterface $hasher,
-        private readonly AuthTokenGeneratorInterface $authTokenGenerator
+        private readonly AuthTokenGeneratorInterface $authTokenGenerator,
+        private readonly RefreshTokenGeneratorInterface $refreshTokenGenerator
     ) {
     }
 
@@ -26,8 +28,9 @@ class LoginUseCase
             throw new InvalidCredentialsException();
         }
 
-        $token = ($this->authTokenGenerator)($user);
-        return new LoginResult($token, "");
+        $authToken = ($this->authTokenGenerator)($user);
+        $refreshToken = ($this->refreshTokenGenerator)($user);
+        return new LoginResult($authToken, $refreshToken);
     }
 
     private function areCredentialsValid(?User $user, string $password): bool
