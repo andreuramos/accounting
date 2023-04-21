@@ -10,7 +10,7 @@ class RegisterUserUseCase
     public function __construct(private readonly UserRegisterer $userRegisterer)
     {
     }
-    public function __invoke(RegisterUserCommand $command)
+    public function __invoke(RegisterUserCommand $command): void
     {
         $this->userRegisterer->execute($command);
     }

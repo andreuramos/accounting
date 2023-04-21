@@ -2,7 +2,7 @@
 
 namespace Test\Unit\User\Infrastructure\Controller;
 
-use App\User\Application\Auth\AuthTokenDecoderInterface;
+use App\User\Application\UseCase\GetUserUseCase;
 use App\User\Domain\Entity\User;
 use App\User\Domain\Exception\InvalidCredentialsException;
 use App\User\Domain\Model\UserRepositoryInterface;
@@ -12,7 +12,6 @@ use App\User\Infrastructure\Controller\GetUserController;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Request;
 
 class GetUserControllerTest extends TestCase
@@ -21,12 +20,14 @@ class GetUserControllerTest extends TestCase
 
     private $tokenDecoder;
     private $userRepository;
+    private $getUserUseCase;
 
     public function setUp(): void
     {
         parent::setUp();
         $this->tokenDecoder = $this->prophesize(JWTDecoder::class);
         $this->userRepository = $this->prophesize(UserRepositoryInterface::class);
+        $this->getUserUseCase = $this->prophesize(GetUserUseCase::class);
     }
 
     public function test_throws_exception_when_no_auth_header()
@@ -47,14 +48,20 @@ class GetUserControllerTest extends TestCase
             'user' => "some@email.com",
             'expiration' => (new \DateTime())->getTimestamp() + 60,
         ]);
-        $user = new User(new Email("some@email.com"),"");
-        $this->userRepository->getByEmail(new Email("some@email.com"))
+        $email = new Email("some@email.com");
+        $user = new User($email,"");
+        $this->userRepository->getByEmail($email)
             ->willReturn($user);
+        $this->getUserUseCase->__invoke($email)->willReturn([
+            'email' => "some@email.com"
+        ]);
         $controller = $this->buildController();
 
         $result = $controller($request);
 
-
+        $this->assertJson($result->getContent());
+        $decodedResult = json_decode($result->getContent(), true);
+        $this->assertArrayHasKey('email', $decodedResult);
     }
 
     /**
@@ -64,7 +71,8 @@ class GetUserControllerTest extends TestCase
     {
         return new GetUserController(
             $this->tokenDecoder->reveal(),
-            $this->userRepository->reveal()
+            $this->userRepository->reveal(),
+            $this->getUserUseCase->reveal()
         );
     }
 }
