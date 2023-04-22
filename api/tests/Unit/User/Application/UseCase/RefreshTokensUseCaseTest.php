@@ -2,13 +2,16 @@
 
 namespace Test\Unit\User\Application\UseCase;
 
+use App\Shared\Domain\ValueObject\Id;
 use App\User\Application\Auth\AuthTokenDecoderInterface;
 use App\User\Application\Command\RefreshTokensCommand;
 use App\User\Application\UseCase\RefreshTokensUseCase;
+use App\User\Domain\Entity\User;
 use App\User\Domain\Exception\InvalidAuthToken;
 use App\User\Domain\Exception\InvalidCredentialsException;
 use App\User\Domain\Model\UserRepositoryInterface;
 use App\User\Domain\ValueObject\Email;
+use App\User\Infrastructure\Auth\JWTToken;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
@@ -53,15 +56,21 @@ class RefreshTokensUseCaseTest extends TestCase
         $useCase->__invoke($command);
     }
 
-    public function test_user_with_other_refresh_throws_exception()
+    public function test_invalidated_token_throws_exception()
     {
-        $command = new RefreshTokensCommand("jwt.invalid.refresh");
-        $this->tokenDecoder->__invoke("jwt.invalid.refresh")->willReturn([
+        $command = new RefreshTokensCommand("jwt.invalidated.refresh");
+        $this->tokenDecoder->__invoke("jwt.invalidated.refresh")->willReturn([
             'user' => "existing@email.com",
             'expiration' => 123
         ]);
+        $user = new User(
+            new Id(1),
+            new Email("existing@email.com"),
+            ""
+        );
+        $user->setRefreshToken(new JWTToken("not.the.samelol"));
         $this->userRepository->getByEmail(new Email('existing@email.com'))
-            ->willReturn(null);
+            ->willReturn($user);
         $useCase = $this->getUseCase();
 
         $this->expectException(InvalidCredentialsException::class);
