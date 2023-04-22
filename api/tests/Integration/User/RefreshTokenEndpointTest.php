@@ -23,4 +23,9 @@ class RefreshTokenEndpointTest extends EndpointTest
 
         $this->assertEquals(401, $response->getStatusCode());
     }
+
+    public function test_valid_jwt_returns_new_auth_and_refresh()
+    {
+        $this->markTestIncomplete();
+    }
 }
