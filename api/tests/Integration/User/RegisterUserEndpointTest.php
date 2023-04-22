@@ -81,7 +81,6 @@ class RegisterUserEndpointTest extends EndpointTest
     public function tearDown(): void
     {
         parent::tearDown();
-        $pdo = $this->container->get(\PDO::class);
-        $pdo->query('DELETE FROM user WHERE email="' . self::SUCCESS_EMAIL . '";');
+        $this->deleteUser(self::SUCCESS_EMAIL);
     }
 }

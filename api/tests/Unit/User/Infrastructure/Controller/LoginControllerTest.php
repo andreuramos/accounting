@@ -2,6 +2,7 @@
 
 namespace Test\Unit\User\Infrastructure\Controller;
 
+use App\Shared\Domain\Exception\MissingMandatoryParameterException;
 use App\User\Application\Command\LoginCommand;
 use App\User\Application\Result\LoginResult;
 use App\User\Application\UseCase\LoginUseCase;
@@ -11,7 +12,6 @@ use App\User\Infrastructure\Controller\LoginController;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 
 class LoginControllerTest extends TestCase
 {
@@ -30,7 +30,7 @@ class LoginControllerTest extends TestCase
         $request->getContent()->willReturn(json_encode([]));
         $controller = $this->getController();
 
-        $this->expectException(MissingMandatoryParametersException::class);
+        $this->expectException(MissingMandatoryParameterException::class);
 
         $controller($request->reveal());
     }

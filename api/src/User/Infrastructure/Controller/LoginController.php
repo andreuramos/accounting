@@ -2,13 +2,13 @@
 
 namespace App\User\Infrastructure\Controller;
 
+use App\Shared\Domain\Exception\MissingMandatoryParameterException;
 use App\User\Application\Command\LoginCommand;
 use App\User\Application\UseCase\LoginUseCase;
 use App\User\Domain\Exception\InvalidCredentialsException;
 use App\User\Domain\ValueObject\Email;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use TheSeer\Tokenizer\Exception;
 
 class LoginController
@@ -57,10 +57,10 @@ class LoginController
     private function guardRequiredParams(array $requestContent)
     {
         if (!array_key_exists('email', $requestContent)) {
-            throw new MissingMandatoryParametersException("email");
+            throw new MissingMandatoryParameterException("email");
         }
         if (!array_key_exists('password', $requestContent)) {
-            throw new MissingMandatoryParametersException("email");
+            throw new MissingMandatoryParameterException("email");
         }
     }
 }

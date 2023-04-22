@@ -15,7 +15,10 @@ abstract class EndpointTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->client = new Client(['base_uri' => 'http://nginx']);
+        $this->client = new Client([
+            'base_uri' => 'http://nginx',
+            'http_errors' => false
+        ]);
         $this->container = ContainerFactory::create();
     }
 
@@ -27,5 +30,11 @@ abstract class EndpointTest extends TestCase
                 'password' => $password
             ], JSON_THROW_ON_ERROR)
         ]);
+    }
+
+    protected function deleteUser(string $email): void
+    {
+        $pdo = $this->container->get(\PDO::class);
+        $pdo->query('DELETE FROM user WHERE email="' . $email . '";');
     }
 }

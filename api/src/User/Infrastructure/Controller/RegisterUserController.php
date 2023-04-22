@@ -2,11 +2,11 @@
 
 namespace App\User\Infrastructure\Controller;
 
+use App\Shared\Domain\Exception\MissingMandatoryParameterException;
 use App\User\Application\Command\RegisterUserCommand;
 use App\User\Application\UseCase\RegisterUserUseCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 
 class RegisterUserController
 {
@@ -41,10 +41,10 @@ class RegisterUserController
     private function guardRequestParams(array $requestContent): void
     {
         if (!array_key_exists('email', $requestContent)) {
-            throw new MissingMandatoryParametersException("email");
+            throw new MissingMandatoryParameterException("email");
         }
         if (!array_key_exists('password', $requestContent)) {
-            throw new MissingMandatoryParametersException("email");
+            throw new MissingMandatoryParameterException("email");
         }
     }
 }

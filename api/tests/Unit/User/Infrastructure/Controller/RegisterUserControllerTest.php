@@ -2,14 +2,13 @@
 
 namespace Test\Unit\User\Infrastructure\Controller;
 
+use App\Shared\Domain\Exception\MissingMandatoryParameterException;
 use App\User\Application\Command\RegisterUserCommand;
 use App\User\Application\UseCase\RegisterUserUseCase;
-use App\User\Domain\Service\UserRegisterer;
 use App\User\Infrastructure\Controller\RegisterUserController;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 
 class RegisterUserControllerTest extends TestCase
 {
@@ -51,7 +50,7 @@ class RegisterUserControllerTest extends TestCase
             ->willReturn(json_encode([]));
         $controller = $this->buildController();
 
-        $this->expectException(MissingMandatoryParametersException::class);
+        $this->expectException(MissingMandatoryParameterException::class);
         $controller($request->reveal());
     }
 

@@ -10,12 +10,9 @@ class GetUserEndpointTest extends EndpointTest
 {
     public function test_unauthorized_returns_401()
     {
-        try {
-            $this->client->get('/user');
-            $this->fail("request should not work unidentified");
-        } catch (RequestException $e) {
-            $this->assertEquals(401, $e->getCode());
-        }
+        $response = $this->client->get('/user');
+        $this->assertEquals(401, $response->getStatusCode());
+
     }
 
     public function test_status_200_when_credentials_succeed()
@@ -39,8 +36,7 @@ class GetUserEndpointTest extends EndpointTest
     public function tearDown(): void
     {
         parent::tearDown();
-        $pdo = $this->container->get(\PDO::class);
-        $pdo->query('DELETE FROM user WHERE email="valid@email.com";');
+        $this->deleteUser("valid@email.com");
     }
 
     private function login(string $email, string $password): ResponseInterface
