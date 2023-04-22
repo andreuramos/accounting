@@ -14,7 +14,7 @@ class MysqlUserRepository implements UserRepositoryInterface
     {
     }
 
-    public function save(User $user): int
+    public function save(User $user): void
     {
         $email = $user->email()->toString();
         $password = $user->passwordHash();
@@ -30,8 +30,6 @@ class MysqlUserRepository implements UserRepositoryInterface
         $stmt->bindParam(':password', $password);
         $stmt->bindParam(':refresh_token', $refreshToken);
         $stmt->execute();
-
-        return 0;
     }
 
     public function getByEmail(Email $email): ?User

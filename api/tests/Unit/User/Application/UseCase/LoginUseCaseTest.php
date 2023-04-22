@@ -79,7 +79,7 @@ class LoginUseCaseTest extends TestCase
         $this->hasher->hash("mypass")->willReturn("passHash");
         $this->authTokenGenerator->__invoke($user)->willReturn($token);
         $this->refreshTokenGenerator->__invoke($user)->willReturn($token);
-        $this->userRepository->save(Argument::type(User::class))->willReturn(1);
+        $this->userRepository->save(Argument::type(User::class));
 
         $useCase = $this->getUseCase();
         $result = $useCase($command);
@@ -103,7 +103,7 @@ class LoginUseCaseTest extends TestCase
         $this->authTokenGenerator->__invoke($user)->willReturn($token);
         $refresh = new JWTToken("refresh.stuff.inside");
         $this->refreshTokenGenerator->__invoke($user)->willReturn($refresh);
-        $this->userRepository->save(Argument::type(User::class))->willReturn(1);
+        $this->userRepository->save(Argument::type(User::class));
 
         $useCase = $this->getUseCase();
         $result = $useCase($command);
@@ -128,8 +128,7 @@ class LoginUseCaseTest extends TestCase
         $this->refreshTokenGenerator->__invoke($user)->willReturn($refreshToken);
         $user->setRefreshToken($refreshToken);
         $this->userRepository->save($user)
-            ->shouldBeCalled()
-            ->willReturn(1);
+            ->shouldBeCalled();
 
         $useCase = $this->getUseCase();
         $useCase($command);
