@@ -23,7 +23,7 @@ class RefreshTokensUseCase
     {
         try {
             $tokenPayload = ($this->tokenDecoder)($command->refreshToken);
-            if (!isset($tokenPayload['user']) || !isset($tokenPayload['expiration'])) {
+            if (!isset($tokenPayload['email']) || !isset($tokenPayload['expiration'])) {
                 throw new InvalidAuthToken();
             }
         } catch (InvalidAuthToken $exception) {
@@ -32,13 +32,13 @@ class RefreshTokensUseCase
 
         $user = $this->getUser($tokenPayload);
 
-        throw new InvalidCredentialsException();
+        return new LoginResult("", "");
     }
 
     private function getUser(array $tokenPayload): User
     {
         $user = $this->userRepository->getByEmail(
-            new Email($tokenPayload['user'])
+            new Email($tokenPayload['email'])
         );
         if (null === $user) {
             throw new InvalidCredentialsException();

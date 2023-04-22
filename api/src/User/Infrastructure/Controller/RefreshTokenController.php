@@ -21,7 +21,10 @@ class RefreshTokenController
         $command = new RefreshTokensCommand($refreshToken);
         $response = ($this->refreshTokensUseCase)($command);
 
-        return new Response(json_encode($response, JSON_THROW_ON_ERROR));
+        return new Response(json_encode([
+            "token" => $response->token,
+            "refresh" => $response->refresh
+        ], JSON_THROW_ON_ERROR));
     }
 
     private function getRefreshToken(Request $request): string

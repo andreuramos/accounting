@@ -53,6 +53,22 @@ class RefreshTokensUseCaseTest extends TestCase
         $useCase->__invoke($command);
     }
 
+    public function test_user_with_other_refresh_throws_exception()
+    {
+        $command = new RefreshTokensCommand("jwt.invalid.refresh");
+        $this->tokenDecoder->__invoke("jwt.invalid.refresh")->willReturn([
+            'user' => "existing@email.com",
+            'expiration' => 123
+        ]);
+        $this->userRepository->getByEmail(new Email('existing@email.com'))
+            ->willReturn(null);
+        $useCase = $this->getUseCase();
+
+        $this->expectException(InvalidCredentialsException::class);
+
+        $useCase->__invoke($command);
+    }
+
     private function getUseCase(): RefreshTokensUseCase
     {
         return new RefreshTokensUseCase(
