@@ -12,8 +12,8 @@ use App\User\Application\UseCase\LoginUseCase;
 use App\User\Domain\Entity\User;
 use App\User\Domain\Exception\InvalidCredentialsException;
 use App\User\Domain\Model\UserRepositoryInterface;
+use App\User\Domain\ValueObject\AuthToken;
 use App\User\Domain\ValueObject\Email;
-use App\User\Infrastructure\Auth\JWTToken;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -74,7 +74,7 @@ class LoginUseCaseTest extends TestCase
             "passHash"
         );
         $command = new LoginCommand($email, "mypass");
-        $token = new JWTToken("some.jwt.token");
+        $token = new AuthToken("some.jwt.token");
         $this->userRepository->getByEmail($email)->willReturn($user);
         $this->hasher->hash("mypass")->willReturn("passHash");
         $this->authTokenGenerator->__invoke($user)->willReturn($token);
@@ -85,7 +85,7 @@ class LoginUseCaseTest extends TestCase
         $result = $useCase($command);
 
         $this->assertInstanceOf(LoginResult::class, $result);
-        $this->assertEquals($token, $result->token);
+        $this->assertEquals($token->value, $result->token);
     }
 
     public function test_returns_refresh_when_credentials_are_valid()
@@ -99,9 +99,9 @@ class LoginUseCaseTest extends TestCase
         $command = new LoginCommand($email, "mypass");
         $this->userRepository->getByEmail($email)->willReturn($user);
         $this->hasher->hash("mypass")->willReturn("passHash");
-        $token = new JWTToken("some.jwt.token");
+        $token = new AuthToken("some.jwt.token");
         $this->authTokenGenerator->__invoke($user)->willReturn($token);
-        $refresh = new JWTToken("refresh.stuff.inside");
+        $refresh = new AuthToken("refresh.stuff.inside");
         $this->refreshTokenGenerator->__invoke($user)->willReturn($refresh);
         $this->userRepository->save(Argument::type(User::class));
 
@@ -109,7 +109,7 @@ class LoginUseCaseTest extends TestCase
         $result = $useCase($command);
 
         $this->assertInstanceOf(LoginResult::class, $result);
-        $this->assertEquals($refresh, $result->refresh);
+        $this->assertEquals($refresh->value, $result->refresh);
     }
 
     public function test_stores_refresh_token()
@@ -121,7 +121,7 @@ class LoginUseCaseTest extends TestCase
             "passHash"
         );
         $command = new LoginCommand($email, "mypass");
-        $refreshToken = new JWTToken("some.jwt.token");
+        $refreshToken = new AuthToken("some.jwt.token");
         $this->userRepository->getByEmail($email)->willReturn($user);
         $this->hasher->hash("mypass")->willReturn("passHash");
         $this->authTokenGenerator->__invoke($user)->willReturn($refreshToken);

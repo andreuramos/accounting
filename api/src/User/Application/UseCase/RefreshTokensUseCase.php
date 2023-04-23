@@ -31,6 +31,7 @@ class RefreshTokensUseCase
         }
 
         $user = $this->getUser($tokenPayload);
+        $this->guardTokenNotInvalidated($user, $command->refreshToken);
 
         return new LoginResult("", "");
     }
@@ -44,5 +45,12 @@ class RefreshTokensUseCase
             throw new InvalidCredentialsException();
         }
         return $user;
+    }
+
+    private function guardTokenNotInvalidated(User $user, string $refreshToken): void
+    {
+        if ((string)$user->refreshToken() !== $refreshToken) {
+            throw new InvalidCredentialsException();
+        }
     }
 }

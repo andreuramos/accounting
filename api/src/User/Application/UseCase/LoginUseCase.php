@@ -34,7 +34,10 @@ class LoginUseCase
         $user->setRefreshToken($refreshToken);
         $this->userRepository->save($user);
 
-        return new LoginResult($authToken, $refreshToken);
+        return new LoginResult(
+            $authToken->value,
+            $refreshToken->value
+        );
     }
 
     private function areCredentialsValid(?User $user, string $password): bool

@@ -10,8 +10,8 @@ use App\User\Domain\Entity\User;
 use App\User\Domain\Exception\InvalidAuthToken;
 use App\User\Domain\Exception\InvalidCredentialsException;
 use App\User\Domain\Model\UserRepositoryInterface;
+use App\User\Domain\ValueObject\AuthToken;
 use App\User\Domain\ValueObject\Email;
-use App\User\Infrastructure\Auth\JWTToken;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
@@ -60,7 +60,7 @@ class RefreshTokensUseCaseTest extends TestCase
     {
         $command = new RefreshTokensCommand("jwt.invalidated.refresh");
         $this->tokenDecoder->__invoke("jwt.invalidated.refresh")->willReturn([
-            'user' => "existing@email.com",
+            'email' => "existing@email.com",
             'expiration' => 123
         ]);
         $user = new User(
@@ -68,8 +68,8 @@ class RefreshTokensUseCaseTest extends TestCase
             new Email("existing@email.com"),
             ""
         );
-        $user->setRefreshToken(new JWTToken("not.the.samelol"));
-        $this->userRepository->getByEmail(new Email('existing@email.com'))
+        $user->setRefreshToken(new AuthToken("not.the.samelol"));
+        $this->userRepository->getByEmail(new Email("existing@email.com"))
             ->willReturn($user);
         $useCase = $this->getUseCase();
 

@@ -3,12 +3,12 @@
 namespace App\User\Domain\Entity;
 
 use App\Shared\Domain\ValueObject\Id;
-use App\User\Application\Auth\AuthTokenInterface;
+use App\User\Domain\ValueObject\AuthToken;
 use App\User\Domain\ValueObject\Email;
 
 class User
 {
-    private ?AuthTokenInterface $refreshToken = null;
+    private ?AuthToken $refreshToken = null;
 
     public function __construct(
         private readonly Id $id,
@@ -32,12 +32,12 @@ class User
         return $this->passwordHash;
     }
 
-    public function setRefreshToken(AuthTokenInterface $token)
+    public function setRefreshToken(AuthToken $token)
     {
         $this->refreshToken = $token;
     }
 
-    public function refreshToken(): ?AuthTokenInterface
+    public function refreshToken(): ?AuthToken
     {
         return $this->refreshToken;
     }

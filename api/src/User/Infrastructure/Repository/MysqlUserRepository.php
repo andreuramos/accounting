@@ -5,6 +5,7 @@ namespace App\User\Infrastructure\Repository;
 use App\Shared\Domain\ValueObject\Id;
 use App\User\Domain\Entity\User;
 use App\User\Domain\Model\UserRepositoryInterface;
+use App\User\Domain\ValueObject\AuthToken;
 use App\User\Domain\ValueObject\Email;
 use PDO;
 
@@ -48,10 +49,14 @@ class MysqlUserRepository implements UserRepositoryInterface
             return null;
         }
 
-        return new User(
+        $user = new User(
             new Id($result['id']),
             new Email($result['email']),
             $result['password']
         );
+        $token = new AuthToken($result['refresh_token']);
+        $user->setRefreshToken($token);
+
+        return $user;
     }
 }

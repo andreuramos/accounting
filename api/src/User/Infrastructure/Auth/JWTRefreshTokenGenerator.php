@@ -2,9 +2,9 @@
 
 namespace App\User\Infrastructure\Auth;
 
-use App\User\Application\Auth\AuthTokenInterface;
 use App\User\Application\Auth\RefreshTokenGeneratorInterface;
 use App\User\Domain\Entity\User;
+use App\User\Domain\ValueObject\AuthToken;
 use Firebase\JWT\JWT;
 
 class JWTRefreshTokenGenerator implements RefreshTokenGeneratorInterface
@@ -15,7 +15,7 @@ class JWTRefreshTokenGenerator implements RefreshTokenGeneratorInterface
     ) {
     }
 
-    public function __invoke(User $user): AuthTokenInterface
+    public function __invoke(User $user): AuthToken
     {
         $expiration = (new \DateTime())->getTimestamp() + $this->ttl;
         $payload = [
@@ -24,6 +24,6 @@ class JWTRefreshTokenGenerator implements RefreshTokenGeneratorInterface
         ];
 
         $encoded = JWT::encode($payload, $this->signatureKey, 'HS256');
-        return new JWTToken($encoded);
+        return new AuthToken($encoded);
     }
 }

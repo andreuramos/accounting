@@ -19,7 +19,7 @@ class JWTRefreshTokenGeneratorTest extends TestCase
 
         $refresh = $generator->__invoke($user);
 
-        $decodedToken = (array) JWT::decode((string) $refresh, new Key('key', 'HS256'));
+        $decodedToken = (array) JWT::decode($refresh->value, new Key('key', 'HS256'));
         $this->assertArrayHasKey('email', $decodedToken);
         $this->assertEquals(date_create()->getTimestamp() + 2592000, $decodedToken['expiration']);
     }

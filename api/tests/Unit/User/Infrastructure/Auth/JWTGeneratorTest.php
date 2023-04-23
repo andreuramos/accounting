@@ -26,7 +26,7 @@ class JWTGeneratorTest extends TestCase
 
         $token = $generator($user);
 
-        $decoded_payload = (array) JWT::decode($token, new Key($this->signatureKey, 'HS256'));
+        $decoded_payload = (array) JWT::decode($token->value, new Key($this->signatureKey, 'HS256'));
         $this->assertArrayHasKey('user', $decoded_payload);
         $this->assertEquals("email@address.com", $decoded_payload['user']);
     }
