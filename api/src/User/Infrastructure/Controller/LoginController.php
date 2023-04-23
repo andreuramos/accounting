@@ -3,13 +3,11 @@
 namespace App\User\Infrastructure\Controller;
 
 use App\Shared\Domain\Exception\MissingMandatoryParameterException;
+use App\Shared\Infrastructure\ApiResponse;
 use App\User\Application\Command\LoginCommand;
 use App\User\Application\UseCase\LoginUseCase;
-use App\User\Domain\Exception\InvalidCredentialsException;
 use App\User\Domain\ValueObject\Email;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use TheSeer\Tokenizer\Exception;
 
 class LoginController
 {
@@ -17,7 +15,7 @@ class LoginController
     {
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request): ApiResponse
     {
         $requestContent = $this->getRequestBody($request);
         $this->guardRequiredParams($requestContent);
@@ -27,21 +25,12 @@ class LoginController
             $requestContent['password']
         );
 
-        try {
-            $result = ($this->loginUseCase)($command);
+        $result = ($this->loginUseCase)($command);
 
-            return new Response(json_encode([
-                "token" => (string) $result->token,
-                "refresh" => (string) $result->refresh,
-            ], JSON_THROW_ON_ERROR), 200, [
-                'Content-Type' => 'application/json'
-            ]);
-        } catch (InvalidCredentialsException $exception) {
-            return new Response("", 401);
-        } catch (Exception $anythingElse) {
-            return new Response("", 400);
-        }
-
+        return new ApiResponse([
+            "token" => (string) $result->token,
+            "refresh" => (string) $result->refresh,
+        ]);
     }
 
     private function getRequestBody(Request $request): array

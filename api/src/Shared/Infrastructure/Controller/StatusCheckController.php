@@ -2,12 +2,12 @@
 
 namespace App\Shared\Infrastructure\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
+use App\Shared\Infrastructure\ApiResponse;
 
 class StatusCheckController
 {
-    public function __invoke()
+    public function __invoke(): ApiResponse
     {
-        return new Response("OK");
+        return new ApiResponse(['status' => "OK"]);
     }
 }

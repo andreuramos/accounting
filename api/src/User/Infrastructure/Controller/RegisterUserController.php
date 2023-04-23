@@ -3,10 +3,10 @@
 namespace App\User\Infrastructure\Controller;
 
 use App\Shared\Domain\Exception\MissingMandatoryParameterException;
+use App\Shared\Infrastructure\ApiResponse;
 use App\User\Application\Command\RegisterUserCommand;
 use App\User\Application\UseCase\RegisterUserUseCase;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class RegisterUserController
 {
@@ -14,7 +14,7 @@ class RegisterUserController
     {
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request): ApiResponse
     {
         $requestContent = $this->getRequestBody($request);
         $this->guardRequestParams($requestContent);
@@ -25,7 +25,7 @@ class RegisterUserController
 
         ($this->registerUserUseCase)($command);
 
-        return new Response("OK", 200);
+        return new ApiResponse(['status' => "OK"]);
     }
 
     private function getRequestBody(Request $request): array

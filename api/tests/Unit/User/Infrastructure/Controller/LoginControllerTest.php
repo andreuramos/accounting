@@ -57,7 +57,7 @@ class LoginControllerTest extends TestCase
         $this->assertArrayHasKey("refresh", $decodedContent);
     }
 
-    public function test_returns_401_when_credentials_are_wrong()
+    public function test_throws_exception_when_credentials_are_wrong()
     {
         $request = $this->prophesize(Request::class);
         $request->getContent()->willReturn(json_encode([
@@ -66,11 +66,11 @@ class LoginControllerTest extends TestCase
         ], JSON_THROW_ON_ERROR));
         $command = new LoginCommand(new Email("some@email.com"), "mypass");
         $this->loginUseCase->__invoke($command)->willThrow(new InvalidCredentialsException());
-
         $controller = $this->getController();
-        $result = $controller($request->reveal());
 
-        $this->assertEquals(401, $result->getStatusCode());
+        $this->expectException(InvalidCredentialsException::class);
+
+        $controller($request->reveal());
     }
 
     private function getController(): LoginController
