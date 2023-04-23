@@ -3,6 +3,8 @@
 namespace App\User\Application\UseCase;
 
 use App\User\Application\Auth\AuthTokenDecoderInterface;
+use App\User\Application\Auth\AuthTokenGeneratorInterface;
+use App\User\Application\Auth\RefreshTokenGeneratorInterface;
 use App\User\Application\Command\RefreshTokensCommand;
 use App\User\Application\Result\LoginResult;
 use App\User\Domain\Entity\User;
@@ -15,7 +17,9 @@ class RefreshTokensUseCase
 {
     public function __construct(
         private readonly AuthTokenDecoderInterface $tokenDecoder,
-        private readonly UserRepositoryInterface $userRepository
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly AuthTokenGeneratorInterface $authTokenGenerator,
+        private readonly RefreshTokenGeneratorInterface $refreshTokenGenerator
     ) {
     }
 
@@ -33,7 +37,13 @@ class RefreshTokensUseCase
         $user = $this->getUser($tokenPayload);
         $this->guardTokenNotInvalidated($user, $command->refreshToken);
 
-        return new LoginResult("", "");
+        $authToken = ($this->authTokenGenerator)($user);
+        $refreshToken = ($this->refreshTokenGenerator)($user);
+
+        return new LoginResult(
+            $authToken,
+            $refreshToken
+        );
     }
 
     private function getUser(array $tokenPayload): User

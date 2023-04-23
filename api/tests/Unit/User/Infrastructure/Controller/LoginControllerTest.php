@@ -7,6 +7,7 @@ use App\User\Application\Command\LoginCommand;
 use App\User\Application\Result\LoginResult;
 use App\User\Application\UseCase\LoginUseCase;
 use App\User\Domain\Exception\InvalidCredentialsException;
+use App\User\Domain\ValueObject\AuthToken;
 use App\User\Domain\ValueObject\Email;
 use App\User\Infrastructure\Controller\LoginController;
 use PHPUnit\Framework\TestCase;
@@ -43,8 +44,9 @@ class LoginControllerTest extends TestCase
             "password" => "mypass",
         ], JSON_THROW_ON_ERROR));
         $command = new LoginCommand(new Email("some@email.com"), "mypass");
+        $token = new AuthToken("");
         $this->loginUseCase->__invoke($command)->shouldBeCalled()
-            ->willReturn(new LoginResult("", ""));
+            ->willReturn(new LoginResult($token, $token));
 
         $controller = $this->getController();
         $result = $controller($request->reveal());

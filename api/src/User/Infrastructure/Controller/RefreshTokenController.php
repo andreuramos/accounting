@@ -22,8 +22,8 @@ class RefreshTokenController
         $response = ($this->refreshTokensUseCase)($command);
 
         return new Response(json_encode([
-            "token" => $response->token,
-            "refresh" => $response->refresh
+            "token" => (string) $response->token,
+            "refresh" => (string) $response->refresh
         ], JSON_THROW_ON_ERROR));
     }
 

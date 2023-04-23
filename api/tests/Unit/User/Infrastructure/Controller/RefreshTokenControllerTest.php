@@ -6,6 +6,7 @@ use App\Shared\Domain\Exception\MissingMandatoryParameterException;
 use App\User\Application\Command\RefreshTokensCommand;
 use App\User\Application\Result\LoginResult;
 use App\User\Application\UseCase\RefreshTokensUseCase;
+use App\User\Domain\ValueObject\AuthToken;
 use App\User\Infrastructure\Controller\RefreshTokenController;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -41,7 +42,7 @@ class RefreshTokenControllerTest extends TestCase
             'refresh_token' => 'im.very.valid'
         ], JSON_THROW_ON_ERROR));
         $command = new RefreshTokensCommand("im.very.valid");
-        $result = new LoginResult("new_auth", "new_refresh");
+        $result = new LoginResult(new AuthToken("new_auth"), new AuthToken("new_refresh"));
         $this->useCase->__invoke($command)->willReturn($result);
         $controller = new RefreshTokenController($this->useCase->reveal());
 

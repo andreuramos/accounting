@@ -35,8 +35,8 @@ class LoginUseCase
         $this->userRepository->save($user);
 
         return new LoginResult(
-            $authToken->value,
-            $refreshToken->value
+            $authToken,
+            $refreshToken
         );
     }
 

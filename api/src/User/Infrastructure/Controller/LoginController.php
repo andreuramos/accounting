@@ -31,8 +31,8 @@ class LoginController
             $result = ($this->loginUseCase)($command);
 
             return new Response(json_encode([
-                "token" => $result->token,
-                "refresh" => $result->refresh,
+                "token" => (string) $result->token,
+                "refresh" => (string) $result->refresh,
             ], JSON_THROW_ON_ERROR), 200, [
                 'Content-Type' => 'application/json'
             ]);
