@@ -16,6 +16,7 @@ use App\User\Domain\Model\UserRepositoryInterface;
 use App\User\Domain\ValueObject\AuthToken;
 use App\User\Domain\ValueObject\Email;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 class RefreshTokensUseCaseTest extends TestCase
@@ -108,6 +109,7 @@ class RefreshTokensUseCaseTest extends TestCase
         $this->refreshTokenGenerator->__invoke($user)
             ->shouldBeCalled()
             ->willReturn($refreshToken);
+        $this->userRepository->save(Argument::type(User::class));
         $useCase = $this->getUseCase();
 
         $result = $useCase->__invoke($command);
@@ -115,6 +117,39 @@ class RefreshTokensUseCaseTest extends TestCase
         $this->assertInstanceOf(LoginResult::class, $result);
         $this->assertEquals($authToken, $result->token);
         $this->assertEquals($refreshToken, $result->refresh);
+    }
+
+    public function test_valid_token_updates_user()
+    {
+        $command = new RefreshTokensCommand("jwt.valid.refresh");
+        $this->tokenDecoder->__invoke("jwt.valid.refresh")->willReturn([
+            'email' => "existing@email.com",
+            'expiration' => 123
+        ]);
+        $user = new User(
+            new Id(1),
+            new Email("existing@email.com"),
+            ""
+        );
+        $user->setRefreshToken(new AuthToken("jwt.valid.refresh"));
+        $this->userRepository->getByEmail(new Email("existing@email.com"))
+            ->willReturn($user);
+        $authToken = new AuthToken("an.auth.token");
+        $this->authTokenGenerator->__invoke($user)
+            ->willReturn($authToken);
+        $refreshToken = new AuthToken('a.refresh.token');
+        $this->refreshTokenGenerator->__invoke($user)
+            ->willReturn($refreshToken);
+        $updatedUser = new User(
+            new Id(1),
+            new Email("existing@email.com"),
+            ""
+        );
+        $updatedUser->setRefreshToken($refreshToken);
+        $this->userRepository->save($updatedUser)->shouldBeCalled();
+        $useCase = $this->getUseCase();
+
+        $useCase->__invoke($command);
     }
 
     private function getUseCase(): RefreshTokensUseCase

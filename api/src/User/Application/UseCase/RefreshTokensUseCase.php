@@ -40,6 +40,9 @@ class RefreshTokensUseCase
         $authToken = ($this->authTokenGenerator)($user);
         $refreshToken = ($this->refreshTokenGenerator)($user);
 
+        $user->setRefreshToken($refreshToken);
+        $this->userRepository->save($user);
+
         return new LoginResult(
             $authToken,
             $refreshToken

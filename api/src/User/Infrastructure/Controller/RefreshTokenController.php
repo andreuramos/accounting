@@ -24,7 +24,9 @@ class RefreshTokenController
         return new Response(json_encode([
             "token" => (string) $response->token,
             "refresh" => (string) $response->refresh
-        ], JSON_THROW_ON_ERROR));
+        ], JSON_THROW_ON_ERROR), 200, [
+            'Content-Type' => 'application/json'
+        ]);
     }
 
     private function getRefreshToken(Request $request): string
