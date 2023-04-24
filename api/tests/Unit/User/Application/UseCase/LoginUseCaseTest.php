@@ -11,6 +11,7 @@ use App\User\Application\Auth\AuthTokenGeneratorInterface;
 use App\User\Application\UseCase\LoginUseCase;
 use App\User\Domain\Entity\User;
 use App\User\Domain\Exception\InvalidCredentialsException;
+use App\User\Domain\Exception\UserNotFoundException;
 use App\User\Domain\Model\UserRepositoryInterface;
 use App\User\Domain\ValueObject\AuthToken;
 use App\User\Domain\ValueObject\Email;
@@ -39,7 +40,7 @@ class LoginUseCaseTest extends TestCase
     {
         $email = new Email("not@existing.com");
         $command = new LoginCommand($email, "mypass");
-        $this->userRepository->getByEmail($email)->willReturn(null);
+        $this->userRepository->getByEmailOrFail($email)->willThrow(UserNotFoundException::class);
 
         $this->expectException(InvalidCredentialsException::class);
 
@@ -56,7 +57,7 @@ class LoginUseCaseTest extends TestCase
             "passHash"
         );
         $command = new LoginCommand($email, "mypass");
-        $this->userRepository->getByEmail($email)->willReturn($user);
+        $this->userRepository->getByEmailOrFail($email)->willReturn($user);
         $this->hasher->hash("mypass")->willReturn("notMyHash");
 
         $this->expectException(InvalidCredentialsException::class);
@@ -75,7 +76,7 @@ class LoginUseCaseTest extends TestCase
         );
         $command = new LoginCommand($email, "mypass");
         $token = new AuthToken("some.jwt.token");
-        $this->userRepository->getByEmail($email)->willReturn($user);
+        $this->userRepository->getByEmailOrFail($email)->willReturn($user);
         $this->hasher->hash("mypass")->willReturn("passHash");
         $this->authTokenGenerator->__invoke($user)->willReturn($token);
         $this->refreshTokenGenerator->__invoke($user)->willReturn($token);
@@ -97,7 +98,7 @@ class LoginUseCaseTest extends TestCase
             "passHash"
         );
         $command = new LoginCommand($email, "mypass");
-        $this->userRepository->getByEmail($email)->willReturn($user);
+        $this->userRepository->getByEmailOrFail($email)->willReturn($user);
         $this->hasher->hash("mypass")->willReturn("passHash");
         $token = new AuthToken("some.jwt.token");
         $this->authTokenGenerator->__invoke($user)->willReturn($token);
@@ -122,7 +123,7 @@ class LoginUseCaseTest extends TestCase
         );
         $command = new LoginCommand($email, "mypass");
         $refreshToken = new AuthToken("some.jwt.token");
-        $this->userRepository->getByEmail($email)->willReturn($user);
+        $this->userRepository->getByEmailOrFail($email)->willReturn($user);
         $this->hasher->hash("mypass")->willReturn("passHash");
         $this->authTokenGenerator->__invoke($user)->willReturn($refreshToken);
         $this->refreshTokenGenerator->__invoke($user)->willReturn($refreshToken);

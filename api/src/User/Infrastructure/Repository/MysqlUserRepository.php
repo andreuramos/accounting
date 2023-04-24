@@ -59,4 +59,15 @@ class MysqlUserRepository implements UserRepositoryInterface
 
         return $user;
     }
+
+    public function getByEmailOrFail(Email $email): User
+    {
+        $user = $this->getByEmail($email);
+
+        if (null === $user) {
+            throw new UserNotFoundException('email', $email->toString());
+        }
+
+        return $user;
+    }
 }

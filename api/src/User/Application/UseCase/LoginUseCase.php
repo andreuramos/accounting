@@ -9,6 +9,7 @@ use App\User\Application\Result\LoginResult;
 use App\User\Application\Auth\AuthTokenGeneratorInterface;
 use App\User\Domain\Entity\User;
 use App\User\Domain\Exception\InvalidCredentialsException;
+use App\User\Domain\Exception\UserNotFoundException;
 use App\User\Domain\Model\UserRepositoryInterface;
 
 class LoginUseCase
@@ -23,7 +24,11 @@ class LoginUseCase
 
     public function __invoke(LoginCommand $command): LoginResult
     {
-        $user = $this->userRepository->getByEmail($command->email);
+        try {
+            $user = $this->userRepository->getByEmailOrFail($command->email);
+        } catch (UserNotFoundException $exception) {
+            throw new InvalidCredentialsException();
+        }
         if (!$this->areCredentialsValid($user, $command->password)) {
             throw new InvalidCredentialsException();
         }
@@ -40,12 +45,8 @@ class LoginUseCase
         );
     }
 
-    private function areCredentialsValid(?User $user, string $password): bool
+    private function areCredentialsValid(User $user, string $password): bool
     {
-        if (null === $user) {
-            return false;
-        }
-
         return $this->hasher->hash($password) === $user->passwordHash();
     }
 }

@@ -26,7 +26,7 @@ class GetUserUseCaseTest extends TestCase
     {
         $email = new Email("my@email.com");
         $user = new User(new Id(1), $email, "");
-        $this->userRepository->getByEmail($email)
+        $this->userRepository->getByEmailOrFail($email)
             ->willReturn($user);
         $useCase = new GetUserUseCase($this->userRepository->reveal());
 

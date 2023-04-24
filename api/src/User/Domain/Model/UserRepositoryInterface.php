@@ -8,5 +8,6 @@ use App\User\Domain\ValueObject\Email;
 interface UserRepositoryInterface
 {
     public function getByEmail(Email $email): ?User;
+    public function getByEmailOrFail(Email $email): User;
     public function save(User $user): void;
 }

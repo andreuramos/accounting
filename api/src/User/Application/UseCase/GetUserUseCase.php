@@ -14,7 +14,7 @@ class GetUserUseCase
 
     public function __invoke(Email $email): array
     {
-        $user = $this->userRepository->getByEmail($email);
+        $user = $this->userRepository->getByEmailOrFail($email);
         return $user->toExposableArray();
     }
 }
