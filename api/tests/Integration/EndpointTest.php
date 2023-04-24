@@ -11,6 +11,7 @@ abstract class EndpointTest extends TestCase
 {
     protected Client $client;
     protected Container $container;
+    protected string $authToken;
 
     protected function setUp(): void
     {
@@ -20,6 +21,7 @@ abstract class EndpointTest extends TestCase
             'http_errors' => false
         ]);
         $this->container = ContainerFactory::create();
+        $this->authToken = "";
     }
 
     protected function registerUser(string $email, string $password)
@@ -30,6 +32,21 @@ abstract class EndpointTest extends TestCase
                 'password' => $password
             ], JSON_THROW_ON_ERROR)
         ]);
+    }
+
+    protected function login(string $email, string $password)
+    {
+        $response = $this->client->post('/login', [
+            'body' => json_encode([
+                'email' => $email,
+                'password' => $password
+            ], JSON_THROW_ON_ERROR)
+        ]);
+
+        if ($response->getStatusCode() === 200) {
+            $loginData = json_decode($response->getBody()->getContents(), true);
+            $this->authToken = $loginData['token'];
+        }
     }
 
     protected function deleteUser(string $email): void
