@@ -6,6 +6,7 @@ use App\Shared\Infrastructure\ContainerFactory;
 use App\User\Domain\Exception\InvalidCredentialsException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
@@ -24,7 +25,7 @@ try {
     $parameters = $matcher->match($context->getPathInfo());
     $controller = $container->get($parameters['controller']);
     $response = $controller($request);
-} catch (RouteNotFoundException $exception) {
+} catch (RouteNotFoundException | ResourceNotFoundException $exception) {
     $response = new Response("APP ERROR: Not found " . $exception->getMessage(), Response::HTTP_NOT_FOUND);
 } catch (InvalidCredentialsException $exception) {
     $response = new Response("APP ERROR: Unauthorized ", Response::HTTP_UNAUTHORIZED);
