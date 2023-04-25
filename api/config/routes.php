@@ -30,12 +30,10 @@ $routes->add('refresh', (new Route(
     '/refresh',
     ['controller' => RefreshTokenController::class]
 ))->setMethods('POST'));
-$registerRoute = new Route(
+$routes->add('register', (new Route(
     '/user',
     ['controller' => RegisterUserController::class]
-);
-$registerRoute->setMethods('POST');
-$routes->add('register', $registerRoute);
+))->setMethods('POST'));
 $routes->add('status', new Route(
     '/status',
     ['controller' => StatusCheckController::class]
