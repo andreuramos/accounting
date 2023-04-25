@@ -44,7 +44,8 @@ class CreateExpenseControllerTest extends TestCase
     public function test_missing_amount_fails()
     {
         $request = $this->buildRequest([
-            'body' => "ass"
+            'description' => "ass",
+            'date' => "2023-04-25",
         ], ['Authorization' => 'Bearer my.jwt.token']);
 
         $this->tokenDecoder->__invoke('my.jwt.token')->willReturn([

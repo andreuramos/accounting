@@ -15,7 +15,9 @@ class CreateExpenseEndpointTest extends EndpointTest
 
         $response = $this->client->post('/expense',[
             'body' => json_encode([
-                'amount' => 3000
+                'amount' => 3000,
+                'description' => "casino",
+                'date' => "2023-04-25"
             ], JSON_THROW_ON_ERROR),
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->authToken
