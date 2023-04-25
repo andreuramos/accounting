@@ -19,6 +19,7 @@ class CreateExpenseControllerTest extends TestCase
 {
     use ProphecyTrait;
 
+    private const TOKEN = 'my.jwt.token';
     private $tokenDecoder;
     private $userRepository;
     private User $user;
@@ -29,6 +30,11 @@ class CreateExpenseControllerTest extends TestCase
         $this->tokenDecoder = $this->prophesize(JWTDecoder::class);
         $this->userRepository = $this->prophesize(UserRepositoryInterface::class);
         $this->user = new User(new Id(1), new Email("any@email.com"), "pass");
+        $this->tokenDecoder->__invoke(self::TOKEN)->willReturn([
+            'user' => $this->user->email()->toString(),
+            'expiration' => date_create()->getTimestamp() + 1000,
+        ]);
+        $this->userRepository->getByEmail($this->user->email())->willReturn($this->user);
     }
 
     public function test_unauthorized_request_fails()
@@ -46,19 +52,38 @@ class CreateExpenseControllerTest extends TestCase
         $request = $this->buildRequest([
             'description' => "ass",
             'date' => "2023-04-25",
-        ], ['Authorization' => 'Bearer my.jwt.token']);
-
-        $this->tokenDecoder->__invoke('my.jwt.token')->willReturn([
-            'user' => $this->user->email()->toString(),
-            'expiration' => date_create()->getTimestamp() + 1000,
-        ]);
-        $this->userRepository->getByEmail($this->user->email())->willReturn($this->user);
+        ], ['Authorization' => 'Bearer ' . self::TOKEN]);
         $controller = $this->getController();
 
         $this->expectException(MissingMandatoryParameterException::class);
 
         $controller($request);
+    }
 
+    public function test_missing_description_fails()
+    {
+        $request = $this->buildRequest([
+            'amount' => 30,
+            'date' => "2023-04-25",
+        ], ['Authorization' => 'Bearer ' . self::TOKEN]);
+        $controller = $this->getController();
+
+        $this->expectException(MissingMandatoryParameterException::class);
+
+        $controller($request);
+    }
+
+    public function test_missing_date_fails()
+    {
+        $request = $this->buildRequest([
+            'amount' => 30,
+            'description' => "rave",
+        ], ['Authorization' => 'Bearer ' . self::TOKEN]);
+        $controller = $this->getController();
+
+        $this->expectException(MissingMandatoryParameterException::class);
+
+        $controller($request);
     }
 
     private function getController(): CreateExpenseController
