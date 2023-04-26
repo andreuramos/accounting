@@ -4,14 +4,17 @@ namespace Test\Unit\Transaction\Infrastructure\Controller;
 
 use App\Shared\Domain\Exception\MissingMandatoryParameterException;
 use App\Shared\Domain\ValueObject\Id;
+use App\Shared\Infrastructure\ApiResponse;
+use App\Transaction\Application\Command\CreateExpenseCommand;
+use App\Transaction\Application\UseCase\CreateExpenseUseCase;
 use App\Transaction\Infrastructure\Controller\CreateExpenseController;
-use App\User\Application\Auth\AuthTokenDecoderInterface;
 use App\User\Domain\Entity\User;
 use App\User\Domain\Exception\InvalidCredentialsException;
 use App\User\Domain\Model\UserRepositoryInterface;
 use App\User\Domain\ValueObject\Email;
 use App\User\Infrastructure\Auth\JWTDecoder;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -22,6 +25,7 @@ class CreateExpenseControllerTest extends TestCase
     private const TOKEN = 'my.jwt.token';
     private $tokenDecoder;
     private $userRepository;
+    private $createExpenseUseCase;
     private User $user;
 
     public function setUp(): void
@@ -29,6 +33,8 @@ class CreateExpenseControllerTest extends TestCase
         parent::setUp();
         $this->tokenDecoder = $this->prophesize(JWTDecoder::class);
         $this->userRepository = $this->prophesize(UserRepositoryInterface::class);
+        $this->createExpenseUseCase = $this->prophesize(CreateExpenseUseCase::class);
+
         $this->user = new User(new Id(1), new Email("any@email.com"), "pass");
         $this->tokenDecoder->__invoke(self::TOKEN)->willReturn([
             'user' => $this->user->email()->toString(),
@@ -86,11 +92,29 @@ class CreateExpenseControllerTest extends TestCase
         $controller($request);
     }
 
+    public function test_instantiates_command_and_calls_use_case()
+    {
+        $request = $this->buildRequest([
+            'amount' => 30,
+            'description' => "rave",
+            'date' => '2022-04-26',
+        ], ['Authorization' => 'Bearer ' . self::TOKEN]);
+        $controller = $this->getController();
+        $this->createExpenseUseCase->__invoke(Argument::type(CreateExpenseCommand::class))
+            ->shouldBeCalled();
+
+        $response = $controller($request);
+
+        $this->assertInstanceOf(ApiResponse::class, $response);
+        $this->assertEquals(200, $response->getStatusCode());
+    }
+
     private function getController(): CreateExpenseController
     {
         return new CreateExpenseController(
             $this->tokenDecoder->reveal(),
-            $this->userRepository->reveal()
+            $this->userRepository->reveal(),
+            $this->createExpenseUseCase->reveal()
         );
     }
 
