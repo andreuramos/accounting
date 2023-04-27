@@ -34,7 +34,8 @@ class CreateExpenseController extends AuthorizedController
         $command = new CreateExpenseCommand(
             (int) $requestContent['amount'],
             $requestContent['description'],
-            $requestContent['date']
+            $requestContent['date'],
+            $this->authUser->id()
         );
         ($this->createExpenseUseCase)($command);
 
