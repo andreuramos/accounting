@@ -9,9 +9,12 @@ use App\Transaction\Domain\Entity\Expense;
 use App\Transaction\Domain\Model\ExpenseRepositoryInterface;
 use App\Transaction\Domain\ValueObject\Money;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class CreateExpenseUseCaseTest extends TestCase
 {
+    use ProphecyTrait;
+
     private $expenseRepository;
 
     public function setUp(): void
@@ -36,21 +39,6 @@ class CreateExpenseUseCaseTest extends TestCase
         );
         $this->expenseRepository->save($expense)->shouldBeCalled();
         $useCase = new CreateExpenseUseCase($this->expenseRepository->reveal());
-
-        $useCase($command);
-    }
-
-    public function test_negative_amount_fails()
-    {
-        $this->markTestSkipped("wip");
-        $command = new CreateExpenseCommand(
-            -1,
-            "hello",
-            "2022-04-27"
-        );
-        $useCase = new CreateExpenseUseCase();
-
-        $this->expectException(\InvalidArgumentException::class);
 
         $useCase($command);
     }
