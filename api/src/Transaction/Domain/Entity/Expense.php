@@ -8,10 +8,11 @@ use App\Transaction\Domain\ValueObject\Money;
 class Expense
 {
     public function __construct(
-        private readonly Id $userId,
-        private readonly Money $amount,
-        private readonly string $description,
-        private readonly \DateTime $date
+        public readonly Id $id,
+        public readonly Id $userId,
+        public readonly Money $amount,
+        public readonly string $description,
+        public readonly \DateTime $date
     ) {
     }
 }

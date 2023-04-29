@@ -2,6 +2,7 @@
 
 namespace App\Transaction\Application\UseCase;
 
+use App\Shared\Domain\ValueObject\Id;
 use App\Transaction\Application\Command\CreateExpenseCommand;
 use App\Transaction\Domain\Entity\Expense;
 use App\Transaction\Domain\Model\ExpenseRepositoryInterface;
@@ -17,6 +18,7 @@ class CreateExpenseUseCase
     public function __invoke(CreateExpenseCommand $command): void
     {
         $expense = new Expense(
+            new Id(null),
             $command->userId,
             new Money($command->amountCents, 'EUR'),
             $command->description,

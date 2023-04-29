@@ -32,10 +32,11 @@ class CreateExpenseUseCaseTest extends TestCase
             new Id(1)
         );
         $expense = new Expense(
+            new Id(null),
             new Id(1),
-           new Money(1, "EUR"),
-           "porros",
-           date_create('2022-04-27')
+            new Money(1, "EUR"),
+            "porros",
+            date_create('2022-04-27')
         );
         $this->expenseRepository->save($expense)->shouldBeCalled();
         $useCase = new CreateExpenseUseCase($this->expenseRepository->reveal());
