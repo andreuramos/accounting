@@ -1,6 +1,7 @@
 #!/bin/bash
 BE_NAME := accounting_php
 FE_NAME := accounting_node
+DB_NAME := accounting_mysql
 
 help: # lists commands
 	printf "hoola"
@@ -19,6 +20,9 @@ enter-be: # execs shell inside php container
 
 init-fe:
 	docker exec -it $(FE_NAME)_1
+
+enter-db:
+	docker exec -it $(DB_NAME)_1 mysql -uaccounting -p
 
 test: test-unit test-integration
 

@@ -7,8 +7,8 @@ class Money
     const VALID_CURRENCIES = ['EUR'];
 
     public function __construct(
-        private readonly int $amountCents,
-        private readonly string $currency
+        public readonly int $amountCents,
+        public readonly string $currency
     ) {
         $this->guardCurrency($this->currency);
     }
