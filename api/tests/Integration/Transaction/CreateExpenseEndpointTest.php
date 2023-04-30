@@ -31,5 +31,7 @@ class CreateExpenseEndpointTest extends EndpointTest
     {
         parent::tearDown();
         $this->deleteUser(self::EMAIL);
+        $pdo = $this->container->get(\PDO::class);
+        $pdo->query('DELETE FROM expense WHERE description="casino";');
     }
 }
