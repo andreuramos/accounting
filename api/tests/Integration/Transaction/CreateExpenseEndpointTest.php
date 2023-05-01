@@ -16,7 +16,7 @@ class CreateExpenseEndpointTest extends EndpointTest
         $response = $this->client->post('/expense',[
             'body' => json_encode([
                 'amount' => 3000,
-                'description' => "casino",
+                'description' => "test_expense_created",
                 'date' => "2023-04-25"
             ], JSON_THROW_ON_ERROR),
             'headers' => [
@@ -32,6 +32,6 @@ class CreateExpenseEndpointTest extends EndpointTest
         parent::tearDown();
         $this->deleteUser(self::EMAIL);
         $pdo = $this->container->get(\PDO::class);
-        $pdo->query('DELETE FROM expense WHERE description="casino";');
+        $pdo->query('DELETE FROM expense WHERE description="test_expense_created";');
     }
 }
