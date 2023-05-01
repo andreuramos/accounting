@@ -15,32 +15,25 @@ use Symfony\Component\Routing\RouteCollection;
 $routes = new RouteCollection();
 
 $routes->add('domain', new Route(
-    '/domain',
-    ['controller' => SharedDomainController::class]
+    '/domain', ['controller' => SharedDomainController::class]
 ));
 $routes->add('create_expense', (new Route(
-    '/expense',
-    ['controller' => CreateExpenseController::class]
+    '/expense', ['controller' => CreateExpenseController::class]
 ))->setMethods('POST'));
 $routes->add('login', new Route(
-    '/login',
-    ['controller' => LoginController::class]
+    '/login', ['controller' => LoginController::class]
 ));
 $routes->add('refresh', (new Route(
-    '/refresh',
-    ['controller' => RefreshTokenController::class]
+    '/refresh', ['controller' => RefreshTokenController::class]
 ))->setMethods('POST'));
 $routes->add('register', (new Route(
-    '/user',
-    ['controller' => RegisterUserController::class]
+    '/user', ['controller' => RegisterUserController::class]
 ))->setMethods('POST'));
 $routes->add('status', new Route(
-    '/status',
-    ['controller' => StatusCheckController::class]
+    '/status', ['controller' => StatusCheckController::class]
 ));
 $routes->add('get-user', new Route(
-    '/user',
-    ['controller' => GetUserController::class]
+    '/user', ['controller' => GetUserController::class]
 ));
 
 return $routes;
