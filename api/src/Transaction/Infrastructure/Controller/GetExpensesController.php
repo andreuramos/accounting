@@ -10,6 +10,7 @@ class GetExpensesController extends AuthorizedController
 {
     public function __invoke(Request $request): ApiResponse
     {
+        $this->auth($request);
         return new ApiResponse([]);
     }
 }
