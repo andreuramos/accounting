@@ -4,6 +4,7 @@ namespace App\Transaction\Infrastructure\Repository;
 
 use App\Transaction\Domain\Entity\Expense;
 use App\Transaction\Domain\Model\ExpenseRepositoryInterface;
+use App\User\Domain\Entity\User;
 use PDO;
 
 class MysqlExpenseRepository implements ExpenseRepositoryInterface
@@ -30,5 +31,10 @@ class MysqlExpenseRepository implements ExpenseRepositoryInterface
         $stmt->bindParam(':date', $date);
 
         $stmt->execute();
+    }
+
+    public function getByUser(User $user): array
+    {
+        return [];
     }
 }
