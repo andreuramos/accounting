@@ -6,6 +6,8 @@ use App\Shared\Domain\ValueObject\Id;
 use App\Transaction\Application\Command\GetUserExpensesCommand;
 use App\Transaction\Application\Result\UserExpenses;
 use App\Transaction\Application\UseCase\GetUserExpensesUseCase;
+use App\Transaction\Domain\Entity\Expense;
+use App\Transaction\Domain\ValueObject\Money;
 use App\Transaction\Infrastructure\Controller\GetExpensesController;
 use App\User\Application\Auth\AuthTokenDecoderInterface;
 use App\User\Domain\Entity\User;
@@ -57,16 +59,23 @@ class GetExpensesControllerTest extends TestCase
         $request = new Request();
         $request->headers->set('Authorization', 'Bearer ' . self::TOKEN);
         $command = new GetUserExpensesCommand($this->user);
+        $userExpense = new Expense(
+            new Id(null),
+            $this->user->id(),
+            new Money(100, "EUR"),
+            "",
+            new \DateTime()
+        );
         $this->useCase->__invoke($command)
             ->shouldBeCalled()
-            ->willReturn(new UserExpenses([]));
+            ->willReturn(new UserExpenses([$userExpense]));
         $controller = $this->getController();
 
         $response = $controller($request);
 
         $this->assertEquals(200, $response->getStatusCode());
         $result = json_decode($response->getContent(), true);
-        $this->assertEquals([], $result);
+        $this->assertcount(1, $result);
     }
 
     private function getController(): GetExpensesController

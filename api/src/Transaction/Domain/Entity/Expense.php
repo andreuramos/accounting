@@ -15,4 +15,16 @@ class Expense
         public readonly \DateTime $date
     ) {
     }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id->getInt(),
+            'user_id' => $this->userId->getInt(),
+            'cents' => $this->amount->amountCents,
+            'currency' => $this->amount->currency,
+            'description' => $this->description,
+            'date' => $this->date->format('Y-m-d')
+        ];
+    }
 }
