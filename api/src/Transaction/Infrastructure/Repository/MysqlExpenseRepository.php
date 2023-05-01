@@ -2,8 +2,10 @@
 
 namespace App\Transaction\Infrastructure\Repository;
 
+use App\Shared\Domain\ValueObject\Id;
 use App\Transaction\Domain\Entity\Expense;
 use App\Transaction\Domain\Model\ExpenseRepositoryInterface;
+use App\Transaction\Domain\ValueObject\Money;
 use App\User\Domain\Entity\User;
 use PDO;
 
@@ -35,6 +37,25 @@ class MysqlExpenseRepository implements ExpenseRepositoryInterface
 
     public function getByUser(User $user): array
     {
-        return [];
+        $userId = $user->id()->getInt();
+
+        $stmt = $this->PDO->prepare(
+            'SELECT * FROM expense WHERE user_id = :user_id'
+        );
+        $stmt->bindParam(':user_id', $userId);
+        $stmt->execute();
+
+        $results = [];
+        foreach ($stmt->fetchAll() as $result) {
+            $results[] = new Expense(
+                new Id($result['id']),
+                new Id($result['user_id']),
+                new Money($result['amount']),
+                $result['description'],
+                new \DateTime($result['date'])
+            );
+        }
+
+        return $results;
     }
 }

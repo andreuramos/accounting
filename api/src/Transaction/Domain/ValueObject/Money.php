@@ -8,7 +8,7 @@ class Money
 
     public function __construct(
         public readonly int $amountCents,
-        public readonly string $currency
+        public readonly string $currency = 'EUR'
     ) {
         $this->guardCurrency($this->currency);
     }
