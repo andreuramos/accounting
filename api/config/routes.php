@@ -5,6 +5,7 @@ require_once './vendor/autoload.php';
 use App\Shared\Infrastructure\Controller\SharedDomainController;
 use App\Shared\Infrastructure\Controller\StatusCheckController;
 use App\Transaction\Infrastructure\Controller\CreateExpenseController;
+use App\Transaction\Infrastructure\Controller\GetExpensesController;
 use App\User\Infrastructure\Controller\GetUserController;
 use App\User\Infrastructure\Controller\LoginController;
 use App\User\Infrastructure\Controller\RefreshTokenController;
@@ -17,6 +18,9 @@ $routes = new RouteCollection();
 $routes->add('domain', new Route(
     '/domain', ['controller' => SharedDomainController::class]
 ));
+$routes->add('get_expenses', (new Route(
+    '/expense', ['controller' => GetExpensesController::class]
+))->setMethods('GET'));
 $routes->add('create_expense', (new Route(
     '/expense', ['controller' => CreateExpenseController::class]
 ))->setMethods('POST'));
