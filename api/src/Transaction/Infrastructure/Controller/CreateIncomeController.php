@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Transaction\Infrastructure;
+namespace App\Transaction\Infrastructure\Controller;
 
 use App\Shared\Infrastructure\ApiResponse;
 use App\Shared\Infrastructure\Controller\AuthorizedController;
