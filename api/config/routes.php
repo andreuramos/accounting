@@ -6,6 +6,7 @@ use App\Shared\Infrastructure\Controller\SharedDomainController;
 use App\Shared\Infrastructure\Controller\StatusCheckController;
 use App\Transaction\Infrastructure\Controller\CreateExpenseController;
 use App\Transaction\Infrastructure\Controller\GetExpensesController;
+use App\Transaction\Infrastructure\CreateIncomeController;
 use App\User\Infrastructure\Controller\GetUserController;
 use App\User\Infrastructure\Controller\LoginController;
 use App\User\Infrastructure\Controller\RefreshTokenController;
@@ -23,6 +24,9 @@ $routes->add('get_expenses', (new Route(
 ))->setMethods('GET'));
 $routes->add('create_expense', (new Route(
     '/expense', ['controller' => CreateExpenseController::class]
+))->setMethods('POST'));
+$routes->add('create_income', (new Route(
+    '/income', ['controller' => CreateIncomeController::class]
 ))->setMethods('POST'));
 $routes->add('login', new Route(
     '/login', ['controller' => LoginController::class]
