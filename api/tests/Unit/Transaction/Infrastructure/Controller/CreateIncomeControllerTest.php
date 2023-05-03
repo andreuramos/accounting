@@ -34,6 +34,34 @@ class CreateIncomeControllerTest extends AuthorizedControllerTest
         $controller($request);
     }
 
+    public function test_missing_description_fails()
+    {
+        $request = $this->buildRequest([
+            'amount' => 100,
+            'date' => '2023-05-03',
+        ]);
+        $request->headers->set('Authorization', 'Bearer ' . self::TOKEN);
+        $controller = $this->buildController();
+
+        $this->expectException(MissingMandatoryParameterException::class);
+
+        $controller($request);
+    }
+
+    public function test_missing_date_fails()
+    {
+        $request = $this->buildRequest([
+            'amount' => 100,
+            'description' => 'missing date',
+        ]);
+        $request->headers->set('Authorization', 'Bearer ' . self::TOKEN);
+        $controller = $this->buildController();
+
+        $this->expectException(MissingMandatoryParameterException::class);
+
+        $controller($request);
+    }
+
     private function buildController(): CreateIncomeController
     {
         return new CreateIncomeController(

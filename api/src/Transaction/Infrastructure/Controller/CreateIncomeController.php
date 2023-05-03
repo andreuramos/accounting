@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CreateIncomeController extends AuthorizedController
 {
+    const MANDATORY_PARAMETERS = ['amount', 'description', 'date'];
+
     public function __invoke(Request $request): ApiResponse
     {
         $this->auth($request);
@@ -19,8 +21,10 @@ class CreateIncomeController extends AuthorizedController
 
     private function guardMandatoryParameters(array $request): void
     {
-        if (!isset($request['amount'])) {
-            throw new MissingMandatoryParameterException('amount');
+        foreach (self::MANDATORY_PARAMETERS as $parameter) {
+            if (!isset($request[$parameter])) {
+                throw new MissingMandatoryParameterException($parameter);
+            }
         }
     }
 }
