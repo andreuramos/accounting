@@ -9,7 +9,7 @@ use Test\Unit\Shared\Infrastructure\Controller\ControllerTest;
 
 class CreateIncomeControllerTest extends ControllerTest
 {
-    public function test_returns_401_when_no_auth()
+    public function test_unauthorized_fails()
     {
         $request = new Request();
         $controller = $this->buildController();
