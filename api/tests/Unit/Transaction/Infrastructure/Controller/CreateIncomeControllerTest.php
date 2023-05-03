@@ -7,7 +7,7 @@ use App\User\Domain\Exception\InvalidCredentialsException;
 use Symfony\Component\HttpFoundation\Request;
 use Test\Unit\Shared\Infrastructure\Controller\AuthorizedControllerTest;
 
-class CreateIncomeAuthorizedControllerTest extends AuthorizedControllerTest
+class CreateIncomeControllerTest extends AuthorizedControllerTest
 {
     public function test_unauthorized_fails()
     {
