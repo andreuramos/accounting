@@ -14,7 +14,9 @@ class CreateIncomeEndpointTest extends EndpointTest
         $this->login(self::TEST_EMAIL, "");
         $response = $this->client->post('/income',[
             'body' => json_encode([
-
+                'amount' => 100,
+                'description' => 'success income',
+                'date' => '2023-05-03',
             ], JSON_THROW_ON_ERROR),
             'headers' => ['Authorization' => 'Bearer '.$this->authToken]
         ]);
