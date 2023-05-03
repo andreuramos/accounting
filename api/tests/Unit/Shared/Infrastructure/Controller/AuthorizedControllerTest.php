@@ -10,7 +10,7 @@ use App\User\Infrastructure\Auth\JWTDecoder;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-abstract class ControllerTest extends TestCase
+abstract class AuthorizedControllerTest extends TestCase
 {
     use ProphecyTrait;
 
