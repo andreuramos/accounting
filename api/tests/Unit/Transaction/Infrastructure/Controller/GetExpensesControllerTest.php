@@ -9,39 +9,21 @@ use App\Transaction\Application\UseCase\GetUserExpensesUseCase;
 use App\Transaction\Domain\Entity\Expense;
 use App\Transaction\Domain\ValueObject\Money;
 use App\Transaction\Infrastructure\Controller\GetExpensesController;
-use App\User\Application\Auth\AuthTokenDecoderInterface;
-use App\User\Domain\Entity\User;
 use App\User\Domain\Exception\InvalidCredentialsException;
-use App\User\Domain\Model\UserRepositoryInterface;
-use App\User\Domain\ValueObject\Email;
-use App\User\Infrastructure\Auth\JWTDecoder;
-use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\Request;
+use Test\Unit\Shared\Infrastructure\Controller\AuthorizedControllerTest;
 
-class GetExpensesControllerTest extends TestCase
+class GetExpensesControllerTest extends AuthorizedControllerTest
 {
     use ProphecyTrait;
 
-    private const TOKEN = 'my.jwt.token';
-    private $tokenDecoder;
-    private $userRepository;
     private $useCase;
-    private User $user;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->tokenDecoder = $this->prophesize(JWTDecoder::class);
-        $this->userRepository = $this->prophesize(UserRepositoryInterface::class);
         $this->useCase = $this->prophesize(GetUserExpensesUseCase::class);
-
-        $this->user = new User(new Id(1), new Email("any@email.com"), "pass");
-        $this->tokenDecoder->__invoke(self::TOKEN)->willReturn([
-            'user' => $this->user->email()->toString(),
-            'expiration' => date_create()->getTimestamp() + 1000,
-        ]);
-        $this->userRepository->getByEmail($this->user->email())->willReturn($this->user);
     }
 
     public function test_fails_if_no_authorized()
