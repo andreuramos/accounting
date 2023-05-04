@@ -12,6 +12,7 @@ abstract class EndpointTest extends TestCase
     protected Client $client;
     protected Container $container;
     protected string $authToken;
+    protected \PDO $pdo;
 
     protected function setUp(): void
     {
@@ -22,6 +23,7 @@ abstract class EndpointTest extends TestCase
         ]);
         $this->container = ContainerFactory::create();
         $this->authToken = "";
+        $this->pdo = $this->container->get(\PDO::class);
     }
 
     protected function registerUser(string $email, string $password)

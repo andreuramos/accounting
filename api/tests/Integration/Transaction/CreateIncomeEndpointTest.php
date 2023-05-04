@@ -15,7 +15,7 @@ class CreateIncomeEndpointTest extends EndpointTest
         $response = $this->client->post('/income',[
             'body' => json_encode([
                 'amount' => 100,
-                'description' => 'success income',
+                'description' => 'test_income_created',
                 'date' => '2023-05-03',
             ], JSON_THROW_ON_ERROR),
             'headers' => ['Authorization' => 'Bearer '.$this->authToken]
@@ -28,5 +28,6 @@ class CreateIncomeEndpointTest extends EndpointTest
     {
         parent::tearDown();
         $this->deleteUser(self::TEST_EMAIL);
+        $this->pdo->query('DELETE FROM income WHERE description="test_income_created"');
     }
 }
