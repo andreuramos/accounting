@@ -63,6 +63,14 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Income",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
 				}
 			]
 		},
