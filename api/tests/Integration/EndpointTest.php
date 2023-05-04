@@ -53,7 +53,6 @@ abstract class EndpointTest extends TestCase
 
     protected function deleteUser(string $email): void
     {
-        $pdo = $this->container->get(\PDO::class);
-        $pdo->query('DELETE FROM user WHERE email="' . $email . '";');
+        $this->pdo->query('DELETE FROM user WHERE email="' . $email . '";');
     }
 }

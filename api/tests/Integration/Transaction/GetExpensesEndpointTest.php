@@ -52,7 +52,6 @@ class GetExpensesEndpointTest extends EndpointTest
     {
         parent::tearDown();
         $this->deleteUser(self::TEST_EMAIL);
-        $pdo = $this->container->get(\PDO::class);
-        $pdo->query('DELETE FROM expense WHERE description = "test_returns_created_expense"');
+        $this->pdo->query('DELETE FROM expense WHERE description = "test_returns_created_expense"');
     }
 }
