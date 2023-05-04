@@ -18,12 +18,12 @@ use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 return [
-    MessageBusInterface::class => DI\get(MessageBus::class),
-    UserRepositoryInterface::class => DI\get(MysqlUserRepository::class),
-    HasherInterface::class => DI\get(Md5Hasher::class),
-    AuthTokenGeneratorInterface::class => DI\get(JWTGenerator::class),
-    RefreshTokenGeneratorInterface::class => DI\get(JWTRefreshTokenGenerator::class),
     AuthTokenDecoderInterface::class => DI\get(JWTDecoder::class),
+    AuthTokenGeneratorInterface::class => DI\get(JWTGenerator::class),
     ExpenseRepositoryInterface::class => DI\get(MysqlExpenseRepository::class),
-    IncomeRepositoryInterface::class => DI\get(MysqlIncomeRepository::class)
+    HasherInterface::class => DI\get(Md5Hasher::class),
+    IncomeRepositoryInterface::class => DI\get(MysqlIncomeRepository::class),
+    MessageBusInterface::class => DI\get(MessageBus::class),
+    RefreshTokenGeneratorInterface::class => DI\get(JWTRefreshTokenGenerator::class),
+    UserRepositoryInterface::class => DI\get(MysqlUserRepository::class),
 ];
