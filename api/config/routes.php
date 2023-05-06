@@ -25,6 +25,9 @@ $routes->add('get_expenses', (new Route(
 $routes->add('create_expense', (new Route(
     '/expense', ['controller' => CreateExpenseController::class]
 ))->setMethods('POST'));
+$routes->add('get_incomes', (new Route(
+    '/income', ['controller' => GetIncomesController::class]
+))->setMethods('GET'));
 $routes->add('create_income', (new Route(
     '/income', ['controller' => CreateIncomeController::class]
 ))->setMethods('POST'));
