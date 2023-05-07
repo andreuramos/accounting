@@ -7,6 +7,7 @@ use App\Shared\Infrastructure\Controller\StatusCheckController;
 use App\Transaction\Infrastructure\Controller\CreateExpenseController;
 use App\Transaction\Infrastructure\Controller\CreateIncomeController;
 use App\Transaction\Infrastructure\Controller\GetExpensesController;
+use App\Transaction\Infrastructure\Controller\GetIncomesController;
 use App\User\Infrastructure\Controller\GetUserController;
 use App\User\Infrastructure\Controller\LoginController;
 use App\User\Infrastructure\Controller\RefreshTokenController;

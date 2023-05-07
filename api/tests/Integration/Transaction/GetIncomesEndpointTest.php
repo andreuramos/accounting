@@ -10,7 +10,6 @@ class GetIncomesEndpointTest extends EndpointTest
 
     public function test_returns_stored_incomes()
     {
-        $this->markTestIncomplete();
         $this->registerUser(self::TEST_EMAIL, "123");
         $this->login(self::TEST_EMAIL, "123");
 
