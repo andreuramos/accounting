@@ -14,15 +14,4 @@ class UserExpenses
             }
         }
     }
-
-    public function toArray(): array
-    {
-        $array = [];
-
-        foreach($this->expenses as $expense) {
-            $array[] = $expense->toArray();
-        }
-
-        return $array;
-    }
 }

@@ -10,11 +10,4 @@ class UserIncomes
         public readonly array $incomes
     ) {
     }
-
-    public function toArray()
-    {
-        return array_map(function (Income $income) {
-            return $income->toArray();
-        }, $this->incomes);
-    }
 }
