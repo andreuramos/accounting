@@ -71,6 +71,29 @@
 						"header": []
 					},
 					"response": []
+				},
+				{
+					"name": "Income",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/income",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"income"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
