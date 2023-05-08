@@ -1,7 +1,4 @@
-DROP DATABASE IF EXISTS 'accounting-db';
-CREATE DATABASE 'accounting-db';
-
-DROP USER IF EXISTS 'accounting'@'localhost';
-CREATE USER 'accounting'@'localhost' IDENTIFIED BY 'accpwd';
-GRANT ALL PRIVILEGES ON 'accounting'.* TO 'accounting'@'localhost';
+CREATE DATABASE IF NOT EXISTS `$DB_NAME`;
+CREATE USER IF NOT EXISTS '$DB_USER'@'%' IDENTIFIED BY '$DB_PWD';
+GRANT ALL PRIVILEGES ON `$DB_NAME`.* TO '$DB_USER'@'%';
 

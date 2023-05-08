@@ -1,7 +1,8 @@
 #!/bin/bash
 BE_NAME := accounting_php
 FE_NAME := accounting_node
-DB_NAME := accounting_mysql
+DB_CONTAINER := accounting_mysql
+include api/.env
 
 help: # lists commands
 	printf "hoola"
@@ -22,7 +23,14 @@ init-fe:
 	docker exec -it $(FE_NAME)_1
 
 enter-db:
-	docker exec -it $(DB_NAME)_1 mysql -uaccounting -p
+	docker exec -it $(DB_CONTAINER)_1 mysql -uaccounting -p
+
+init-db:
+	@echo "Initing database ..."
+	export DB_USER=$(DB_USER) && \
+	export DB_PWD=$(DB_PWD) && \
+	export DB_NAME=$(DB_NAME) && \
+	envsubst < ./api/config/db-init.sql | docker exec -i $(DB_CONTAINER)_1 mysql -uroot -p$(DB_ROOT_PASSWORD)
 
 test: test-unit test-integration
 
