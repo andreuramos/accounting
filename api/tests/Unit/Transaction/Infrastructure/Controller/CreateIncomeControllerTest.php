@@ -33,11 +33,10 @@ class CreateIncomeControllerTest extends AuthorizedControllerTest
 
     public function test_missing_amount_fails()
     {
-        $request = $this->buildRequest([
+        $request = $this->buildAuthorizedRequest([
             'description' => "test_missing_amount",
             'date' => '2023-05-03',
         ]);
-        $request->headers->set('Authorization', 'Bearer ' . self::TOKEN);
         $controller = $this->buildController();
 
         $this->expectException(MissingMandatoryParameterException::class);
@@ -47,11 +46,10 @@ class CreateIncomeControllerTest extends AuthorizedControllerTest
 
     public function test_missing_description_fails()
     {
-        $request = $this->buildRequest([
+        $request = $this->buildAuthorizedRequest([
             'amount' => 100,
             'date' => '2023-05-03',
         ]);
-        $request->headers->set('Authorization', 'Bearer ' . self::TOKEN);
         $controller = $this->buildController();
 
         $this->expectException(MissingMandatoryParameterException::class);
@@ -61,11 +59,10 @@ class CreateIncomeControllerTest extends AuthorizedControllerTest
 
     public function test_missing_date_fails()
     {
-        $request = $this->buildRequest([
+        $request = $this->buildAuthorizedRequest([
             'amount' => 100,
             'description' => 'missing date',
         ]);
-        $request->headers->set('Authorization', 'Bearer ' . self::TOKEN);
         $controller = $this->buildController();
 
         $this->expectException(MissingMandatoryParameterException::class);
@@ -75,12 +72,11 @@ class CreateIncomeControllerTest extends AuthorizedControllerTest
 
     public function test_calls_usecase_with_command()
     {
-        $request = $this->buildRequest([
+        $request = $this->buildAuthorizedRequest([
             'amount' => 100,
             'description' => 'correct income',
             'date' => '2023-05-03'
         ]);
-        $request->headers->set('Authorization', 'Bearer ' . self::TOKEN);
         $this->createIncomeUseCase->__invoke(Argument::type(CreateIncomeCommand::class))
             ->shouldBeCalled();
         $controller = $this->buildController();
@@ -94,14 +90,6 @@ class CreateIncomeControllerTest extends AuthorizedControllerTest
             $this->tokenDecoder->reveal(),
             $this->userRepository->reveal(),
             $this->createIncomeUseCase->reveal(),
-        );
-    }
-
-
-    private function buildRequest(array $content): Request
-    {
-        return new Request(
-            [], [], [], [], [], [], json_encode($content)
         );
     }
 }

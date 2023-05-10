@@ -37,10 +37,10 @@ class CreateExpenseControllerTest extends AuthorizedControllerTest
 
     public function test_missing_amount_fails()
     {
-        $request = $this->buildRequest([
+        $request = $this->buildAuthorizedRequest([
             'description' => "ass",
             'date' => "2023-04-25",
-        ], ['Authorization' => 'Bearer ' . self::TOKEN]);
+        ]);
         $controller = $this->getController();
 
         $this->expectException(MissingMandatoryParameterException::class);
@@ -50,10 +50,10 @@ class CreateExpenseControllerTest extends AuthorizedControllerTest
 
     public function test_missing_description_fails()
     {
-        $request = $this->buildRequest([
+        $request = $this->buildAuthorizedRequest([
             'amount' => 30,
             'date' => "2023-04-25",
-        ], ['Authorization' => 'Bearer ' . self::TOKEN]);
+        ]);
         $controller = $this->getController();
 
         $this->expectException(MissingMandatoryParameterException::class);
@@ -63,10 +63,10 @@ class CreateExpenseControllerTest extends AuthorizedControllerTest
 
     public function test_missing_date_fails()
     {
-        $request = $this->buildRequest([
+        $request = $this->buildAuthorizedRequest([
             'amount' => 30,
             'description' => "rave",
-        ], ['Authorization' => 'Bearer ' . self::TOKEN]);
+        ]);
         $controller = $this->getController();
 
         $this->expectException(MissingMandatoryParameterException::class);
@@ -76,11 +76,11 @@ class CreateExpenseControllerTest extends AuthorizedControllerTest
 
     public function test_instantiates_command_and_calls_use_case()
     {
-        $request = $this->buildRequest([
+        $request = $this->buildAuthorizedRequest([
             'amount' => 30,
             'description' => "rave",
             'date' => '2022-04-26',
-        ], ['Authorization' => 'Bearer ' . self::TOKEN]);
+        ]);
         $controller = $this->getController();
         $this->createExpenseUseCase->__invoke(Argument::type(CreateExpenseCommand::class))
             ->shouldBeCalled();
@@ -98,16 +98,5 @@ class CreateExpenseControllerTest extends AuthorizedControllerTest
             $this->userRepository->reveal(),
             $this->createExpenseUseCase->reveal()
         );
-    }
-
-    private function buildRequest(array $content, array $headers): Request
-    {
-        $request = new Request(
-            [], [], [], [], [], [], json_encode($content)
-        );
-        foreach ($headers as $header => $value) {
-            $request->headers->set($header, $value);
-        }
-        return $request;
     }
 }

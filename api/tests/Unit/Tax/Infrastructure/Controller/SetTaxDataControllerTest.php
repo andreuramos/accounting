@@ -27,6 +27,11 @@ class SetTaxDataControllerTest extends AuthorizedControllerTest
         $controller($request);
     }
 
+    public function test_missing_tax_name_fails()
+    {
+        $request = $this->buildAuthorizedRequest([]);
+    }
+
     private function buildController(): SetTaxDataController
     {
         return new SetTaxDataController(

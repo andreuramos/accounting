@@ -9,6 +9,7 @@ use App\User\Domain\ValueObject\Email;
 use App\User\Infrastructure\Auth\JWTDecoder;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Symfony\Component\HttpFoundation\Request;
 
 abstract class AuthorizedControllerTest extends TestCase
 {
@@ -31,5 +32,14 @@ abstract class AuthorizedControllerTest extends TestCase
             'expiration' => date_create()->getTimestamp() + 1000,
         ]);
         $this->userRepository->getByEmail($this->user->email())->willReturn($this->user);
+    }
+
+    public function buildAuthorizedRequest(array $body): Request
+    {
+        $request = new Request(
+            [], [], [], [], [], [], json_encode($body, JSON_THROW_ON_ERROR)
+        );
+        $request->headers->set('Authorization', 'Bearer ' . self::TOKEN);
+        return $request;
     }
 }
