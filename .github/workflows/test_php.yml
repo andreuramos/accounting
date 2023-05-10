@@ -17,6 +17,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: generate dotenv
+      run: cp api/.env.sample api/.env
+
     - name: Build Docker environment
       run: make up
 
