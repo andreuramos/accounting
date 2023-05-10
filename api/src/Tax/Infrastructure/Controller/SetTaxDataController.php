@@ -5,13 +5,27 @@ namespace App\Tax\Infrastructure\Controller;
 use App\Shared\Domain\Exception\MissingMandatoryParameterException;
 use App\Shared\Infrastructure\ApiResponse;
 use App\Shared\Infrastructure\Controller\AuthorizedController;
+use App\Tax\Application\Command\SetTaxDataCommand;
+use App\Tax\Application\UseCase\SetTaxDataUseCase;
+use App\User\Domain\Model\UserRepositoryInterface;
+use App\User\Infrastructure\Auth\JWTDecoder;
 use Symfony\Component\HttpFoundation\Request;
 
 class SetTaxDataController extends AuthorizedController
 {
+    public function __construct(
+        JWTDecoder $tokenDecoder,
+        UserRepositoryInterface $userRepository,
+        private readonly SetTaxDataUseCase $setTaxDataUseCase,
+    ) {
+        parent::__construct($tokenDecoder, $userRepository);
+    }
+
     private const MANDATORY_PARAMETERS = [
-        'tax_name', 'tax_number', 'tax_address_street',
-        'tax_address_zip_code', 'tax_address_region'
+        'tax_name',
+        'tax_number',
+        'tax_address_street',
+        'tax_address_zip_code',
     ];
 
     public function __invoke(Request $request): ApiResponse
@@ -19,6 +33,14 @@ class SetTaxDataController extends AuthorizedController
         $this->auth($request);
         $content = json_decode($request->getContent(), true);
         $this->guardMandatoryParameters($content);
+
+        $command = new SetTaxDataCommand(
+            $content['tax_name'],
+            $content['tax_number'],
+            $content['tax_address_street'],
+            $content['tax_address_zip_code'],
+        );
+        ($this->setTaxDataUseCase)($command);
 
         return new ApiResponse([]);
     }

@@ -25,7 +25,6 @@ class SetTaxDataEndpointTest extends EndpointTest
                 'tax_number' => "B07656565",
                 'tax_address_street' => "Andreu Jaume Nadal 29",
                 'tax_address_zip_code' => "07013",
-                'tax_address_region' => "Illes Balears",
             ], JSON_THROW_ON_ERROR),
             'headers' => ['Authorization' => 'Bearer '.$this->authToken ]
         ]);
