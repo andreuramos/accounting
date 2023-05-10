@@ -8,7 +8,7 @@ class SetTaxDataEndpointTest extends EndpointTest
 {
     public function test_unauthorized_returns_401()
     {
-        $response = $this->client->post('/tax_data');
+        $response = $this->client->post('/tax/data');
         $this->assertEquals(401, $response->getStatusCode());
     }
 }
