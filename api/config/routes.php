@@ -16,40 +16,61 @@ use App\User\Infrastructure\Controller\RegisterUserController;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
-$routes = new RouteCollection();
+$routes = [
+    [
+        'path' => '/domain',
+        'controller' => SharedDomainController::class,
+        'method' => 'GET'
+    ], [
+        'path' => '/expense',
+        'controller' => GetExpensesController::class,
+        'method' => 'GET'
+    ], [
+        'path' => '/expense',
+        'controller' => CreateExpenseController::class,
+        'method' => 'POST'
+    ], [
+        'path' => '/income',
+        'controller' => GetIncomesController::class,
+        'method' => 'GET'
+    ], [
+        'path' => '/income',
+        'controller' => CreateIncomeController::class,
+        'method' => 'POST',
+    ], [
+        'path' => '/login',
+        'controller' => LoginController::class,
+        'method' => 'POST',
+    ], [
+        'path' => '/refresh',
+        'controller' => RefreshTokenController::class,
+        'method' => 'POST',
+    ], [
+        'path' => '/user',
+        'controller' => RegisterUserController::class,
+        'method' => 'POST',
+    ], [
+        'path' => '/user',
+        'controller' => GetUserController::class,
+        'method' => 'GET',
+    ], [
+        'path' => '/status',
+        'controller' => StatusCheckController::class,
+        'method' => 'GET'
+    ], [
+        'path' => '/tax/data',
+        'controller' => SetTaxDataController::class,
+        'method' => 'POST'
+    ],
+];
 
-$routes->add('domain', new Route(
-    '/domain', ['controller' => SharedDomainController::class]
-));
-$routes->add('get_expenses', (new Route(
-    '/expense', ['controller' => GetExpensesController::class]
-))->setMethods('GET'));
-$routes->add('create_expense', (new Route(
-    '/expense', ['controller' => CreateExpenseController::class]
-))->setMethods('POST'));
-$routes->add('get_incomes', (new Route(
-    '/income', ['controller' => GetIncomesController::class]
-))->setMethods('GET'));
-$routes->add('create_income', (new Route(
-    '/income', ['controller' => CreateIncomeController::class]
-))->setMethods('POST'));
-$routes->add('login', new Route(
-    '/login', ['controller' => LoginController::class]
-));
-$routes->add('refresh', (new Route(
-    '/refresh', ['controller' => RefreshTokenController::class]
-))->setMethods('POST'));
-$routes->add('register', (new Route(
-    '/user', ['controller' => RegisterUserController::class]
-))->setMethods('POST'));
-$routes->add('status', new Route(
-    '/status', ['controller' => StatusCheckController::class]
-));
-$routes->add('POST_tax_data', (new Route(
-    '/tax/data', ['controller' => SetTaxDataController::class]
-))->setMethods('POST'));
-$routes->add('get-user', new Route(
-    '/user', ['controller' => GetUserController::class]
-));
+$routesCollection = new RouteCollection();
 
-return $routes;
+foreach ($routes as $route) {
+    $name = $route['path'] . '_' . $route['method'];
+    $routesCollection->add($name, (new Route(
+        $route['path'], ['controller' => $route['controller']]
+    ))->setMethods($route['method']));
+}
+
+return $routesCollection;
