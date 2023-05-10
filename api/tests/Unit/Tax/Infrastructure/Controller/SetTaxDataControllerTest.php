@@ -2,6 +2,7 @@
 
 namespace Test\Unit\Tax\Infrastructure\Controller;
 
+use App\Shared\Domain\Exception\MissingMandatoryParameterException;
 use App\Tax\Infrastructure\Controller\SetTaxDataController;
 use App\User\Domain\Exception\InvalidCredentialsException;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -29,7 +30,17 @@ class SetTaxDataControllerTest extends AuthorizedControllerTest
 
     public function test_missing_tax_name_fails()
     {
-        $request = $this->buildAuthorizedRequest([]);
+        $request = $this->buildAuthorizedRequest([
+            'tax_number' => "B07656565",
+            'tax_address_street' => "Andreu Jaume Nadal 29",
+            'tax_address_zip_code' => "07013",
+            'tax_address_region' => "Illes Balears",
+        ]);
+        $controller = $this->buildController();
+
+        $this->expectException(MissingMandatoryParameterException::class);
+
+        $controller($request);
     }
 
     private function buildController(): SetTaxDataController
