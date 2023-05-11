@@ -35,6 +35,7 @@ class SetTaxDataController extends AuthorizedController
         $this->guardMandatoryParameters($content);
 
         $command = new SetTaxDataCommand(
+            $this->authUser,
             $content['tax_name'],
             $content['tax_number'],
             $content['tax_address_street'],
