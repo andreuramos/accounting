@@ -36,5 +36,6 @@ class SetTaxDataEndpointTest extends EndpointTest
     {
         parent::tearDown();
         $this->deleteUser(self::EMAIL);
+        $this->pdo->query('DELETE FROM tax_data WHERE tax_number = "B07656565"');
     }
 }
