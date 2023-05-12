@@ -41,6 +41,8 @@ test-integration: # runs all tests
 test-unit:
 	docker exec $(BE_NAME)_1 vendor/bin/phpunit --colors=always --testsuite unit
 
+migration: create-migration
+
 create-migration:
 	docker exec -u 1000 -it $(BE_NAME)_1 vendor/bin/phinx create $(name) --configuration=config/phinx.php
 

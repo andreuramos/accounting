@@ -2,6 +2,8 @@
 
 use App\Shared\Application\Service\HasherInterface;
 use App\Shared\Infrastructure\Service\Md5Hasher;
+use App\Tax\Domain\Model\TaxDataAggregateRepositoryInterface;
+use App\Tax\Infrastructure\Repository\MysqlTaxDataAggregateRepository;
 use App\Transaction\Domain\Model\ExpenseRepositoryInterface;
 use App\Transaction\Domain\Model\IncomeRepositoryInterface;
 use App\Transaction\Infrastructure\Repository\MysqlExpenseRepository;
@@ -25,5 +27,6 @@ return [
     IncomeRepositoryInterface::class => DI\get(MysqlIncomeRepository::class),
     MessageBusInterface::class => DI\get(MessageBus::class),
     RefreshTokenGeneratorInterface::class => DI\get(JWTRefreshTokenGenerator::class),
+    TaxDataAggregateRepositoryInterface::class => DI\get(MysqlTaxDataAggregateRepository::class),
     UserRepositoryInterface::class => DI\get(MysqlUserRepository::class),
 ];
