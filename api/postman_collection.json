@@ -192,6 +192,35 @@
 			]
 		},
 		{
+			"name": "Tax",
+			"item": [
+				{
+					"name": "Tax data",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/tax/data",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tax",
+								"data"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "status",
 			"request": {
 				"method": "GET",
