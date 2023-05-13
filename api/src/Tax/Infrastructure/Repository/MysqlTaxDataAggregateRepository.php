@@ -17,13 +17,13 @@ class MysqlTaxDataAggregateRepository implements TaxDataAggregateRepositoryInter
         if (!$this->alreadyExists($taxDataAggregate)) {
             $stmt = $this->PDO->prepare(
                 'INSERT INTO tax_data (user_id, tax_name, tax_number, address, zip_code) ' .
-                'VALUES (:user_id, :tax_name, :tax_number, :address, :zip)'
+                'VALUES (:user_id, :tax_name, :tax_number, :address, :zip_code)'
             );
         } else {
             $stmt = $this->PDO->prepare(
                 'UPDATE tax_data SET ' .
-                'tax_name=":tax_name", tax_number=":tax_number", ' .
-                'address=":address", zip_code=":zip" where user_id=:userId'
+                'tax_name=:tax_name, tax_number=:tax_number, ' .
+                'address=:address, zip_code=:zip_code where user_id=:user_id'
             );
         }
 
@@ -36,7 +36,7 @@ class MysqlTaxDataAggregateRepository implements TaxDataAggregateRepositoryInter
         $address = $taxDataAggregate->address->street;
         $stmt->bindParam(':address', $address);
         $zip = $taxDataAggregate->address->zip;
-        $stmt->bindParam(':zip', $zip);
+        $stmt->bindParam(':zip_code', $zip);
 
         $stmt->execute();
     }
