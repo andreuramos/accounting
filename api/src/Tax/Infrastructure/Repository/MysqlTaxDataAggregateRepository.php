@@ -2,6 +2,7 @@
 
 namespace App\Tax\Infrastructure\Repository;
 
+use App\Shared\Domain\ValueObject\Id;
 use App\Tax\Domain\Aggregate\TaxDataAggregate;
 use App\Tax\Domain\Model\TaxDataAggregateRepositoryInterface;
 
@@ -14,21 +15,64 @@ class MysqlTaxDataAggregateRepository implements TaxDataAggregateRepositoryInter
 
     public function save(TaxDataAggregate $taxDataAggregate): void
     {
-        if (!$this->alreadyExists($taxDataAggregate)) {
-            $stmt = $this->PDO->prepare(
-                'INSERT INTO tax_data (user_id, tax_name, tax_number, address, zip_code) ' .
-                'VALUES (:user_id, :tax_name, :tax_number, :address, :zip_code)'
-            );
+        $taxDataId = $this->getTaxDataId($taxDataAggregate->userId);
+        if (null === $taxDataId) {
+            $this->createTaxData($taxDataAggregate);
         } else {
-            $stmt = $this->PDO->prepare(
-                'UPDATE tax_data SET ' .
-                'tax_name=:tax_name, tax_number=:tax_number, ' .
-                'address=:address, zip_code=:zip_code where user_id=:user_id'
-            );
+            $this->updateTaxData($taxDataAggregate, $taxDataId);
+        }
+    }
+
+    private function getTaxDataId(Id $userId): ?int
+    {
+        $userIdInt = $userId->getInt() + 1;
+        $query = $this->PDO->query("SELECT tax_data_id FROM user WHERE id = " . $userIdInt . ";");
+        $query->execute();
+
+        $taxDataId = $query->fetch();
+
+        if (false === $taxDataId) {
+            return null;
         }
 
+        return $taxDataId[0];
+    }
+
+    private function createTaxData(TaxDataAggregate $taxDataAggregate): void
+    {
+        $stmt = $this->PDO->prepare(
+            'INSERT INTO tax_data (tax_name, tax_number, address, zip_code) ' .
+            'VALUES (:tax_name, :tax_number, :address, :zip_code)'
+        );
+
+        $taxName = $taxDataAggregate->taxName;
+        $stmt->bindParam(':tax_name', $taxName);
+        $taxNumber = $taxDataAggregate->taxNumber;
+        $stmt->bindParam(':tax_number', $taxNumber);
+        $address = $taxDataAggregate->address->street;
+        $stmt->bindParam(':address', $address);
+        $zip = $taxDataAggregate->address->zip;
+        $stmt->bindParam(':zip_code', $zip);
+        $stmt->execute();
+
+        $insertedId = $this->PDO->lastInsertId();
+
         $userId = $taxDataAggregate->userId->getInt();
-        $stmt->bindParam(':user_id', $userId);
+        $this->PDO->query(
+            'UPDATE user SET tax_data_id = ' . $insertedId .
+            ' WHERE id = ' . $userId . ';'
+        );
+    }
+
+    private function updateTaxData(TaxDataAggregate $taxDataAggregate, int $taxDataId): void
+    {
+        $stmt = $this->PDO->prepare(
+            'UPDATE tax_data SET ' .
+            'tax_name=:tax_name, tax_number=:tax_number, ' .
+            'address=:address, zip_code=:zip_code where id=:id'
+        );
+
+        $stmt->bindParam(':id', $taxDataId);
         $taxName = $taxDataAggregate->taxName;
         $stmt->bindParam(':tax_name', $taxName);
         $taxNumber = $taxDataAggregate->taxNumber;
@@ -39,14 +83,5 @@ class MysqlTaxDataAggregateRepository implements TaxDataAggregateRepositoryInter
         $stmt->bindParam(':zip_code', $zip);
 
         $stmt->execute();
-    }
-
-    private function alreadyExists(TaxDataAggregate $taxDataAggregate): bool
-    {
-        $userId = $taxDataAggregate->userId->getInt();
-        $query = $this->PDO->query("SELECT * FROM tax_data WHERE user_id = " . $userId . ";");
-        $query->execute();
-
-        return !empty($query->fetchAll());
     }
 }
