@@ -11,6 +11,8 @@ class CreateInvoiceController extends AuthorizedController
     public function __invoke(Request $request): ApiResponse
     {
         $this->auth($request);
-        return new ApiResponse([]);
+        return new ApiResponse([
+            'invoice_number' => 123,
+        ]);
     }
 }
