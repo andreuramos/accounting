@@ -3,7 +3,7 @@
 namespace App\Tax\Infrastructure\Repository;
 
 use App\Shared\Domain\ValueObject\Id;
-use App\Tax\Domain\Aggregate\TaxDataAggregate;
+use App\Tax\Domain\Entity\TaxData;
 use App\Tax\Domain\Model\TaxDataAggregateRepositoryInterface;
 
 class MysqlTaxDataAggregateRepository implements TaxDataAggregateRepositoryInterface
@@ -13,7 +13,7 @@ class MysqlTaxDataAggregateRepository implements TaxDataAggregateRepositoryInter
     ) {
     }
 
-    public function save(TaxDataAggregate $taxDataAggregate): void
+    public function save(TaxData $taxDataAggregate): void
     {
         $taxDataId = $this->getTaxDataId($taxDataAggregate->userId);
         if (null === $taxDataId) {
@@ -38,7 +38,7 @@ class MysqlTaxDataAggregateRepository implements TaxDataAggregateRepositoryInter
         return $taxDataId[0];
     }
 
-    private function createTaxData(TaxDataAggregate $taxDataAggregate): void
+    private function createTaxData(TaxData $taxDataAggregate): void
     {
         $stmt = $this->PDO->prepare(
             'INSERT INTO tax_data (tax_name, tax_number, address, zip_code) ' .
@@ -64,7 +64,7 @@ class MysqlTaxDataAggregateRepository implements TaxDataAggregateRepositoryInter
         );
     }
 
-    private function updateTaxData(TaxDataAggregate $taxDataAggregate, int $taxDataId): void
+    private function updateTaxData(TaxData $taxDataAggregate, int $taxDataId): void
     {
         $stmt = $this->PDO->prepare(
             'UPDATE tax_data SET ' .

@@ -5,7 +5,7 @@ namespace Test\Unit\Tax\Application\UseCase;
 use App\Shared\Domain\ValueObject\Id;
 use App\Tax\Application\Command\SetUserTaxDataCommand;
 use App\Tax\Application\UseCase\SetUserTaxDataUseCase;
-use App\Tax\Domain\Aggregate\TaxDataAggregate;
+use App\Tax\Domain\Entity\TaxData;
 use App\Tax\Domain\Model\TaxDataAggregateRepositoryInterface;
 use App\User\Domain\Entity\User;
 use App\User\Domain\ValueObject\Email;
@@ -44,7 +44,7 @@ class SetTaxDataUseCaseTest extends TestCase
         $command = new SetUserTaxDataCommand(
             $user, "Moixa Brewing", "B076546846", "Fake street 123", "07013"
         );
-        $this->taxDataRepository->save(Argument::type(TaxDataAggregate::class))
+        $this->taxDataRepository->save(Argument::type(TaxData::class))
             ->shouldBeCalled();
         $useCase = $this->getUseCase();
 

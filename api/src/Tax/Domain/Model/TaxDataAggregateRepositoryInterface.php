@@ -2,9 +2,9 @@
 
 namespace App\Tax\Domain\Model;
 
-use App\Tax\Domain\Aggregate\TaxDataAggregate;
+use App\Tax\Domain\Entity\TaxData;
 
 interface TaxDataAggregateRepositoryInterface
 {
-    public function save(TaxDataAggregate $taxDataAggregate): void;
+    public function save(TaxData $taxDataAggregate): void;
 }

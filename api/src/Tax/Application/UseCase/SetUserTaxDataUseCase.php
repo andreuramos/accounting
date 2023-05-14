@@ -3,7 +3,7 @@
 namespace App\Tax\Application\UseCase;
 
 use App\Tax\Application\Command\SetUserTaxDataCommand;
-use App\Tax\Domain\Aggregate\TaxDataAggregate;
+use App\Tax\Domain\Entity\TaxData;
 use App\Tax\Domain\Model\TaxDataAggregateRepositoryInterface;
 use App\Tax\Domain\ValueObject\Address;
 
@@ -21,7 +21,7 @@ class SetUserTaxDataUseCase
             $command->taxAddressZipCode,
         );
 
-        $taxData = new TaxDataAggregate(
+        $taxData = new TaxData(
             $command->user->id(),
             $command->taxName,
             $command->taxNumber,

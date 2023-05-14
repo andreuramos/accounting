@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Tax\Domain\Aggregate;
+namespace App\Tax\Domain\Entity;
 
 use App\Shared\Domain\ValueObject\Id;
 use App\Tax\Domain\ValueObject\Address;
 
-class TaxDataAggregate
+class TaxData
 {
     public function __construct(
         public readonly Id $userId,
