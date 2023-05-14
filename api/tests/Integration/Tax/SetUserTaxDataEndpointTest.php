@@ -4,13 +4,13 @@ namespace Test\Integration\Tax;
 
 use Test\Integration\EndpointTest;
 
-class SetTaxDataEndpointTest extends EndpointTest
+class SetUserTaxDataEndpointTest extends EndpointTest
 {
     const EMAIL = "set@taxdata.test";
 
     public function test_unauthorized_returns_401()
     {
-        $response = $this->client->post('/tax/data');
+        $response = $this->client->post('/user/tax_data');
         $this->assertEquals(401, $response->getStatusCode());
     }
 
@@ -19,7 +19,7 @@ class SetTaxDataEndpointTest extends EndpointTest
         $this->registerUser(self::EMAIL, "");
         $this->login(self::EMAIL, "");
 
-        $response = $this->client->post('/tax/data', [
+        $response = $this->client->post('/user/tax_data', [
             'body' => json_encode([
                 'tax_name' => "Moixa Brewing SL",
                 'tax_number' => "B07656565",

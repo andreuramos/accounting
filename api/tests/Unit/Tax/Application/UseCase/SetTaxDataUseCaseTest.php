@@ -3,8 +3,8 @@
 namespace Test\Unit\Tax\Application\UseCase;
 
 use App\Shared\Domain\ValueObject\Id;
-use App\Tax\Application\Command\SetTaxDataCommand;
-use App\Tax\Application\UseCase\SetTaxDataUseCase;
+use App\Tax\Application\Command\SetUserTaxDataCommand;
+use App\Tax\Application\UseCase\SetUserTaxDataUseCase;
 use App\Tax\Domain\Aggregate\TaxDataAggregate;
 use App\Tax\Domain\Model\TaxDataAggregateRepositoryInterface;
 use App\User\Domain\Entity\User;
@@ -28,7 +28,7 @@ class SetTaxDataUseCaseTest extends TestCase
     public function test_empty_name_fails()
     {
         $user = new User(new Id(1), new Email("my@email.com"), "");
-        $command = new SetTaxDataCommand(
+        $command = new SetUserTaxDataCommand(
             $user, "", "43186322G", "Fake street 123", "07013"
         );
         $useCase = $this->getUseCase();
@@ -41,7 +41,7 @@ class SetTaxDataUseCaseTest extends TestCase
     public function test_stores_it_in_repo()
     {
         $user = new User(new Id(1), new Email("my@email.com"), "");
-        $command = new SetTaxDataCommand(
+        $command = new SetUserTaxDataCommand(
             $user, "Moixa Brewing", "B076546846", "Fake street 123", "07013"
         );
         $this->taxDataRepository->save(Argument::type(TaxDataAggregate::class))
@@ -51,9 +51,9 @@ class SetTaxDataUseCaseTest extends TestCase
         $useCase($command);
     }
 
-    private function getUseCase(): SetTaxDataUseCase
+    private function getUseCase(): SetUserTaxDataUseCase
     {
-        return new SetTaxDataUseCase(
+        return new SetUserTaxDataUseCase(
             $this->taxDataRepository->reveal(),
         );
     }

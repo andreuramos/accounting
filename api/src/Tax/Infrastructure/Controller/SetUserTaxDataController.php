@@ -5,18 +5,18 @@ namespace App\Tax\Infrastructure\Controller;
 use App\Shared\Domain\Exception\MissingMandatoryParameterException;
 use App\Shared\Infrastructure\ApiResponse;
 use App\Shared\Infrastructure\Controller\AuthorizedController;
-use App\Tax\Application\Command\SetTaxDataCommand;
-use App\Tax\Application\UseCase\SetTaxDataUseCase;
+use App\Tax\Application\Command\SetUserTaxDataCommand;
+use App\Tax\Application\UseCase\SetUserTaxDataUseCase;
 use App\User\Domain\Model\UserRepositoryInterface;
 use App\User\Infrastructure\Auth\JWTDecoder;
 use Symfony\Component\HttpFoundation\Request;
 
-class SetTaxDataController extends AuthorizedController
+class SetUserTaxDataControllerq extends AuthorizedController
 {
     public function __construct(
-        JWTDecoder $tokenDecoder,
-        UserRepositoryInterface $userRepository,
-        private readonly SetTaxDataUseCase $setTaxDataUseCase,
+        JWTDecoder                             $tokenDecoder,
+        UserRepositoryInterface                $userRepository,
+        private readonly SetUserTaxDataUseCase $setTaxDataUseCase,
     ) {
         parent::__construct($tokenDecoder, $userRepository);
     }
@@ -34,7 +34,7 @@ class SetTaxDataController extends AuthorizedController
         $content = json_decode($request->getContent(), true);
         $this->guardMandatoryParameters($content);
 
-        $command = new SetTaxDataCommand(
+        $command = new SetUserTaxDataCommand(
             $this->authUser,
             $content['tax_name'],
             $content['tax_number'],

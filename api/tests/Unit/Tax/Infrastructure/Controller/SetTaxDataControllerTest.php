@@ -4,9 +4,9 @@ namespace Test\Unit\Tax\Infrastructure\Controller;
 
 use App\Shared\Domain\Exception\MissingMandatoryParameterException;
 use App\Shared\Infrastructure\ApiResponse;
-use App\Tax\Application\Command\SetTaxDataCommand;
-use App\Tax\Application\UseCase\SetTaxDataUseCase;
-use App\Tax\Infrastructure\Controller\SetTaxDataController;
+use App\Tax\Application\Command\SetUserTaxDataCommand;
+use App\Tax\Application\UseCase\SetUserTaxDataUseCase;
+use App\Tax\Infrastructure\Controller\SetUserTaxDataController;
 use App\User\Domain\Exception\InvalidCredentialsException;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -22,7 +22,7 @@ class SetTaxDataControllerTest extends AuthorizedControllerTest
     public function setUp(): void
     {
         parent::setUp();
-        $this->setTaxDataUseCase = $this->prophesize(SetTaxDataUseCase::class);
+        $this->setTaxDataUseCase = $this->prophesize(SetUserTaxDataUseCase::class);
     }
 
     public function test_unauthroized_fails()
@@ -58,7 +58,7 @@ class SetTaxDataControllerTest extends AuthorizedControllerTest
             'tax_address_zip_code' => "07013",
         ]);
         $controller = $this->buildController();
-        $this->setTaxDataUseCase->__invoke(Argument::type(SetTaxDataCommand::class))
+        $this->setTaxDataUseCase->__invoke(Argument::type(SetUserTaxDataCommand::class))
             ->shouldBeCalled();
 
         $response = $controller($request);
@@ -67,9 +67,9 @@ class SetTaxDataControllerTest extends AuthorizedControllerTest
         $this->assertEquals(200, $response->getStatusCode());
     }
 
-    private function buildController(): SetTaxDataController
+    private function buildController(): SetUserTaxDataController
     {
-        return new SetTaxDataController(
+        return new SetUserTaxDataController(
             $this->tokenDecoder->reveal(),
             $this->userRepository->reveal(),
             $this->setTaxDataUseCase->reveal(),

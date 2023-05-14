@@ -4,7 +4,7 @@ require_once './vendor/autoload.php';
 
 use App\Shared\Infrastructure\Controller\SharedDomainController;
 use App\Shared\Infrastructure\Controller\StatusCheckController;
-use App\Tax\Infrastructure\Controller\SetTaxDataController;
+use App\Tax\Infrastructure\Controller\SetUserTaxDataController;
 use App\Transaction\Infrastructure\Controller\CreateExpenseController;
 use App\Transaction\Infrastructure\Controller\CreateIncomeController;
 use App\Transaction\Infrastructure\Controller\GetExpensesController;
@@ -58,8 +58,8 @@ $routes = [
         'controller' => StatusCheckController::class,
         'method' => 'GET'
     ], [
-        'path' => '/tax/data',
-        'controller' => SetTaxDataController::class,
+        'path' => '/user/tax_data',
+        'controller' => SetUserTaxDataController::class,
         'method' => 'POST'
     ],
 ];

@@ -4,7 +4,7 @@ namespace App\Tax\Application\Command;
 
 use App\User\Domain\Entity\User;
 
-class SetTaxDataCommand
+class SetUserTaxDataCommand
 {
     public function __construct(
         public readonly User $user,

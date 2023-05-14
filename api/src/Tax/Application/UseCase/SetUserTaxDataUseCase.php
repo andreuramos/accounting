@@ -2,19 +2,19 @@
 
 namespace App\Tax\Application\UseCase;
 
-use App\Tax\Application\Command\SetTaxDataCommand;
+use App\Tax\Application\Command\SetUserTaxDataCommand;
 use App\Tax\Domain\Aggregate\TaxDataAggregate;
 use App\Tax\Domain\Model\TaxDataAggregateRepositoryInterface;
 use App\Tax\Domain\ValueObject\Address;
 
-class SetTaxDataUseCase
+class SetUserTaxDataUseCase
 {
     public function __construct(
         private readonly TaxDataAggregateRepositoryInterface $taxDataAggregateRepository
     ) {
     }
 
-    public function __invoke(SetTaxDataCommand $command): void
+    public function __invoke(SetUserTaxDataCommand $command): void
     {
         $address = new Address(
             $command->taxAddressStreet,

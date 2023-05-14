@@ -205,14 +205,18 @@
 								"type": "text"
 							}
 						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tax_name\": \"Moixa Brewing SLU\",\n    \"tax_number\": \"43186322G\",\n    \"tax_address_street\": \"Andreu Jaume Nadal 29\",\n    \"tax_address_zip_code\": \"07013\"\n}"
+						},
 						"url": {
-							"raw": "{{base_url}}/tax/data",
+							"raw": "{{base_url}}/user/tax_data",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"tax",
-								"data"
+								"user",
+								"tax_data"
 							]
 						}
 					},
