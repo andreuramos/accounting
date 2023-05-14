@@ -11,7 +11,7 @@ use App\User\Domain\Model\UserRepositoryInterface;
 use App\User\Infrastructure\Auth\JWTDecoder;
 use Symfony\Component\HttpFoundation\Request;
 
-class SetUserTaxDataControllerq extends AuthorizedController
+class SetUserTaxDataController extends AuthorizedController
 {
     public function __construct(
         JWTDecoder                             $tokenDecoder,
