@@ -16,7 +16,7 @@ class MysqlIncomeRepository implements IncomeRepositoryInterface
     ) {
     }
 
-    public function save(Income $income): void
+    public function save(Income $income): Id
     {
         $stmt = $this->pdo->prepare(
             'INSERT INTO income ' .
@@ -35,6 +35,9 @@ class MysqlIncomeRepository implements IncomeRepositoryInterface
         $stmt->bindParam(':date', $date);
 
         $stmt->execute();
+
+        $lastInsertId = $this->pdo->lastInsertId();
+        return new Id($lastInsertId);
     }
 
     public function getByUser(User $user): array

@@ -24,6 +24,23 @@ class CreateIncomeEndpointTest extends EndpointTest
         $this->assertEquals(200, $response->getStatusCode());
     }
 
+    public function test_returns_created_id()
+    {
+        $this->registerUser(self::TEST_EMAIL, "");
+        $this->login(self::TEST_EMAIL, "");
+        $response = $this->client->post('/income',[
+            'body' => json_encode([
+                'amount' => 100,
+                'description' => 'test_income_created',
+                'date' => '2023-05-03',
+            ], JSON_THROW_ON_ERROR),
+            'headers' => ['Authorization' => 'Bearer '.$this->authToken]
+        ]);
+
+        $decodedResponse = json_decode($response->getBody(), true);
+        $this->assertArrayHasKey('id', $decodedResponse);
+    }
+
     public function tearDown(): void
     {
         parent::tearDown();

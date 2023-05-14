@@ -15,7 +15,7 @@ class CreateIncomeUseCase
     ) {
     }
 
-    public function __invoke(CreateIncomeCommand $command): void
+    public function __invoke(CreateIncomeCommand $command): Id
     {
         $income = new Income(
             new Id(null),
@@ -25,6 +25,6 @@ class CreateIncomeUseCase
             new \DateTime($command->date)
         );
 
-        $this->incomeRepository->save($income);
+        return $this->incomeRepository->save($income);
     }
 }

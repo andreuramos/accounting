@@ -3,6 +3,7 @@
 namespace Test\Unit\Transaction\Infrastructure\Controller;
 
 use App\Shared\Domain\Exception\MissingMandatoryParameterException;
+use App\Shared\Domain\ValueObject\Id;
 use App\Transaction\Application\Command\CreateIncomeCommand;
 use App\Transaction\Application\UseCase\CreateIncomeUseCase;
 use App\Transaction\Infrastructure\Controller\CreateIncomeController;
@@ -82,6 +83,23 @@ class CreateIncomeControllerTest extends AuthorizedControllerTest
         $controller = $this->buildController();
 
         $controller($request);
+    }
+
+    public function test_returns_usecase_created_id()
+    {
+        $request = $this->buildAuthorizedRequest([
+            'amount' => 100,
+            'description' => 'correct income',
+            'date' => '2023-05-14'
+        ]);
+        $this->createIncomeUseCase->__invoke(Argument::type(CreateIncomeCommand::class))
+            ->willReturn(new Id(23));
+        $controller = $this->buildController();
+
+        $response = $controller($request);
+
+        $decodedContent = json_decode($response->getContent(), true);
+        $this->assertEquals(23, $decodedContent['id']);
     }
 
     private function buildController(): CreateIncomeController
