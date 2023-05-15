@@ -10,4 +10,5 @@ interface IncomeRepositoryInterface
 {
     public function save(Income $income): Id;
     public function getByUser(User $user): array;
+    public function getByIdOrFail(Id $id): Income;
 }

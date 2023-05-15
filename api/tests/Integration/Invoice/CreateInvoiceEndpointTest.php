@@ -7,6 +7,7 @@ use Test\Integration\EndpointTest;
 class CreateInvoiceEndpointTest extends EndpointTest
 {
     private const EMAIL = "create@invoice.test";
+    private $incomeId;
 
     public function test_unauthorized_fails()
     {
@@ -28,6 +29,7 @@ class CreateInvoiceEndpointTest extends EndpointTest
             'headers' => ['Authorization' => 'Bearer ' . $this->authToken],
         ]);
         $income = json_decode($incomeResponse->getBody(), true);
+        $this->incomeId = (int) $income['id'];
 
         $response = $this->client->post('/invoice', [
             'body' => json_encode([
@@ -43,5 +45,14 @@ class CreateInvoiceEndpointTest extends EndpointTest
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertArrayHasKey('invoice_number', json_decode($response->getBody(), true));
+    }
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        $this->deleteUser(self::EMAIL);
+        if ($this->incomeId) {
+            $this->pdo->query('DELETE FROM income WHERE id=' . $this->incomeId . ';');
+        }
     }
 }

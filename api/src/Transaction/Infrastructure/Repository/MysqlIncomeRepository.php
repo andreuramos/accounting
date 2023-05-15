@@ -52,15 +52,35 @@ class MysqlIncomeRepository implements IncomeRepositoryInterface
 
         $results = [];
         foreach ($stmt->fetchAll() as $dbIncome) {
-            $results[] = new Income(
-                new Id($dbIncome['id']),
-                new Id($dbIncome['user_id']),
-                new Money($dbIncome['amount']),
-                $dbIncome['description'],
-                new \DateTime($dbIncome['date'])
-            );
+            $results[] = $this->buildIncome($dbIncome);
         }
 
         return $results;
+    }
+
+    public function getByIdOrFail(Id $id): Income
+    {
+        $incomeId = $id->getInt();
+
+        $stmt = $this->pdo->prepare(
+            'SELECT * FROM income WHERE id=:id'
+        );
+        $stmt->bindParam(':id', $incomeId);
+        $stmt->execute();
+
+        $result = $stmt->fetch();
+
+        return $this->buildIncome($result);
+    }
+
+    private function buildIncome(array $dbIncome): Income
+    {
+        return new Income(
+            new Id($dbIncome['id']),
+            new Id($dbIncome['user_id']),
+            new Money($dbIncome['amount']),
+            $dbIncome['description'],
+            new \DateTime($dbIncome['date'])
+        );
     }
 }

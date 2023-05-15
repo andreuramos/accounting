@@ -5,6 +5,7 @@ namespace App\Invoice\Infrastructure\Controller;
 use App\Invoice\Application\Command\CreateInvoiceCommand;
 use App\Invoice\Application\UseCase\CreateInvoiceUseCase;
 use App\Shared\Domain\Exception\MissingMandatoryParameterException;
+use App\Shared\Domain\ValueObject\Id;
 use App\Shared\Infrastructure\ApiResponse;
 use App\Shared\Infrastructure\Controller\AuthorizedController;
 use App\User\Domain\Model\UserRepositoryInterface;
@@ -23,7 +24,7 @@ class CreateInvoiceController extends AuthorizedController
 
     private const MANDATORY_PARAMETERS = [
         'income_id', 'customer_name', 'customer_tax_name',
-        'customer_tax_number', //'customer_tax_address',
+        'customer_tax_number', 'customer_tax_address',
         'customer_tax_zip_code'
     ];
 
@@ -33,7 +34,9 @@ class CreateInvoiceController extends AuthorizedController
         $requestContent = json_decode($request->getContent(), true);
         $this->guardMandatoryParameters($requestContent);
 
-        $command = new CreateInvoiceCommand();
+        $command = new CreateInvoiceCommand(
+            new Id($requestContent['income_id'])
+        );
         $invoiceNumber = ($this->createInvoiceUseCase)($command);
 
         return new ApiResponse([
