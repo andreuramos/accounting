@@ -35,7 +35,8 @@ class CreateInvoiceController extends AuthorizedController
         $this->guardMandatoryParameters($requestContent);
 
         $command = new CreateInvoiceCommand(
-            new Id($requestContent['income_id'])
+            $this->authUser,
+            new Id($requestContent['income_id']),
         );
         $invoiceNumber = ($this->createInvoiceUseCase)($command);
 
