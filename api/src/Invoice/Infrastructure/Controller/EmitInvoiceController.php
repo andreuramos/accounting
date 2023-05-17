@@ -2,8 +2,8 @@
 
 namespace App\Invoice\Infrastructure\Controller;
 
-use App\Invoice\Application\Command\CreateInvoiceCommand;
-use App\Invoice\Application\UseCase\CreateInvoiceUseCase;
+use App\Invoice\Application\Command\EmitInvoiceCommand;
+use App\Invoice\Application\UseCase\EmitInvoiceUseCase;
 use App\Shared\Domain\Exception\MissingMandatoryParameterException;
 use App\Shared\Domain\ValueObject\Id;
 use App\Shared\Infrastructure\ApiResponse;
@@ -12,12 +12,12 @@ use App\User\Domain\Model\UserRepositoryInterface;
 use App\User\Infrastructure\Auth\JWTDecoder;
 use Symfony\Component\HttpFoundation\Request;
 
-class CreateInvoiceController extends AuthorizedController
+class EmitInvoiceController extends AuthorizedController
 {
     public function __construct(
-        JWTDecoder $tokenDecoder,
-        UserRepositoryInterface $userRepository,
-        private readonly CreateInvoiceUseCase $createInvoiceUseCase,
+        JWTDecoder                          $tokenDecoder,
+        UserRepositoryInterface             $userRepository,
+        private readonly EmitInvoiceUseCase $emitInvoiceUseCase,
     ) {
         parent::__construct($tokenDecoder, $userRepository);
     }
@@ -34,11 +34,11 @@ class CreateInvoiceController extends AuthorizedController
         $requestContent = json_decode($request->getContent(), true);
         $this->guardMandatoryParameters($requestContent);
 
-        $command = new CreateInvoiceCommand(
+        $command = new EmitInvoiceCommand(
             $this->authUser,
             new Id($requestContent['income_id']),
         );
-        $invoiceNumber = ($this->createInvoiceUseCase)($command);
+        $invoiceNumber = ($this->emitInvoiceUseCase)($command);
 
         return new ApiResponse([
             'invoice_number' => (string) $invoiceNumber,

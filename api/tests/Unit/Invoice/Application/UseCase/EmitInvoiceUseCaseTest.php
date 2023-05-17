@@ -2,8 +2,8 @@
 
 namespace Test\Unit\Invoice\Application\UseCase;
 
-use App\Invoice\Application\Command\CreateInvoiceCommand;
-use App\Invoice\Application\UseCase\CreateInvoiceUseCase;
+use App\Invoice\Application\Command\EmitInvoiceCommand;
+use App\Invoice\Application\UseCase\EmitInvoiceUseCase;
 use App\Shared\Domain\ValueObject\Id;
 use App\Transaction\Domain\Entity\Income;
 use App\Transaction\Domain\Exception\IncomeNotFoundException;
@@ -14,7 +14,7 @@ use App\User\Domain\ValueObject\Email;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-class CreateInvoiceUseCaseTest extends TestCase
+class EmitInvoiceUseCaseTest extends TestCase
 {
     use ProphecyTrait;
 
@@ -31,7 +31,7 @@ class CreateInvoiceUseCaseTest extends TestCase
     public function test_fails_when_income_not_found()
     {
         $incomeId = new Id(123);
-        $command = new CreateInvoiceCommand(
+        $command = new EmitInvoiceCommand(
             $this->user,
             $incomeId,
         );
@@ -50,7 +50,7 @@ class CreateInvoiceUseCaseTest extends TestCase
         $useCase = $this->buildUseCase();
         $incomeId = new Id(123);
         $income = new Income($incomeId, new Id(2), new Money(100), "", new \DateTime());
-        $command = new CreateInvoiceCommand(
+        $command = new EmitInvoiceCommand(
             $this->user,
             $incomeId,
         );
@@ -62,12 +62,14 @@ class CreateInvoiceUseCaseTest extends TestCase
         $useCase($command);
     }
 
-    /**
-     * @return CreateInvoiceUseCase
-     */
-    private function buildUseCase(): CreateInvoiceUseCase
+    public function test_creates_business_for_customer()
     {
-        return new CreateInvoiceUseCase(
+$this->markTestIncomplete();
+    }
+
+    private function buildUseCase(): EmitInvoiceUseCase
+    {
+        return new EmitInvoiceUseCase(
             $this->incomeRepository->reveal()
         );
     }

@@ -4,7 +4,7 @@ namespace Test\Integration\Invoice;
 
 use Test\Integration\EndpointTest;
 
-class CreateInvoiceEndpointTest extends EndpointTest
+class EmitInvoiceEndpointTest extends EndpointTest
 {
     private const EMAIL = "create@invoice.test";
     private $incomeId;

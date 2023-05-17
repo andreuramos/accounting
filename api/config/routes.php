@@ -2,7 +2,7 @@
 
 require_once './vendor/autoload.php';
 
-use App\Invoice\Infrastructure\Controller\CreateInvoiceController;
+use App\Invoice\Infrastructure\Controller\EmitInvoiceController;
 use App\Shared\Infrastructure\Controller\SharedDomainController;
 use App\Shared\Infrastructure\Controller\StatusCheckController;
 use App\Tax\Infrastructure\Controller\SetUserTaxDataController;
@@ -40,7 +40,7 @@ $routes = [
         'method' => 'POST',
     ], [
         'path' => '/invoice',
-        'controller' => CreateInvoiceController::class,
+        'controller' => EmitInvoiceController::class,
         'method' => 'POST',
     ], [
         'path' => '/login',

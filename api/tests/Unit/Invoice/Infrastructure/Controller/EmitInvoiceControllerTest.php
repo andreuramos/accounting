@@ -2,10 +2,10 @@
 
 namespace Test\Unit\Invoice\Infrastructure\Controller;
 
-use App\Invoice\Application\Command\CreateInvoiceCommand;
-use App\Invoice\Application\UseCase\CreateInvoiceUseCase;
+use App\Invoice\Application\Command\EmitInvoiceCommand;
+use App\Invoice\Application\UseCase\EmitInvoiceUseCase;
 use App\Invoice\Domain\ValueObject\InvoiceNumber;
-use App\Invoice\Infrastructure\Controller\CreateInvoiceController;
+use App\Invoice\Infrastructure\Controller\EmitInvoiceController;
 use App\Shared\Domain\Exception\MissingMandatoryParameterException;
 use App\User\Domain\Exception\InvalidCredentialsException;
 use Prophecy\Argument;
@@ -13,7 +13,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Test\Unit\Shared\Infrastructure\Controller\AuthorizedControllerTest;
 
-class CreateInvoiceControllerTest extends AuthorizedControllerTest
+class EmitInvoiceControllerTest extends AuthorizedControllerTest
 {
     use ProphecyTrait;
 
@@ -22,7 +22,7 @@ class CreateInvoiceControllerTest extends AuthorizedControllerTest
     public function setUp(): void
     {
         parent::setUp();
-        $this->useCase = $this->prophesize(CreateInvoiceUseCase::class);
+        $this->useCase = $this->prophesize(EmitInvoiceUseCase::class);
     }
 
     public function test_fails_if_unauthorized()
@@ -62,7 +62,7 @@ class CreateInvoiceControllerTest extends AuthorizedControllerTest
             "customer_tax_zip_code" => "07014",
         ]);
         $invoiceNumber = new InvoiceNumber('2023000001');
-        $this->useCase->__invoke(Argument::type(CreateInvoiceCommand::class))
+        $this->useCase->__invoke(Argument::type(EmitInvoiceCommand::class))
             ->shouldBeCalled()
             ->willReturn($invoiceNumber);
         $controller = $this->getController();
@@ -75,9 +75,9 @@ class CreateInvoiceControllerTest extends AuthorizedControllerTest
 
     }
 
-    private function getController(): CreateInvoiceController
+    private function getController(): EmitInvoiceController
     {
-        return new CreateInvoiceController(
+        return new EmitInvoiceController(
             $this->tokenDecoder->reveal(),
             $this->userRepository->reveal(),
             $this->useCase->reveal(),
