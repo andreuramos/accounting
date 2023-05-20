@@ -1,7 +1,9 @@
 <?php
 
 use App\Invoice\Domain\Model\BusinessRepositoryInterface;
+use App\Invoice\Domain\Model\InvoiceRepositoryInterface;
 use App\Invoice\Infrastructure\Repository\MysqlBusinessRepository;
+use App\Invoice\Infrastructure\Repository\MysqlInvoiceRepository;
 use App\Shared\Application\Service\HasherInterface;
 use App\Shared\Infrastructure\Service\Md5Hasher;
 use App\Tax\Domain\Model\TaxDataAggregateRepositoryInterface;
@@ -28,6 +30,7 @@ return [
     ExpenseRepositoryInterface::class => DI\get(MysqlExpenseRepository::class),
     HasherInterface::class => DI\get(Md5Hasher::class),
     IncomeRepositoryInterface::class => DI\get(MysqlIncomeRepository::class),
+    InvoiceRepositoryInterface::class => DI\get(MysqlInvoiceRepository::class),
     MessageBusInterface::class => DI\get(MessageBus::class),
     RefreshTokenGeneratorInterface::class => DI\get(JWTRefreshTokenGenerator::class),
     TaxDataAggregateRepositoryInterface::class => DI\get(MysqlTaxDataAggregateRepository::class),
