@@ -1,5 +1,7 @@
 <?php
 
+use App\Invoice\Domain\Model\BusinessRepositoryInterface;
+use App\Invoice\Infrastructure\Repository\MysqlBusinessRepository;
 use App\Shared\Application\Service\HasherInterface;
 use App\Shared\Infrastructure\Service\Md5Hasher;
 use App\Tax\Domain\Model\TaxDataAggregateRepositoryInterface;
@@ -22,6 +24,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 return [
     AuthTokenDecoderInterface::class => DI\get(JWTDecoder::class),
     AuthTokenGeneratorInterface::class => DI\get(JWTGenerator::class),
+    BusinessRepositoryInterface::class => DI\get(MysqlBusinessRepository::class),
     ExpenseRepositoryInterface::class => DI\get(MysqlExpenseRepository::class),
     HasherInterface::class => DI\get(Md5Hasher::class),
     IncomeRepositoryInterface::class => DI\get(MysqlIncomeRepository::class),
