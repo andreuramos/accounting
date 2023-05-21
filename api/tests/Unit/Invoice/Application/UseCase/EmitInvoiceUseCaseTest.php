@@ -8,6 +8,7 @@ use App\Invoice\Domain\Entity\Business;
 use App\Invoice\Domain\Entity\Invoice;
 use App\Invoice\Domain\Model\BusinessRepositoryInterface;
 use App\Invoice\Domain\Model\InvoiceRepositoryInterface;
+use App\Invoice\Domain\Service\InvoiceNumberGenerator;
 use App\Invoice\Domain\ValueObject\InvoiceNumber;
 use App\Shared\Domain\ValueObject\Id;
 use App\Tax\Domain\Entity\TaxData;
@@ -31,6 +32,7 @@ class EmitInvoiceUseCaseTest extends TestCase
     private $businessRepository;
     private $taxDataAggregateRepository;
     private $invoiceRepository;
+    private $invoiceNumberGenerator;
     private User $user;
 
     public function setUp(): void
@@ -40,6 +42,7 @@ class EmitInvoiceUseCaseTest extends TestCase
         $this->businessRepository = $this->prophesize(BusinessRepositoryInterface::class);
         $this->taxDataAggregateRepository = $this->prophesize(TaxDataAggregateRepositoryInterface::class);
         $this->invoiceRepository = $this->prophesize(InvoiceRepositoryInterface::class);
+        $this->invoiceNumberGenerator = $this->prophesize(InvoiceNumberGenerator::class);
         $this->user = new User(new Id(1), new Email('a@b.com'), "");
     }
 
@@ -115,6 +118,8 @@ class EmitInvoiceUseCaseTest extends TestCase
             ->willReturn(new Business(
                 new Id(1), "company", $this->generateTaxData()
             ));
+        $this->invoiceNumberGenerator->__invoke(Argument::any())
+            ->willReturn(new InvoiceNumber('123'));
 
         $this->businessRepository->save(Argument::type(Business::class))
             ->shouldBeCalled()
@@ -150,17 +155,22 @@ class EmitInvoiceUseCaseTest extends TestCase
             "Emitter Company",
             $this->generateTaxData(),
         );
+        $invoiceNumber = new InvoiceNumber('20230001');
         $this->businessRepository->getByTaxNumber($taxNumber)
             ->willReturn($receiverBusiness);
         $this->businessRepository->save(Argument::type(Business::class))
             ->shouldNotBeCalled();
         $this->businessRepository->getByUserIdOrFail($this->user->id())
             ->willReturn($userBusiness);
+        $this->invoiceNumberGenerator->__invoke($userBusiness)
+            ->willReturn($invoiceNumber);
 
         $this->invoiceRepository->save(Argument::type(Invoice::class))
             ->shouldBeCalled();
 
-        $useCase($command);
+        $response = $useCase($command);
+
+        $this->assertEquals($invoiceNumber, $response);
     }
 
     private function buildUseCase(): EmitInvoiceUseCase
@@ -169,6 +179,7 @@ class EmitInvoiceUseCaseTest extends TestCase
             $this->incomeRepository->reveal(),
             $this->businessRepository->reveal(),
             $this->invoiceRepository->reveal(),
+            $this->invoiceNumberGenerator->reveal(),
         );
     }
 

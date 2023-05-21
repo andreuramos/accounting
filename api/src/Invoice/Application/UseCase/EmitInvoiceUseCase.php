@@ -7,6 +7,7 @@ use App\Invoice\Domain\Entity\Business;
 use App\Invoice\Domain\Entity\Invoice;
 use App\Invoice\Domain\Model\BusinessRepositoryInterface;
 use App\Invoice\Domain\Model\InvoiceRepositoryInterface;
+use App\Invoice\Domain\Service\InvoiceNumberGenerator;
 use App\Invoice\Domain\ValueObject\InvoiceNumber;
 use App\Shared\Domain\ValueObject\Id;
 use App\Tax\Domain\Entity\TaxData;
@@ -20,6 +21,7 @@ class EmitInvoiceUseCase
         private readonly IncomeRepositoryInterface $incomeRepository,
         private readonly BusinessRepositoryInterface $businessRepository,
         private readonly InvoiceRepositoryInterface $invoiceRepository,
+        private readonly InvoiceNumberGenerator $invoiceNumberGenerator,
     ) {
     }
     public function __invoke(EmitInvoiceCommand $command): InvoiceNumber
@@ -29,9 +31,9 @@ class EmitInvoiceUseCase
             throw new IncomeNotFoundException();
         }
 
-        $invoiceNumber = new InvoiceNumber('');
         $receiverBusiness = $this->getReceiverBusinessId($command);
         $emitterBusiness = $this->businessRepository->getByUserIdOrFail($command->user->id());
+        $invoiceNumber = ($this->invoiceNumberGenerator)($emitterBusiness);
 
         $invoice = new Invoice(
             new Id(null),
