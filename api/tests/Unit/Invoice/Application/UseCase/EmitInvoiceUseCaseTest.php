@@ -6,6 +6,7 @@ use App\Invoice\Application\Command\EmitInvoiceCommand;
 use App\Invoice\Application\UseCase\EmitInvoiceUseCase;
 use App\Invoice\Domain\Entity\Business;
 use App\Invoice\Domain\Entity\Invoice;
+use App\Invoice\Domain\Exception\BusinessNotFoundException;
 use App\Invoice\Domain\Model\BusinessRepositoryInterface;
 use App\Invoice\Domain\Model\InvoiceRepositoryInterface;
 use App\Invoice\Domain\Service\InvoiceNumberGenerator;
@@ -92,7 +93,34 @@ class EmitInvoiceUseCaseTest extends TestCase
 
     public function test_fails_if_user_has_no_tax_data()
     {
-        $this->markTestIncomplete();
+        $useCase = $this->buildUseCase();
+        $incomeId = new Id(123);
+        $income = new Income($incomeId, $this->user->id(), new Money(100), "", new \DateTime());
+        $taxNumber = "B071892093";
+        $command = new EmitInvoiceCommand(
+            $this->user,
+            $incomeId,
+            "My Business",
+            "My Business SL",
+            $taxNumber,
+            "Fake st 123",
+            "07001",
+        );
+        $receiverBusiness = new Business(
+            new Id(1),
+            "Receiver Company",
+            $this->generateTaxData(),
+        );
+        $this->incomeRepository->getByIdOrFail($incomeId)
+            ->willReturn($income);
+        $this->businessRepository->getByTaxNumber($taxNumber)
+            ->willReturn($receiverBusiness);
+        $this->businessRepository->getByUserIdOrFail($this->user->id())
+            ->willThrow(BusinessNotFoundException::class);
+
+        $this->expectException(BusinessNotFoundException::class);
+
+        $useCase($command);
     }
 
     public function test_creates_business_for_customer()
