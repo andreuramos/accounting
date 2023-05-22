@@ -48,6 +48,31 @@ class MysqlBusinessRepository implements BusinessRepositoryInterface
 
     public function save(Business $business): void
     {
+        $taxDataStmt = $this->PDO->prepare(
+            'INSERT INTO tax_data (tax_name, tax_number, address, zip_code) ' .
+            'VALUES (:tax_name, :tax_number, :address, :zip_code)'
+        );
+        $taxName = $business->taxData->taxName;
+        $taxDataStmt->bindParam(':tax_name', $taxName);
+        $taxNumber = $business->taxData->taxNumber;
+        $taxDataStmt->bindParam(':tax_number', $taxNumber);
+        $address = $business->taxData->address->street;
+        $taxDataStmt->bindParam(':address', $address);
+        $zip = $business->taxData->address->zip;
+        $taxDataStmt->bindParam(':zip_code', $zip);
+
+        $taxDataStmt->execute();
+
+        $BusinessStmt = $this->PDO->prepare(
+            'INSERT INTO business (name, taxDataId) ' .
+            'VALUES (:name, :taxDataId)'
+        );
+        $name = $business->name;
+        $BusinessStmt->bindParam(':name', $name);
+        $taxDataId = $this->PDO->lastInsertId();
+        $BusinessStmt->bindParam(':taxDataId', $taxDataId);
+
+        $BusinessStmt->execute();
     }
 
     public function getByUserIdOrFail(Id $userId): Business

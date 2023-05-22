@@ -34,7 +34,7 @@ class EmitInvoiceEndpointTest extends EndpointTest
         $response = $this->client->post('/invoice', [
             'body' => json_encode([
                 'income_id' => $income['id'],
-                'customer_name' => "Atomic Garden",
+                'customer_name' => "CUSTOMER Bar",
                 'customer_tax_name' => "Jaume de s'Atomic",
                 'customer_tax_number' => "435678122F",
                 'customer_tax_address' => "Cardenal despuig 41",
@@ -54,5 +54,7 @@ class EmitInvoiceEndpointTest extends EndpointTest
         if ($this->incomeId) {
             $this->pdo->query('DELETE FROM income WHERE id=' . $this->incomeId . ';');
         }
+        $this->pdo->query('DELETE FROM tax_data WHERE tax_number = "435678122F";');
+        $this->pdo->query('DELETE FROM business WHERE name = "CUSTOMER Bar"');
     }
 }
