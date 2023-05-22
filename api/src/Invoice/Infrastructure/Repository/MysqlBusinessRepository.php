@@ -3,6 +3,7 @@
 namespace App\Invoice\Infrastructure\Repository;
 
 use App\Invoice\Domain\Entity\Business;
+use App\Invoice\Domain\Exception\BusinessNotFoundException;
 use App\Invoice\Domain\Model\BusinessRepositoryInterface;
 use App\Shared\Domain\ValueObject\Id;
 use App\Tax\Domain\Entity\TaxData;
@@ -31,12 +32,7 @@ class MysqlBusinessRepository implements BusinessRepositoryInterface
             return null;
         }
 
-        $taxData = new TaxData(
-            new Id($result['tax_data_id']),
-            $result['tax_name'],
-            $result['tax_number'],
-            new Address($result['address'], $result['zip_code'])
-        );
+        $taxData = $this->buildTaxData($result);
         $business = new Business(
             new Id($result['business_id']),
             $result['name'],
@@ -73,20 +69,50 @@ class MysqlBusinessRepository implements BusinessRepositoryInterface
         $BusinessStmt->bindParam(':taxDataId', $taxDataId);
 
         $BusinessStmt->execute();
+
+        $userStmt = $this->PDO->prepare(
+            'UPDATE user SET tax_data_id = :tax_data_id ' .
+            'WHERE id = :user_id'
+        );
+        $userId = $business->taxData->userId->getInt();
+        $userStmt->bindParam(':tax_data_id', $taxDataId);
+        $userStmt->bindParam(':user_id', $userId);
+        $userStmt->execute();
     }
 
     public function getByUserIdOrFail(Id $userId): Business
     {
-        // @TODO: implement this
+        $stmt = $this->PDO->prepare(
+            'SELECT b.id as business_id, b.name, ' .
+            ' td.id as tax_data_id, td.* FROM business b ' .
+            'LEFT JOIN tax_data td ON b.taxDataId = td.id ' .
+            'LEFT JOIN user u ON u.tax_data_id = td.id ' .
+            'WHERE u.id = :user_id'
+        );
+        $id = $userId->getInt();
+        $stmt->bindParam(':user_id', $id);
+        $stmt->execute();
+
+        $result = $stmt->fetch();
+        if (false === $result) {
+            throw new BusinessNotFoundException();
+        }
+
+        $taxData = $this->buildTaxData($result);
         return new Business(
-            new Id(1),
-            "",
-            new TaxData(
-                new Id(null),
-                '.',
-                '',
-                new Address('', '')
-            )
+            new Id($result['business_id']),
+            $result['name'],
+            $taxData
+        );
+    }
+
+     private function buildTaxData(array $result): TaxData
+    {
+        return new TaxData(
+            new Id($result['tax_data_id']),
+            $result['tax_name'],
+            $result['tax_number'],
+            new Address($result['address'], $result['zip_code'])
         );
     }
 }

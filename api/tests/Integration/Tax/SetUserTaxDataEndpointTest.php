@@ -21,7 +21,7 @@ class SetUserTaxDataEndpointTest extends EndpointTest
 
         $response = $this->client->post('/user/tax_data', [
             'body' => json_encode([
-                'tax_name' => "Moixa Brewing SL",
+                'tax_name' => "SET TAX DATA TEST",
                 'tax_number' => "B07656565",
                 'tax_address_street' => "Andreu Jaume Nadal 29",
                 'tax_address_zip_code' => "07013",
@@ -37,5 +37,6 @@ class SetUserTaxDataEndpointTest extends EndpointTest
         parent::tearDown();
         $this->deleteUser(self::EMAIL);
         $this->pdo->query('DELETE FROM tax_data WHERE tax_number = "B07656565"');
+        $this->pdo->query('DELETE FROM business WHERE name = "SET TAX DATA TEST"');
     }
 }

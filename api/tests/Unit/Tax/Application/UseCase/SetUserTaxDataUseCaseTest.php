@@ -2,6 +2,8 @@
 
 namespace Test\Unit\Tax\Application\UseCase;
 
+use App\Invoice\Domain\Entity\Business;
+use App\Invoice\Domain\Model\BusinessRepositoryInterface;
 use App\Shared\Domain\ValueObject\Id;
 use App\Tax\Application\Command\SetUserTaxDataCommand;
 use App\Tax\Application\UseCase\SetUserTaxDataUseCase;
@@ -13,16 +15,16 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-class SetTaxDataUseCaseTest extends TestCase
+class SetUserTaxDataUseCaseTest extends TestCase
 {
     use ProphecyTrait;
 
-    private $taxDataRepository;
+    private $businessRepository;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->taxDataRepository = $this->prophesize(TaxDataAggregateRepositoryInterface::class);
+        $this->businessRepository = $this->prophesize(BusinessRepositoryInterface::class);
     }
 
     public function test_empty_name_fails()
@@ -38,13 +40,13 @@ class SetTaxDataUseCaseTest extends TestCase
         $useCase($command);
     }
 
-    public function test_stores_it_in_repo()
+    public function test_creates_business()
     {
         $user = new User(new Id(1), new Email("my@email.com"), "");
         $command = new SetUserTaxDataCommand(
             $user, "Moixa Brewing", "B076546846", "Fake street 123", "07013"
         );
-        $this->taxDataRepository->save(Argument::type(TaxData::class))
+        $this->businessRepository->save(Argument::type(Business::class))
             ->shouldBeCalled();
         $useCase = $this->getUseCase();
 
@@ -54,7 +56,7 @@ class SetTaxDataUseCaseTest extends TestCase
     private function getUseCase(): SetUserTaxDataUseCase
     {
         return new SetUserTaxDataUseCase(
-            $this->taxDataRepository->reveal(),
+            $this->businessRepository->reveal(),
         );
     }
 }
