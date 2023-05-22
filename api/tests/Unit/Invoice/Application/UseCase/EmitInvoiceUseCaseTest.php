@@ -150,8 +150,7 @@ class EmitInvoiceUseCaseTest extends TestCase
             ->willReturn(new InvoiceNumber('123'));
 
         $this->businessRepository->save(Argument::type(Business::class))
-            ->shouldBeCalled()
-            ->willReturn(new Id(3));
+            ->shouldBeCalled();
 
         $useCase($command);
     }

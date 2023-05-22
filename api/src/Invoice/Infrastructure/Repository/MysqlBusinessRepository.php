@@ -46,9 +46,8 @@ class MysqlBusinessRepository implements BusinessRepositoryInterface
         return $business;
     }
 
-    public function save(Business $business): Id
+    public function save(Business $business): void
     {
-        return new Id(null);
     }
 
     public function getByUserIdOrFail(Id $userId): Business
