@@ -2,6 +2,7 @@
 
 namespace App\Invoice\Infrastructure\Repository;
 
+use App\Invoice\Domain\Entity\Business;
 use App\Invoice\Domain\Entity\Invoice;
 use App\Invoice\Domain\Model\InvoiceRepositoryInterface;
 
@@ -28,5 +29,10 @@ class MysqlInvoiceRepository implements InvoiceRepositoryInterface
         $stmt->bindParam(':date', $date);
 
         $stmt->execute();
+    }
+
+    public function getLastEmittedByBusiness(Business $business): ?Invoice
+    {
+        return null;
     }
 }
