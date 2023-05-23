@@ -8,6 +8,7 @@ class EmitInvoiceEndpointTest extends EndpointTest
 {
     private const EMAIL = "create@invoice.test";
     private $incomeId;
+    private $invoiceNumber;
 
     public function test_unauthorized_fails()
     {
@@ -59,7 +60,11 @@ class EmitInvoiceEndpointTest extends EndpointTest
         ]);
 
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertArrayHasKey('invoice_number', json_decode($response->getBody(), true));
+        $decodedResponse = json_decode($response->getBody(), true);
+        $this->invoiceNumber = $decodedResponse['invoice_number'];
+        $this->assertArrayHasKey('invoice_number', $decodedResponse);
+        $invoice = $this->pdo->query('SELECT * FROM invoice WHERE number = "'.$decodedResponse['invoice_number'].'"');
+        $this->assertNotFalse($invoice);
     }
 
     public function tearDown(): void
@@ -73,6 +78,7 @@ class EmitInvoiceEndpointTest extends EndpointTest
         $this->pdo->query('DELETE FROM tax_data WHERE tax_number = "EMIT0012300TEST";');
         $this->pdo->query('DELETE FROM business WHERE name = "CUSTOMER Bar"');
         $this->pdo->query('DELETE FROM business WHERE name = "test emitinvoice"');
+        $this->pdo->query('DELETE FROM invoice WHERE number = "'.$this->invoiceNumber.'"');
     }
 
        private function createIncome(): array
