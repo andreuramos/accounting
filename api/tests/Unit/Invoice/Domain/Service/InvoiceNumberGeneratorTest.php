@@ -19,12 +19,16 @@ class InvoiceNumberGeneratorTest extends TestCase
 
     private $invoiceRepository;
     private $timestamper;
+    private Business $business;
 
     public function setUp(): void
     {
         parent::setUp();
         $this->invoiceRepository = $this->prophesize(InvoiceRepositoryInterface::class);
         $this->timestamper = $this->prophesize(Timestamper::class);
+        $this->business = new Business(
+            new Id(1), "mybusiness", new TaxData(new Id(1), "-", "", new Address("", ""))
+        );
     }
 
     public function test_adds_year_prefix()
@@ -32,12 +36,9 @@ class InvoiceNumberGeneratorTest extends TestCase
         $this->invoiceRepository->getLastEmittedByBusiness(Argument::type(Business::class))
             ->willReturn(null);
         $this->timestamper->__invoke()->willReturn(date_create('2023-05-23'));
-        $business = new Business(
-            new Id(1), "mybusiness", new TaxData(new Id(1), "-", "", new Address("", ""))
-        );
         $service = $this->buildService();
 
-        $result = $service($business);
+        $result = $service($this->business);
 
         $this->assertStringContainsString('2023', $result->number);
     }
