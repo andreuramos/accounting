@@ -18,6 +18,16 @@ class InvoiceNumberGenerator
     public function __invoke(Business $business): InvoiceNumber
     {
         $timestamp = ($this->timestamper)();
-        return new InvoiceNumber($timestamp->format('Y'));
+        $yearSuffix = $timestamp->format('Y');
+
+        $correlativeNumber = $this->getLastInvoiceNumber($business);
+        $eightDigits = sprintf("%08d", $correlativeNumber);
+
+        return new InvoiceNumber($yearSuffix.$eightDigits);
+    }
+
+    private function getLastInvoiceNumber(Business $business): int
+    {
+        return 1;
     }
 }

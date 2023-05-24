@@ -40,7 +40,21 @@ class InvoiceNumberGeneratorTest extends TestCase
 
         $result = $service($this->business);
 
-        $this->assertStringContainsString('2023', $result->number);
+        $this->assertStringStartsWith('2023', $result->number);
+    }
+
+    public function test_suffix_is_8_characters_long()
+    {
+        $this->invoiceRepository->getLastEmittedByBusiness(Argument::type(Business::class))
+            ->willReturn(null);
+        $this->timestamper->__invoke()->willReturn(date_create('2023-05-23'));
+        $service = $this->buildService();
+
+        $result = $service($this->business);
+
+        $number = $result->number;
+        $suffix = substr($number, 4);
+        $this->assertEquals(8, strlen($suffix));
     }
 
     private function buildService(): InvoiceNumberGenerator
