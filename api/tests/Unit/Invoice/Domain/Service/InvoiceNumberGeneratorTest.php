@@ -31,7 +31,7 @@ class InvoiceNumberGeneratorTest extends TestCase
         );
     }
 
-    public function test_adds_year_prefix()
+    public function test_starts_with_year_prefix()
     {
         $this->invoiceRepository->getLastEmittedByBusiness(Argument::type(Business::class))
             ->willReturn(null);
