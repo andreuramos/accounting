@@ -28,6 +28,13 @@ class InvoiceNumberGenerator
 
     private function getLastInvoiceNumber(Business $business): int
     {
-        return 1;
+        $lastInvoice = $this->invoiceRepository->getLastEmittedByBusiness($business);
+
+        if (null === $lastInvoice) {
+            return 1;
+        }
+
+        $correlativeValue = (int) substr($lastInvoice->invoiceNumber->number, 4);
+        return $correlativeValue+1;
     }
 }
