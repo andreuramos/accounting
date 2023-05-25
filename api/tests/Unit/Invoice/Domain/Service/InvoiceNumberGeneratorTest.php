@@ -11,6 +11,8 @@ use App\Shared\Application\Service\Timestamper;
 use App\Shared\Domain\ValueObject\Id;
 use App\Tax\Domain\Entity\TaxData;
 use App\Tax\Domain\ValueObject\Address;
+use App\Transaction\Domain\Entity\Income;
+use App\Transaction\Domain\ValueObject\Money;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -64,7 +66,13 @@ class InvoiceNumberGeneratorTest extends TestCase
         $lastInvoice = new Invoice(
             new Id(1),
             new InvoiceNumber('202300000001'),
-            new Id(1),
+            new Income(
+                new Id(1),
+                new Id(2),
+                new Money(200, "EUR"),
+                "Some boxes of beer",
+                new \DateTime()
+            ),
             $this->business,
             $this->getMockBuilder(Business::class)->disableOriginalConstructor()->getMock(),
             new \DateTime()

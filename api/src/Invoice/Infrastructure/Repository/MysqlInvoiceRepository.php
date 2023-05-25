@@ -27,7 +27,7 @@ class MysqlInvoiceRepository implements InvoiceRepositoryInterface
         $stmt->bindParam(':receiver_id', $receiverId);
         $date = $invoice->dateTime->format('Y-m-d');
         $stmt->bindParam(':date', $date);
-        $incomeId = $invoice->incomeId->getInt();
+        $incomeId = $invoice->income->id->getInt();
         $stmt->bindParam(':income_id', $incomeId);
 
         $stmt->execute();
