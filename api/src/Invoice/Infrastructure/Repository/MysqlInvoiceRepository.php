@@ -34,7 +34,7 @@ class MysqlInvoiceRepository implements InvoiceRepositoryInterface
         $stmt->bindParam(':receiver_id', $receiverId);
         $date = $invoice->dateTime->format('Y-m-d');
         $stmt->bindParam(':date', $date);
-        $incomeId = $invoice->income->id->getInt();
+        $incomeId = $invoice->incomeId->getInt();
         $stmt->bindParam(':income_id', $incomeId);
 
         $stmt->execute();
@@ -56,7 +56,6 @@ class MysqlInvoiceRepository implements InvoiceRepositoryInterface
                 'LEFT JOIN tax_data EMITTERTAX on EMITTER.taxDataId = EMITTERTAX.id ' .
                 'LEFT JOIN business RECEIVER ON INV.receiver_id = RECEIVER.id ' .
                 'LEFT JOIN tax_data RECEIVERTAX on RECEIVER.taxDataId = RECEIVERTAX.id ' .
-                'LEFT JOIN income INC ON INC.id = INV.income_id ' .
             'WHERE INV.emitter_id = :emitter_id ' .
             'ORDER BY INV.number DESC'
         );
@@ -95,13 +94,7 @@ class MysqlInvoiceRepository implements InvoiceRepositoryInterface
         return new Invoice(
             new Id($result['id']),
             new InvoiceNumber($result['number']),
-            new Income(
-                new Id(null),
-                new Id(null),
-                new Money(1, "EUR"),
-                "whatever",
-                new \DateTime()
-            ),
+            new Id($result['income_id']),
             $emitter,
             $receiver,
             new \DateTime()

@@ -66,13 +66,7 @@ class InvoiceNumberGeneratorTest extends TestCase
         $lastInvoice = new Invoice(
             new Id(1),
             new InvoiceNumber('202300000001'),
-            new Income(
-                new Id(1),
-                new Id(2),
-                new Money(200, "EUR"),
-                "Some boxes of beer",
-                new \DateTime()
-            ),
+            new Id(1),
             $this->business,
             $this->getMockBuilder(Business::class)->disableOriginalConstructor()->getMock(),
             new \DateTime()

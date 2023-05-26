@@ -12,7 +12,7 @@ class Invoice
     public function __construct(
         public readonly Id $id,
         public readonly InvoiceNumber $invoiceNumber,
-        public readonly Income $income,
+        public readonly Id $incomeId,
         public readonly Business $emitter,
         public readonly Business $receiver,
         public readonly DateTime $dateTime,
