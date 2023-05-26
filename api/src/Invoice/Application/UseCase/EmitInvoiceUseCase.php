@@ -39,8 +39,8 @@ class EmitInvoiceUseCase
             new Id(null),
             $invoiceNumber,
             $income->id,
-            $emitterBusiness,
-            $receiverBusiness,
+            $emitterBusiness->id,
+            $receiverBusiness->id,
             new \DateTime()
         );
 

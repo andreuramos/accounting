@@ -28,9 +28,9 @@ class MysqlInvoiceRepository implements InvoiceRepositoryInterface
 
         $number = $invoice->invoiceNumber->number;
         $stmt->bindParam(':number', $number);
-        $emitterId = $invoice->emitter->id->getInt();
+        $emitterId = $invoice->emitterBusinessId->getInt();
         $stmt->bindParam(':emitter_id', $emitterId);
-        $receiverId = $invoice->receiver->id->getInt();
+        $receiverId = $invoice->receiverBusinessId->getInt();
         $stmt->bindParam(':receiver_id', $receiverId);
         $date = $invoice->dateTime->format('Y-m-d');
         $stmt->bindParam(':date', $date);
@@ -43,21 +43,9 @@ class MysqlInvoiceRepository implements InvoiceRepositoryInterface
     public function getLastEmittedByBusiness(Business $business): ?Invoice
     {
         $stmt = $this->PDO->prepare(
-            'SELECT INV.*, ' .
-                'EMITTER.id as emitter_id, ' .
-                'EMITTER.name as emitter_name, ' .
-                'EMITTER.taxDataId as emitter_tax_data_id, ' .
-                'EMITTERTAX.tax_name as emitter_tax_name, ' .
-                'EMITTERTAX.tax_number as emitter_tax_number, ' .
-                'EMITTERTAX.address as emitter_tax_address, ' .
-                'EMITTERTAX.zip_code as emitter_tax_zip_code ' .
-            'FROM invoice INV ' .
-                'LEFT JOIN business EMITTER ON INV.emitter_id = EMITTER.id ' .
-                'LEFT JOIN tax_data EMITTERTAX on EMITTER.taxDataId = EMITTERTAX.id ' .
-                'LEFT JOIN business RECEIVER ON INV.receiver_id = RECEIVER.id ' .
-                'LEFT JOIN tax_data RECEIVERTAX on RECEIVER.taxDataId = RECEIVERTAX.id ' .
-            'WHERE INV.emitter_id = :emitter_id ' .
-            'ORDER BY INV.number DESC'
+            'SELECT * FROM invoice ' .
+            'WHERE emitter_id = :emitter_id ' .
+            'ORDER BY number DESC'
         );
         $emitterId = $business->id->getInt();
         $stmt->bindParam(':emitter_id', $emitterId);
@@ -69,34 +57,12 @@ class MysqlInvoiceRepository implements InvoiceRepositoryInterface
             return null;
         }
 
-        $emitter = new Business(
-            new Id($result['emitter_id']),
-            $result['emitter_name'],
-            new TaxData(
-                new Id($result['emitter_tax_data_id']),
-                $result['emitter_tax_name'],
-                $result['emitter_tax_number'],
-                new Address(
-                    $result['emitter_tax_address'],
-                    $result['emitter_tax_zip_code']
-                )
-            )
-        );
-        $receiver = new Business(
-            new Id(null),
-            "whatever, this is gonna be refactored",
-            new TaxData(
-                new Id(null), "whatever", "whatever",
-                new Address("street", "zip")
-            )
-        );
-
         return new Invoice(
             new Id($result['id']),
             new InvoiceNumber($result['number']),
             new Id($result['income_id']),
-            $emitter,
-            $receiver,
+            new Id($result['emitter_id']),
+            new Id($result['receiver_id']),
             new \DateTime()
         );
     }
