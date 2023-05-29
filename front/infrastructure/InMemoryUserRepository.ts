@@ -4,8 +4,9 @@ import UserRepository from '@domain/UserRepository'
 export default class InMemoryUserRepository implements UserRepository {
     private users: Array<User> = []
 
-    public async add(user: User): Promise<void> {
+    public async add(user: User): Promise<Response> {
         this.users.push(user)
+        return new Response()
     }
 
     public async findByEmail(email: string): Promise<User | null> {
