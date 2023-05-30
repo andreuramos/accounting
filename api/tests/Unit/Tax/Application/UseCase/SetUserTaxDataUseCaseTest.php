@@ -7,8 +7,6 @@ use App\Invoice\Domain\Model\BusinessRepositoryInterface;
 use App\Shared\Domain\ValueObject\Id;
 use App\Tax\Application\Command\SetUserTaxDataCommand;
 use App\Tax\Application\UseCase\SetUserTaxDataUseCase;
-use App\Tax\Domain\Entity\TaxData;
-use App\Tax\Domain\Model\TaxDataAggregateRepositoryInterface;
 use App\User\Domain\Entity\User;
 use App\User\Domain\ValueObject\Email;
 use PHPUnit\Framework\TestCase;

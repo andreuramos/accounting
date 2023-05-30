@@ -6,7 +6,6 @@ use App\Invoice\Domain\Entity\Business;
 use App\Invoice\Domain\Exception\BusinessNotFoundException;
 use App\Invoice\Domain\Model\BusinessRepositoryInterface;
 use App\Shared\Domain\ValueObject\Id;
-use App\Tax\Domain\Entity\TaxData;
 use App\Tax\Domain\ValueObject\Address;
 use PDO;
 
@@ -19,10 +18,8 @@ class MysqlBusinessRepository implements BusinessRepositoryInterface
     public function getByTaxNumber(string $taxNumber): ?Business
     {
         $stmt = $this->PDO->prepare(
-            'SELECT b.id as business_id, b.name, ' .
-            ' td.id as tax_data_id, td.* FROM business b LEFT JOIN tax_data td ' .
-            'ON b.taxDataId = td.id ' .
-            'WHERE td.tax_number = :tax_number'
+            'SELECT * FROM business ' .
+            'WHERE tax_number = :tax_number'
         );
         $stmt->bindParam(':tax_number', $taxNumber);
         $stmt->execute();
@@ -32,11 +29,12 @@ class MysqlBusinessRepository implements BusinessRepositoryInterface
             return null;
         }
 
-        $taxData = $this->buildTaxData($result);
         $business = new Business(
             new Id($result['business_id']),
             $result['name'],
-            $taxData
+            $result['tax_name'],
+            $result['tax_number'],
+            new Address($result['address'], $result['zip_code'])
         );
 
         return $business;
@@ -98,18 +96,9 @@ class MysqlBusinessRepository implements BusinessRepositoryInterface
             throw new BusinessNotFoundException();
         }
 
-        $taxData = $this->buildTaxData($result);
         return new Business(
-            new Id($result['business_id']),
+            new Id($result['id']),
             $result['name'],
-            $taxData
-        );
-    }
-
-     private function buildTaxData(array $result): TaxData
-    {
-        return new TaxData(
-            new Id($result['tax_data_id']),
             $result['tax_name'],
             $result['tax_number'],
             new Address($result['address'], $result['zip_code'])
