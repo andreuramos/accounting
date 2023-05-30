@@ -59,14 +59,11 @@ class EmitInvoiceUseCase
         $business = new Business(
             new Id(null),
             $command->customerName,
-            new TaxData(
-                new Id(null),
-                $command->customerTaxName,
-                $command->customerTaxNumber,
-                new Address(
-                    $command->customerTaxAddress,
-                    $command->customerTaxZipCode
-                )
+            $command->customerTaxName,
+            $command->customerTaxNumber,
+            new Address(
+                $command->customerTaxAddress,
+                $command->customerTaxZipCode
             )
         );
         $this->businessRepository->save($business);
