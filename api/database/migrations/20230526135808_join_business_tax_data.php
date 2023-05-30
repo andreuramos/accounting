@@ -40,6 +40,7 @@ final class JoinBusinessTaxData extends AbstractMigration
         $taxDataTable->save();
 
         $businessTable->removeColumn('taxDataId');
+        $businessTable->save();
     }
 
     private function isEngineMysql(): bool
