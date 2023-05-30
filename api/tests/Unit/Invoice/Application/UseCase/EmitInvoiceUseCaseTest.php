@@ -109,7 +109,7 @@ class EmitInvoiceUseCaseTest extends TestCase
         $receiverBusiness = new Business(
             new Id(1),
             "Receiver Company",
-            $this->generateTaxData(),
+            ... $this->generateTaxData(),
         );
         $this->incomeRepository->getByIdOrFail($incomeId)
             ->willReturn($income);
@@ -144,7 +144,7 @@ class EmitInvoiceUseCaseTest extends TestCase
             ->willReturn(null);
         $this->businessRepository->getByUserIdOrFail($this->user->id())
             ->willReturn(new Business(
-                new Id(1), "company", $this->generateTaxData()
+                new Id(1), "company", ...$this->generateTaxData()
             ));
         $this->invoiceNumberGenerator->__invoke(Argument::any())
             ->willReturn(new InvoiceNumber('123'));
@@ -175,12 +175,12 @@ class EmitInvoiceUseCaseTest extends TestCase
         $receiverBusiness = new Business(
             new Id(1),
             "Receiver Company",
-            $this->generateTaxData(),
+            ...$this->generateTaxData(),
         );
         $userBusiness = new Business(
             new Id(2),
             "Emitter Company",
-            $this->generateTaxData(),
+            ...$this->generateTaxData(),
         );
         $invoiceNumber = new InvoiceNumber('20230001');
         $this->businessRepository->getByTaxNumber($taxNumber)
@@ -210,13 +210,12 @@ class EmitInvoiceUseCaseTest extends TestCase
         );
     }
 
-    private function generateTaxData(): TaxData
+    private function generateTaxData(): array
     {
-        return new TaxData(
-            new Id(random_int(1, 100)),
+        return [
             "brand " . random_int(0, 100),
             "B" . random_int(1000000,9999999),
             new Address("Fake street", "07013")
-        );
+        ];
     }
 }
