@@ -35,7 +35,8 @@
     "src",
     "domain",
     "application",
-    "helpers"
+    "infrastructure",
+    "helpers",
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
