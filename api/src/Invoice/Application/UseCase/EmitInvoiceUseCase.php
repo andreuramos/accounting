@@ -10,7 +10,6 @@ use App\Invoice\Domain\Model\InvoiceRepositoryInterface;
 use App\Invoice\Domain\Service\InvoiceNumberGenerator;
 use App\Invoice\Domain\ValueObject\InvoiceNumber;
 use App\Shared\Domain\ValueObject\Id;
-use App\Tax\Domain\Entity\TaxData;
 use App\Tax\Domain\ValueObject\Address;
 use App\Transaction\Domain\Exception\IncomeNotFoundException;
 use App\Transaction\Domain\Model\IncomeRepositoryInterface;
