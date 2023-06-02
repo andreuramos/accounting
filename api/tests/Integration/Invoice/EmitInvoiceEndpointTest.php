@@ -74,10 +74,8 @@ class EmitInvoiceEndpointTest extends EndpointTest
         if ($this->incomeId) {
             $this->pdo->query('DELETE FROM income WHERE id=' . $this->incomeId . ';');
         }
-        $this->pdo->query('DELETE FROM tax_data WHERE tax_number = "435678122F";');
-        $this->pdo->query('DELETE FROM tax_data WHERE tax_number = "EMIT0012300TEST";');
-        $this->pdo->query('DELETE FROM business WHERE name = "CUSTOMER Bar"');
-        $this->pdo->query('DELETE FROM business WHERE name = "test emitinvoice"');
+        $this->pdo->query('DELETE FROM business WHERE tax_id = "435678122F";');
+        $this->pdo->query('DELETE FROM business WHERE tax_id = "EMIT0012300TEST";');
         $this->pdo->query('DELETE FROM invoice WHERE number = "'.$this->invoiceNumber.'"');
     }
 

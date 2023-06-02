@@ -19,7 +19,7 @@ class MysqlBusinessRepository implements BusinessRepositoryInterface
     {
         $stmt = $this->PDO->prepare(
             'SELECT * FROM business ' .
-            'WHERE tax_number = :tax_number'
+            'WHERE tax_id = :tax_number'
         );
         $stmt->bindParam(':tax_number', $taxNumber);
         $stmt->execute();
@@ -30,11 +30,11 @@ class MysqlBusinessRepository implements BusinessRepositoryInterface
         }
 
         $business = new Business(
-            new Id($result['business_id']),
+            new Id($result['id']),
             $result['name'],
             $result['tax_name'],
-            $result['tax_number'],
-            new Address($result['address'], $result['zip_code'])
+            $result['tax_id'],
+            new Address($result['tax_address'], $result['tax_zip_code'])
         );
 
         return $business;
@@ -42,49 +42,31 @@ class MysqlBusinessRepository implements BusinessRepositoryInterface
 
     public function save(Business $business): void
     {
-        $taxDataStmt = $this->PDO->prepare(
-            'INSERT INTO tax_data (tax_name, tax_number, address, zip_code) ' .
-            'VALUES (:tax_name, :tax_number, :address, :zip_code)'
+        $stmt = $this->PDO->prepare(
+            'INSERT INTO business ' .
+            '(name, tax_name, tax_id, tax_address, tax_zip_code) ' .
+            'VALUES (:name, :tax_name, :tax_number, :address, :zip_code)'
         );
-        $taxName = $business->taxData->taxName;
-        $taxDataStmt->bindParam(':tax_name', $taxName);
-        $taxNumber = $business->taxData->taxNumber;
-        $taxDataStmt->bindParam(':tax_number', $taxNumber);
-        $address = $business->taxData->address->street;
-        $taxDataStmt->bindParam(':address', $address);
-        $zip = $business->taxData->address->zip;
-        $taxDataStmt->bindParam(':zip_code', $zip);
+        $businessName = $business->name;
+        $stmt->bindParam(':name', $businessName);
+        $taxName = $business->taxName;
+        $stmt->bindParam(':tax_name', $taxName);
+        $taxNumber = $business->taxNumber;
+        $stmt->bindParam(':tax_number', $taxNumber);
+        $address = $business->taxAddress->street;
+        $stmt->bindParam(':address', $address);
+        $zip = $business->taxAddress->zip;
+        $stmt->bindParam(':zip_code', $zip);
 
-        $taxDataStmt->execute();
-
-        $BusinessStmt = $this->PDO->prepare(
-            'INSERT INTO business (name, taxDataId) ' .
-            'VALUES (:name, :taxDataId)'
-        );
-        $name = $business->name;
-        $BusinessStmt->bindParam(':name', $name);
-        $taxDataId = $this->PDO->lastInsertId();
-        $BusinessStmt->bindParam(':taxDataId', $taxDataId);
-
-        $BusinessStmt->execute();
-
-        $userStmt = $this->PDO->prepare(
-            'UPDATE user SET tax_data_id = :tax_data_id ' .
-            'WHERE id = :user_id'
-        );
-        $userId = $business->taxData->userId->getInt();
-        $userStmt->bindParam(':tax_data_id', $taxDataId);
-        $userStmt->bindParam(':user_id', $userId);
-        $userStmt->execute();
+        $stmt->execute();
     }
 
     public function getByUserIdOrFail(Id $userId): Business
     {
         $stmt = $this->PDO->prepare(
-            'SELECT b.id as business_id, b.name, ' .
-            ' td.id as tax_data_id, td.* FROM business b ' .
-            'LEFT JOIN tax_data td ON b.taxDataId = td.id ' .
-            'LEFT JOIN user u ON u.tax_data_id = td.id ' .
+            'SELECT b.id as business_id, b.* ' .
+            'FROM business b ' .
+            'LEFT JOIN user u ON u.tax_data_id = b.id ' .
             'WHERE u.id = :user_id'
         );
         $id = $userId->getInt();
@@ -100,8 +82,8 @@ class MysqlBusinessRepository implements BusinessRepositoryInterface
             new Id($result['id']),
             $result['name'],
             $result['tax_name'],
-            $result['tax_number'],
-            new Address($result['address'], $result['zip_code'])
+            $result['tax_id'],
+            new Address($result['tax_address'], $result['tax_zip_code'])
         );
     }
 }

@@ -7,11 +7,13 @@ use App\Invoice\Domain\Model\BusinessRepositoryInterface;
 use App\Shared\Domain\ValueObject\Id;
 use App\Tax\Application\Command\SetUserTaxDataCommand;
 use App\Tax\Domain\ValueObject\Address;
+use App\User\Domain\Model\UserRepositoryInterface;
 
 class SetUserTaxDataUseCase
 {
     public function __construct(
         private readonly BusinessRepositoryInterface $businessRepository,
+        private readonly UserRepositoryInterface $userRepository,
     ) {
     }
 
@@ -32,7 +34,11 @@ class SetUserTaxDataUseCase
             $command->taxNumber,
             $address
         );
-
         $this->businessRepository->save($business);
+
+        $this->userRepository->linkBusinessToUser(
+            $command->user->id(),
+            $command->taxNumber,
+        );
     }
 }

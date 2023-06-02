@@ -70,4 +70,23 @@ class MysqlUserRepository implements UserRepositoryInterface
 
         return $user;
     }
+
+    public function linkBusinessToUser(Id $userId, string $taxNumber): void
+    {
+        $businessStmt = $this->PDO->prepare(
+            'SELECT id FROM business WHERE tax_id = :taxNumber'
+        );
+        $businessStmt->bindParam('taxNumber', $taxNumber);
+        $businessStmt->execute();
+        $business = $businessStmt->fetch();
+
+        $stmt = $this->PDO->prepare(
+            'UPDATE user SET tax_data_id = :businessId ' .
+            'WHERE id = :userID'
+        );
+        $userIdInt = $userId->getInt();
+        $stmt->bindParam('userID', $userIdInt);
+        $stmt->bindParam('businessId', $business['id']);
+        $stmt->execute();
+    }
 }
