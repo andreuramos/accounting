@@ -66,7 +66,7 @@ class MysqlBusinessRepository implements BusinessRepositoryInterface
         $stmt = $this->PDO->prepare(
             'SELECT b.id as business_id, b.* ' .
             'FROM business b ' .
-            'LEFT JOIN user u ON u.tax_data_id = b.id ' .
+            'LEFT JOIN user u ON u.business_id = b.id ' .
             'WHERE u.id = :user_id'
         );
         $id = $userId->getInt();

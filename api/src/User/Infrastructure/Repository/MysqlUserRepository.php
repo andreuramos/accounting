@@ -81,7 +81,7 @@ class MysqlUserRepository implements UserRepositoryInterface
         $business = $businessStmt->fetch();
 
         $stmt = $this->PDO->prepare(
-            'UPDATE user SET tax_data_id = :businessId ' .
+            'UPDATE user SET business_id = :businessId ' .
             'WHERE id = :userID'
         );
         $userIdInt = $userId->getInt();
