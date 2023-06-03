@@ -9,7 +9,6 @@ use App\Invoice\Domain\Service\InvoiceNumberGenerator;
 use App\Invoice\Domain\ValueObject\InvoiceNumber;
 use App\Shared\Application\Service\Timestamper;
 use App\Shared\Domain\ValueObject\Id;
-use App\Tax\Domain\Entity\TaxData;
 use App\Tax\Domain\ValueObject\Address;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;

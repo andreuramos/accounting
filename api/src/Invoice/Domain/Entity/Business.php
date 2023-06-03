@@ -3,7 +3,6 @@
 namespace App\Invoice\Domain\Entity;
 
 use App\Shared\Domain\ValueObject\Id;
-use App\Tax\Domain\Entity\TaxData;
 use App\Tax\Domain\ValueObject\Address;
 
 class Business
