@@ -22,10 +22,14 @@ class MysqlUserRepository implements UserRepositoryInterface
         $refreshToken = (string) $user->refreshToken();
 
         if (null === $user->id()->getInt()) {
-            $stmt = $this->PDO->prepare("INSERT INTO user (email, password, refresh_token) VALUES (:email, :password, :refresh_token)");
+            $stmt = $this->PDO->prepare(
+                "INSERT INTO user (email, password, refresh_token) VALUES (:email, :password, :refresh_token)"
+            );
         } else {
             $userId = $user->id()->getInt();
-            $stmt = $this->PDO->prepare("UPDATE user SET email = :email, password = :password, refresh_token = :refresh_token WHERE id = :id");
+            $stmt = $this->PDO->prepare(
+                "UPDATE user SET email = :email, password = :password, refresh_token = :refresh_token WHERE id = :id"
+            );
             $stmt->bindParam(':id', $userId);
         }
         $stmt->bindParam(':email', $email);
