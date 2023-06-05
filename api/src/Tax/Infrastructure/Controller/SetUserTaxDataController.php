@@ -14,8 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 class SetUserTaxDataController extends AuthorizedController
 {
     public function __construct(
-        JWTDecoder                             $tokenDecoder,
-        UserRepositoryInterface                $userRepository,
+        JWTDecoder $tokenDecoder,
+        UserRepositoryInterface $userRepository,
         private readonly SetUserTaxDataUseCase $setTaxDataUseCase,
     ) {
         parent::__construct($tokenDecoder, $userRepository);
