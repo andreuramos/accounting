@@ -4,7 +4,7 @@ namespace App\Transaction\Domain\ValueObject;
 
 class Money
 {
-    const VALID_CURRENCIES = ['EUR'];
+    private const VALID_CURRENCIES = ['EUR'];
 
     public function __construct(
         public readonly int $amountCents,
@@ -15,7 +15,7 @@ class Money
 
     private function guardCurrency(string $currency): void
     {
-        if(!in_array($currency, self::VALID_CURRENCIES)) {
+        if (!in_array($currency, self::VALID_CURRENCIES)) {
             throw new \InvalidArgumentException("invalid currency " . $currency);
         }
     }
