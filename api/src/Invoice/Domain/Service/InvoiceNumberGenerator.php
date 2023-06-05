@@ -23,7 +23,7 @@ class InvoiceNumberGenerator
         $correlativeNumber = $this->getLastInvoiceNumber($business);
         $eightDigits = sprintf("%08d", $correlativeNumber);
 
-        return new InvoiceNumber($yearSuffix.$eightDigits);
+        return new InvoiceNumber($yearSuffix . $eightDigits);
     }
 
     private function getLastInvoiceNumber(Business $business): int
@@ -35,6 +35,6 @@ class InvoiceNumberGenerator
         }
 
         $correlativeValue = (int) substr($lastInvoice->invoiceNumber->number, 4);
-        return $correlativeValue+1;
+        return $correlativeValue + 1;
     }
 }
