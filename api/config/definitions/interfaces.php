@@ -1,12 +1,12 @@
 <?php
 
-use App\Invoice\Domain\Model\BusinessRepositoryInterface;
 use App\Invoice\Domain\Model\InvoiceRepositoryInterface;
-use App\Invoice\Infrastructure\Repository\MysqlBusinessRepository;
 use App\Invoice\Infrastructure\Repository\MysqlInvoiceRepository;
 use App\Shared\Application\Service\HasherInterface;
 use App\Shared\Infrastructure\Service\Md5Hasher;
+use App\Tax\Domain\Model\BusinessRepositoryInterface;
 use App\Tax\Domain\Model\TaxDataAggregateRepositoryInterface;
+use App\Tax\Infrastructure\Repository\MysqlBusinessRepository;
 use App\Tax\Infrastructure\Repository\MysqlTaxDataAggregateRepository;
 use App\Transaction\Domain\Model\ExpenseRepositoryInterface;
 use App\Transaction\Domain\Model\IncomeRepositoryInterface;
@@ -17,9 +17,9 @@ use App\User\Application\Auth\AuthTokenGeneratorInterface;
 use App\User\Application\Auth\RefreshTokenGeneratorInterface;
 use App\User\Domain\Model\UserRepositoryInterface;
 use App\User\Infrastructure\Auth\JWTDecoder;
+use App\User\Infrastructure\Auth\JWTGenerator;
 use App\User\Infrastructure\Auth\JWTRefreshTokenGenerator;
 use App\User\Infrastructure\Repository\MysqlUserRepository;
-use App\User\Infrastructure\Auth\JWTGenerator;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\MessageBusInterface;
 

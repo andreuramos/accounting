@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Invoice\Infrastructure\Repository;
+namespace App\Tax\Infrastructure\Repository;
 
-use App\Invoice\Domain\Entity\Business;
-use App\Invoice\Domain\Exception\BusinessNotFoundException;
-use App\Invoice\Domain\Model\BusinessRepositoryInterface;
 use App\Shared\Domain\ValueObject\Id;
+use App\Tax\Domain\Entity\Business;
+use App\Tax\Domain\Exception\BusinessNotFoundException;
+use App\Tax\Domain\Model\BusinessRepositoryInterface;
 use App\Tax\Domain\ValueObject\Address;
 use PDO;
 

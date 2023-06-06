@@ -2,8 +2,8 @@
 
 namespace App\Invoice\Domain\Model;
 
-use App\Invoice\Domain\Entity\Business;
 use App\Invoice\Domain\Entity\Invoice;
+use App\Tax\Domain\Entity\Business;
 
 interface InvoiceRepositoryInterface
 {

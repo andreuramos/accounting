@@ -2,11 +2,11 @@
 
 namespace Test\Unit\Tax\Application\UseCase;
 
-use App\Invoice\Domain\Entity\Business;
-use App\Invoice\Domain\Model\BusinessRepositoryInterface;
 use App\Shared\Domain\ValueObject\Id;
 use App\Tax\Application\Command\SetUserTaxDataCommand;
 use App\Tax\Application\UseCase\SetUserTaxDataUseCase;
+use App\Tax\Domain\Entity\Business;
+use App\Tax\Domain\Model\BusinessRepositoryInterface;
 use App\User\Domain\Entity\User;
 use App\User\Domain\Model\UserRepositoryInterface;
 use App\User\Domain\ValueObject\Email;

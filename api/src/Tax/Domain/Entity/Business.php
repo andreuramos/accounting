@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Invoice\Domain\Entity;
+namespace App\Tax\Domain\Entity;
 
 use App\Shared\Domain\ValueObject\Id;
 use App\Tax\Domain\ValueObject\Address;

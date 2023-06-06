@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Invoice\Domain\Model;
+namespace App\Tax\Domain\Model;
 
-use App\Invoice\Domain\Entity\Business;
 use App\Shared\Domain\ValueObject\Id;
+use App\Tax\Domain\Entity\Business;
 
 interface BusinessRepositoryInterface
 {
