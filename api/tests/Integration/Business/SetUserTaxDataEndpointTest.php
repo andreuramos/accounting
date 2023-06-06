@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\Integration\Tax;
+namespace Test\Integration\Business;
 
 use Test\Integration\EndpointTest;
 
