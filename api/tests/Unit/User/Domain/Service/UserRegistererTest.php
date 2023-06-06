@@ -48,7 +48,7 @@ class UserRegistererTest extends TestCase
             $this->passwordHasher->reveal()
         );
 
-        $service->execute($command);
+        $service->__invoke($command);
     }
 
     public function test_throws_exception_if_email_in_use()
@@ -69,6 +69,6 @@ class UserRegistererTest extends TestCase
             $this->passwordHasher->reveal()
         );
 
-        $service->execute($command);
+        $service->__invoke($command);
     }
 }

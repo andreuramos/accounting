@@ -18,7 +18,7 @@ class UserCreator
     ) {
     }
 
-    public function execute(RegisterUserCommand $command): void
+    public function __invoke(RegisterUserCommand $command): void
     {
         $email = new Email($command->email());
         if (null !== $this->userRepository->getByEmail($email)) {

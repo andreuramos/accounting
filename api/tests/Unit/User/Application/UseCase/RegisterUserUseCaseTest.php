@@ -23,7 +23,7 @@ class RegisterUserUseCaseTest extends TestCase
 
     public function test_user_is_registered()
     {
-        $this->userRegisterer->execute(Argument::any())->shouldBeCalled();
+        $this->userRegisterer->__invoke(Argument::any())->shouldBeCalled();
         $command = new RegisterUserCommand('my@email.com', "123");
         $usecase = new RegisterUserUseCase($this->userRegisterer->reveal());
 

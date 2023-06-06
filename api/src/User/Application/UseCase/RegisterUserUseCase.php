@@ -12,6 +12,6 @@ class RegisterUserUseCase
     }
     public function __invoke(RegisterUserCommand $command): void
     {
-        $this->userCreator->execute($command);
+        ($this->userCreator)($command);
     }
 }
