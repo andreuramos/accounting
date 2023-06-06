@@ -4,7 +4,7 @@ namespace Test\Unit\User\Application\UseCase;
 
 use App\User\Application\Command\RegisterUserCommand;
 use App\User\Application\UseCase\RegisterUserUseCase;
-use App\User\Domain\Model\AccountRepositoryInterface;
+use App\User\Domain\Service\AccountCreator;
 use App\User\Domain\Service\UserCreator;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -15,13 +15,13 @@ class RegisterUserUseCaseTest extends TestCase
     use ProphecyTrait;
 
     private $userCreator;
-    private $accountRepository;
+    private $accountCreator;
 
     public function setUp(): void
     {
         parent::setUp();
         $this->userCreator = $this->prophesize(UserCreator::class);
-        $this->accountRepository = $this->prophesize(AccountRepositoryInterface::class);
+        $this->accountCreator = $this->prophesize(AccountCreator::class);
     }
 
     public function test_user_is_registered()
@@ -36,7 +36,7 @@ class RegisterUserUseCaseTest extends TestCase
     public function test_account_is_created()
     {
         $command = new RegisterUserCommand('your@email.com', '123');
-        $this->accountRepository->createForUser($command->email())->shouldBeCalled();
+        $this->accountCreator->__invoke($command->email())->shouldBeCalled();
         $usecase = $this->getUseCase();
 
         $usecase($command);
@@ -46,7 +46,7 @@ class RegisterUserUseCaseTest extends TestCase
     {
         return new RegisterUserUseCase(
             $this->userCreator->reveal(),
-            $this->accountRepository->reveal(),
+            $this->accountCreator->reveal(),
         );
     }
 }
