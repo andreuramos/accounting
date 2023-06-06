@@ -2,7 +2,9 @@
 
 namespace App\User\Domain\Model;
 
+use App\User\Domain\Entity\Account;
+
 interface AccountRepositoryInterface
 {
-    public function createForUser(string $email): void;
+    public function save(Account $account): void;
 }
