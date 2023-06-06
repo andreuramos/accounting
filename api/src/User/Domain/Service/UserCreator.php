@@ -10,7 +10,7 @@ use App\User\Domain\Exception\UserAlreadyExistsException;
 use App\User\Domain\Model\UserRepositoryInterface;
 use App\User\Domain\ValueObject\Email;
 
-class UserRegisterer
+class UserCreator
 {
     public function __construct(
         private readonly UserRepositoryInterface $userRepository,

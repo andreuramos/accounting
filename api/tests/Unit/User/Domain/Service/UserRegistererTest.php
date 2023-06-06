@@ -8,7 +8,7 @@ use App\User\Application\Command\RegisterUserCommand;
 use App\User\Domain\Entity\User;
 use App\User\Domain\Exception\UserAlreadyExistsException;
 use App\User\Domain\Model\UserRepositoryInterface;
-use App\User\Domain\Service\UserRegisterer;
+use App\User\Domain\Service\UserCreator;
 use App\User\Domain\ValueObject\Email;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -43,7 +43,7 @@ class UserRegistererTest extends TestCase
         $user = new User(new Id(null), new Email($email), $hashedPassword);
         $this->userRepository->save($user)
             ->shouldBeCalled();
-        $service = new UserRegisterer(
+        $service = new UserCreator(
             $this->userRepository->reveal(),
             $this->passwordHasher->reveal()
         );
@@ -64,7 +64,7 @@ class UserRegistererTest extends TestCase
             ->willReturn($user);
         $this->userRepository->save(Argument::any())
             ->shouldNotBeCalled();
-        $service = new UserRegisterer(
+        $service = new UserCreator(
             $this->userRepository->reveal(),
             $this->passwordHasher->reveal()
         );

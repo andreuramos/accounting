@@ -3,15 +3,15 @@
 namespace App\User\Application\UseCase;
 
 use App\User\Application\Command\RegisterUserCommand;
-use App\User\Domain\Service\UserRegisterer;
+use App\User\Domain\Service\UserCreator;
 
 class RegisterUserUseCase
 {
-    public function __construct(private readonly UserRegisterer $userRegisterer)
+    public function __construct(private readonly UserCreator $userCreator)
     {
     }
     public function __invoke(RegisterUserCommand $command): void
     {
-        $this->userRegisterer->execute($command);
+        $this->userCreator->execute($command);
     }
 }
