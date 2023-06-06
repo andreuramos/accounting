@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tax\Domain\ValueObject;
+namespace App\Business\Domain\ValueObject;
 
 class Address
 {

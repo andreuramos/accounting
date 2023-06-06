@@ -2,10 +2,10 @@
 
 namespace App\Invoice\Domain\Service;
 
+use App\Business\Domain\Entity\Business;
 use App\Invoice\Domain\Model\InvoiceRepositoryInterface;
 use App\Invoice\Domain\ValueObject\InvoiceNumber;
 use App\Shared\Application\Service\Timestamper;
-use App\Tax\Domain\Entity\Business;
 
 class InvoiceNumberGenerator
 {

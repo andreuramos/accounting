@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Tax\Infrastructure\Controller;
+namespace App\Business\Infrastructure\Controller;
 
+use App\Business\Application\Command\SetUserTaxDataCommand;
+use App\Business\Application\UseCase\SetUserTaxDataUseCase;
 use App\Shared\Domain\Exception\MissingMandatoryParameterException;
 use App\Shared\Infrastructure\ApiResponse;
 use App\Shared\Infrastructure\Controller\AuthorizedController;
-use App\Tax\Application\Command\SetUserTaxDataCommand;
-use App\Tax\Application\UseCase\SetUserTaxDataUseCase;
 use App\User\Domain\Model\UserRepositoryInterface;
 use App\User\Infrastructure\Auth\JWTDecoder;
 use Symfony\Component\HttpFoundation\Request;

@@ -2,6 +2,11 @@
 
 namespace Test\Unit\Invoice\Application\UseCase;
 
+use App\Business\Domain\Entity\Business;
+use App\Business\Domain\Exception\BusinessNotFoundException;
+use App\Business\Domain\Model\BusinessRepositoryInterface;
+use App\Business\Domain\Model\TaxDataAggregateRepositoryInterface;
+use App\Business\Domain\ValueObject\Address;
 use App\Invoice\Application\Command\EmitInvoiceCommand;
 use App\Invoice\Application\UseCase\EmitInvoiceUseCase;
 use App\Invoice\Domain\Entity\Invoice;
@@ -9,11 +14,6 @@ use App\Invoice\Domain\Model\InvoiceRepositoryInterface;
 use App\Invoice\Domain\Service\InvoiceNumberGenerator;
 use App\Invoice\Domain\ValueObject\InvoiceNumber;
 use App\Shared\Domain\ValueObject\Id;
-use App\Tax\Domain\Entity\Business;
-use App\Tax\Domain\Exception\BusinessNotFoundException;
-use App\Tax\Domain\Model\BusinessRepositoryInterface;
-use App\Tax\Domain\Model\TaxDataAggregateRepositoryInterface;
-use App\Tax\Domain\ValueObject\Address;
 use App\Transaction\Domain\Entity\Income;
 use App\Transaction\Domain\Exception\IncomeNotFoundException;
 use App\Transaction\Domain\Model\IncomeRepositoryInterface;

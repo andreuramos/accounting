@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Tax\Infrastructure\Repository;
+namespace App\Business\Infrastructure\Repository;
 
+use App\Business\Domain\Entity\TaxData;
+use App\Business\Domain\Model\TaxDataAggregateRepositoryInterface;
 use App\Shared\Domain\ValueObject\Id;
-use App\Tax\Domain\Entity\TaxData;
-use App\Tax\Domain\Model\TaxDataAggregateRepositoryInterface;
 
 class MysqlTaxDataAggregateRepository implements TaxDataAggregateRepositoryInterface
 {

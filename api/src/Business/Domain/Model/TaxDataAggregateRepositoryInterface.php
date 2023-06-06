@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Tax\Domain\Model;
+namespace App\Business\Domain\Model;
 
-use App\Tax\Domain\Entity\TaxData;
+use App\Business\Domain\Entity\TaxData;
 
 interface TaxDataAggregateRepositoryInterface
 {

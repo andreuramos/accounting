@@ -1,13 +1,13 @@
 <?php
 
+use App\Business\Domain\Model\BusinessRepositoryInterface;
+use App\Business\Domain\Model\TaxDataAggregateRepositoryInterface;
+use App\Business\Infrastructure\Repository\MysqlBusinessRepository;
+use App\Business\Infrastructure\Repository\MysqlTaxDataAggregateRepository;
 use App\Invoice\Domain\Model\InvoiceRepositoryInterface;
 use App\Invoice\Infrastructure\Repository\MysqlInvoiceRepository;
 use App\Shared\Application\Service\HasherInterface;
 use App\Shared\Infrastructure\Service\Md5Hasher;
-use App\Tax\Domain\Model\BusinessRepositoryInterface;
-use App\Tax\Domain\Model\TaxDataAggregateRepositoryInterface;
-use App\Tax\Infrastructure\Repository\MysqlBusinessRepository;
-use App\Tax\Infrastructure\Repository\MysqlTaxDataAggregateRepository;
 use App\Transaction\Domain\Model\ExpenseRepositoryInterface;
 use App\Transaction\Domain\Model\IncomeRepositoryInterface;
 use App\Transaction\Infrastructure\Repository\MysqlExpenseRepository;

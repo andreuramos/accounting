@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Tax\Application\UseCase;
+namespace App\Business\Application\UseCase;
 
+use App\Business\Application\Command\SetUserTaxDataCommand;
+use App\Business\Domain\Entity\Business;
+use App\Business\Domain\Model\BusinessRepositoryInterface;
+use App\Business\Domain\ValueObject\Address;
 use App\Shared\Domain\ValueObject\Id;
-use App\Tax\Application\Command\SetUserTaxDataCommand;
-use App\Tax\Domain\Entity\Business;
-use App\Tax\Domain\Model\BusinessRepositoryInterface;
-use App\Tax\Domain\ValueObject\Address;
 use App\User\Domain\Model\UserRepositoryInterface;
 
 class SetUserTaxDataUseCase

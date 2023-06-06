@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tax\Domain\Exception;
+namespace App\Business\Domain\Exception;
 
 use Throwable;
 

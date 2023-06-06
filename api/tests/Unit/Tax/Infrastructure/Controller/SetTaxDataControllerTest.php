@@ -2,11 +2,11 @@
 
 namespace Test\Unit\Tax\Infrastructure\Controller;
 
+use App\Business\Application\Command\SetUserTaxDataCommand;
+use App\Business\Application\UseCase\SetUserTaxDataUseCase;
+use App\Business\Infrastructure\Controller\SetUserTaxDataController;
 use App\Shared\Domain\Exception\MissingMandatoryParameterException;
 use App\Shared\Infrastructure\ApiResponse;
-use App\Tax\Application\Command\SetUserTaxDataCommand;
-use App\Tax\Application\UseCase\SetUserTaxDataUseCase;
-use App\Tax\Infrastructure\Controller\SetUserTaxDataController;
 use App\User\Domain\Exception\InvalidCredentialsException;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;

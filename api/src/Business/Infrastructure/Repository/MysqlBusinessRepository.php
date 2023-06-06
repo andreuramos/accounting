@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Tax\Infrastructure\Repository;
+namespace App\Business\Infrastructure\Repository;
 
+use App\Business\Domain\Entity\Business;
+use App\Business\Domain\Exception\BusinessNotFoundException;
+use App\Business\Domain\Model\BusinessRepositoryInterface;
+use App\Business\Domain\ValueObject\Address;
 use App\Shared\Domain\ValueObject\Id;
-use App\Tax\Domain\Entity\Business;
-use App\Tax\Domain\Exception\BusinessNotFoundException;
-use App\Tax\Domain\Model\BusinessRepositoryInterface;
-use App\Tax\Domain\ValueObject\Address;
 use PDO;
 
 class MysqlBusinessRepository implements BusinessRepositoryInterface

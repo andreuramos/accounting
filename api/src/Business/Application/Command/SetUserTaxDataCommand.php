@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tax\Application\Command;
+namespace App\Business\Application\Command;
 
 use App\User\Domain\Entity\User;
 
