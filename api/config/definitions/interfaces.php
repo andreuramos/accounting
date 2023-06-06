@@ -15,15 +15,18 @@ use App\Transaction\Infrastructure\Repository\MysqlIncomeRepository;
 use App\User\Application\Auth\AuthTokenDecoderInterface;
 use App\User\Application\Auth\AuthTokenGeneratorInterface;
 use App\User\Application\Auth\RefreshTokenGeneratorInterface;
+use App\User\Domain\Model\AccountRepositoryInterface;
 use App\User\Domain\Model\UserRepositoryInterface;
 use App\User\Infrastructure\Auth\JWTDecoder;
 use App\User\Infrastructure\Auth\JWTGenerator;
 use App\User\Infrastructure\Auth\JWTRefreshTokenGenerator;
+use App\User\Infrastructure\Repository\MysqlAccountRepository;
 use App\User\Infrastructure\Repository\MysqlUserRepository;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 return [
+    AccountRepositoryInterface::class => DI\get(MysqlAccountRepository::class),
     AuthTokenDecoderInterface::class => DI\get(JWTDecoder::class),
     AuthTokenGeneratorInterface::class => DI\get(JWTGenerator::class),
     BusinessRepositoryInterface::class => DI\get(MysqlBusinessRepository::class),
