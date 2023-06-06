@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-class UserRegistererTest extends TestCase
+class UserCreatorTest extends TestCase
 {
     use ProphecyTrait;
 
