@@ -20,6 +20,8 @@ class RegisterUserEndpointTest extends EndpointTest
         ]);
 
         $this->assertEquals(200, $response->getStatusCode());
+        $user = $this->pdo->query('SELECT * FROM user WHERE email = "' . self::SUCCESS_EMAIL . '"');
+        $this->assertNotNull($user);
     }
 
     public function test_fails_if_no_email()
