@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\Unit\Tax\Infrastructure\Controller;
+namespace Test\Unit\Business\Infrastructure\Controller;
 
 use App\Business\Application\Command\SetUserTaxDataCommand;
 use App\Business\Application\UseCase\SetUserTaxDataUseCase;
