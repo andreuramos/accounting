@@ -19,7 +19,7 @@ class AccountCreator
     public function __invoke(string $userEmail): void
     {
         $email = new Email($userEmail);
-        $user = $this->userRepository->getByEmail($email);
+        $user = $this->userRepository->getByEmailOrFail($email);
 
         $account = new Account(
             new Id(null),

@@ -31,7 +31,7 @@ class AccountCreatorTest extends TestCase
     {
         $email = new Email("some@email.com");
         $user = new User(new Id(1), $email, '123');
-        $this->userRepository->getByEmail($email)
+        $this->userRepository->getByEmailOrFail($email)
             ->willReturn($user);
         $this->accountRepository->save(Argument::type(Account::class))
             ->shouldBeCalled();

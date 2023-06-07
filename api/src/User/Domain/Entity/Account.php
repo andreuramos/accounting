@@ -7,8 +7,8 @@ use App\Shared\Domain\ValueObject\Id;
 class Account
 {
     public function __construct(
-        private readonly Id $id,
-        private readonly Id $userId,
+        public readonly Id $id,
+        public readonly Id $mainUserId,
     ) {
     }
 }
