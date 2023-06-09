@@ -13,7 +13,7 @@ abstract class EndpointTest extends TestCase
     protected Container $container;
     protected string $authToken;
     protected \PDO $pdo;
-    protected $email = "";
+    protected string $email = "";
 
     protected function setUp(): void
     {
