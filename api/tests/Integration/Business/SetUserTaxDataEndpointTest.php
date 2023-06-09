@@ -6,8 +6,6 @@ use Test\Integration\EndpointTest;
 
 class SetUserTaxDataEndpointTest extends EndpointTest
 {
-    const EMAIL = "set@taxdata.test";
-
     public function test_unauthorized_returns_401()
     {
         $response = $this->client->post('/user/tax_data');
@@ -16,8 +14,8 @@ class SetUserTaxDataEndpointTest extends EndpointTest
 
     public function test_correct_request_returns_200()
     {
-        $this->registerUser(self::EMAIL, "");
-        $this->login(self::EMAIL, "");
+        $this->registerUser($this->email, "");
+        $this->login($this->email, "");
 
         $response = $this->client->post('/user/tax_data', [
             'body' => json_encode([
@@ -35,7 +33,7 @@ class SetUserTaxDataEndpointTest extends EndpointTest
     public function tearDown(): void
     {
         parent::tearDown();
-        $this->deleteUser(self::EMAIL);
+        $this->deleteUser($this->email);
         $this->pdo->query('DELETE FROM business WHERE name = "SET TAX DATA TEST"');
     }
 }

@@ -6,12 +6,10 @@ use Test\Integration\EndpointTest;
 
 class CreateIncomeEndpointTest extends EndpointTest
 {
-    const TEST_EMAIL = "create@income.app";
-
     public function test_returns_status_200()
     {
-        $this->registerUser(self::TEST_EMAIL, "");
-        $this->login(self::TEST_EMAIL, "");
+        $this->registerUser($this->email, "");
+        $this->login($this->email, "");
         $response = $this->client->post('/income',[
             'body' => json_encode([
                 'amount' => 100,
@@ -26,8 +24,8 @@ class CreateIncomeEndpointTest extends EndpointTest
 
     public function test_returns_created_id()
     {
-        $this->registerUser(self::TEST_EMAIL, "");
-        $this->login(self::TEST_EMAIL, "");
+        $this->registerUser($this->email, "");
+        $this->login($this->email, "");
         $response = $this->client->post('/income',[
             'body' => json_encode([
                 'amount' => 100,
@@ -44,7 +42,7 @@ class CreateIncomeEndpointTest extends EndpointTest
     public function tearDown(): void
     {
         parent::tearDown();
-        $this->deleteUser(self::TEST_EMAIL);
+        $this->deleteUser($this->email);
         $this->pdo->query('DELETE FROM income WHERE description="test_income_created"');
     }
 }

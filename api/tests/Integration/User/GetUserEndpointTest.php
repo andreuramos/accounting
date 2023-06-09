@@ -16,8 +16,8 @@ class GetUserEndpointTest extends EndpointTest
     public function test_status_200_when_credentials_succeed()
     {
         try{
-            $this->registerUser("valid@email.com","mypass");
-            $this->login("valid@email.com", "mypass");
+            $this->registerUser($this->email,"mypass");
+            $this->login($this->email, "mypass");
 
             $response = $this->client->get('/user',[
                 'headers' => [
@@ -33,6 +33,6 @@ class GetUserEndpointTest extends EndpointTest
     public function tearDown(): void
     {
         parent::tearDown();
-        $this->deleteUser("valid@email.com");
+        $this->deleteUser($this->email);
     }
 }

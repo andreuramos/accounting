@@ -13,6 +13,7 @@ abstract class EndpointTest extends TestCase
     protected Container $container;
     protected string $authToken;
     protected \PDO $pdo;
+    protected $email = "";
 
     protected function setUp(): void
     {
@@ -24,6 +25,10 @@ abstract class EndpointTest extends TestCase
         $this->container = ContainerFactory::create();
         $this->authToken = "";
         $this->pdo = $this->container->get(\PDO::class);
+
+        $class = explode('\\', static::class);
+        $this->email = $this->getName() . '@' . end($class) . '.test';
+
     }
 
     protected function registerUser(string $email, string $password)
@@ -57,7 +62,7 @@ abstract class EndpointTest extends TestCase
         $userQuery->execute();
         $user = $userQuery->fetch();
 
-        if ($user) {
+        if (false !== $user) {
             $this->pdo->query('DELETE FROM account WHERE main_user_id = ' . $user['id']);
             $this->pdo->query('DELETE FROM user WHERE id="' . $user['id'] . '";');
         }

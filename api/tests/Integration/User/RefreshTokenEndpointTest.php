@@ -6,8 +6,6 @@ use Test\Integration\EndpointTest;
 
 class RefreshTokenEndpointTest extends EndpointTest
 {
-    const USER_EMAIL = "test_refresh@email.com";
-
     public function test_refresh_with_no_params_returns_400()
     {
         $response = $this->client->post('/refresh');
@@ -28,10 +26,10 @@ class RefreshTokenEndpointTest extends EndpointTest
 
     public function test_valid_jwt_returns_new_auth_and_refresh()
     {
-        $this->registerUser(self::USER_EMAIL, "correctPassword");
+        $this->registerUser($this->email, "correctPassword");
         $loginResponse = $this->client->post('/login', [
             'body' => json_encode([
-                'email' => self::USER_EMAIL,
+                'email' => $this->email,
                 'password' => "correctPassword"
             ], JSON_THROW_ON_ERROR)
         ]);
@@ -53,6 +51,6 @@ class RefreshTokenEndpointTest extends EndpointTest
     public function tearDown(): void
     {
         parent::tearDown();
-        $this->deleteUser(self::USER_EMAIL);
+        $this->deleteUser($this->email);
     }
 }

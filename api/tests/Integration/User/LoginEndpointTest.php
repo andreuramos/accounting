@@ -7,17 +7,13 @@ use Test\Integration\EndpointTest;
 
 class LoginEndpointTest extends EndpointTest
 {
-    private const EXISTING_EMAIL = "existing@email.com";
-    private const EXISTING_EMAIL2 = "another@existing.net";
-    private const EXISTING_EMAIL3 = "last@email.org";
-
     public function test_status_200_if_correct_credentials(): void
     {
         try {
-            $this->registerUser(self::EXISTING_EMAIL, "correctPassword");
+            $this->registerUser($this->email, "correctPassword");
             $response = $this->client->post('/login', [
                 'body' => json_encode([
-                    'email' => self::EXISTING_EMAIL,
+                    'email' => $this->email,
                     'password' => "correctPassword"
                 ], JSON_THROW_ON_ERROR)
             ]);
@@ -30,10 +26,10 @@ class LoginEndpointTest extends EndpointTest
     public function test_returns_tokens_if_correct_credentials(): void
     {
         try {
-            $this->registerUser(self::EXISTING_EMAIL2, "correctPassword");
+            $this->registerUser($this->email, "correctPassword");
             $response = $this->client->post('/login', [
                 'body' => json_encode([
-                    'email' => self::EXISTING_EMAIL2,
+                    'email' => $this->email,
                     'password' => "correctPassword"
                 ], JSON_THROW_ON_ERROR)
             ]);
@@ -47,10 +43,10 @@ class LoginEndpointTest extends EndpointTest
     public function test_fails_if_wrong_credentials(): void
     {
         try {
-            $this->registerUser(self::EXISTING_EMAIL3, "correctPassword");
+            $this->registerUser($this->email, "correctPassword");
             $response = $this->client->post('/login', [
                 'body' => json_encode([
-                    'email' => self::EXISTING_EMAIL3,
+                    'email' => $this->email,
                     'password' => "wrongPassword"
                 ], JSON_THROW_ON_ERROR)
             ]);
@@ -63,8 +59,6 @@ class LoginEndpointTest extends EndpointTest
     public function tearDown(): void
     {
         parent::tearDown();
-        $this->pdo->query('DELETE FROM user WHERE email="' . self::EXISTING_EMAIL . '";');
-        $this->pdo->query('DELETE FROM user WHERE email="' . self::EXISTING_EMAIL2 . '";');
-        $this->pdo->query('DELETE FROM user WHERE email="' . self::EXISTING_EMAIL3 . '";');
+        $this->deleteUser($this->email);
     }
 }
