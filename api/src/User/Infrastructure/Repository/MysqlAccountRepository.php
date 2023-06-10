@@ -4,6 +4,7 @@ namespace App\User\Infrastructure\Repository;
 
 use App\Shared\Domain\ValueObject\Id;
 use App\User\Domain\Entity\Account;
+use App\User\Domain\Exception\AccountNotFoundException;
 use App\User\Domain\Model\AccountRepositoryInterface;
 use App\User\Domain\ValueObject\Email;
 
@@ -23,11 +24,26 @@ class MysqlAccountRepository implements AccountRepositoryInterface
         $stmt->execute();
     }
 
-    public function getByOwnerEmail(Email $email): Account
+    public function getByOwnerEmailOrFail(Email $email): Account
     {
+        $stmt = $this->PDO->prepare(
+            'SELECT a.id as account_id, u.id as user_id FROM account a ' .
+            'LEFT JOIN user u ON a.main_user_id = u.id ' .
+            'WHERE u.email = :email'
+        );
+        $stringEmail = $email->toString();
+        $stmt->bindParam(':email', $stringEmail);
+
+        $stmt->execute();
+        $result = $stmt->fetch();
+
+        if (false === $result) {
+            throw new AccountNotFoundException($stringEmail);
+        }
+
         return new Account(
-            new Id(null),
-            new Id(null),
+            new Id($result['account_id']),
+            new Id($result['user_id']),
         );
     }
 }

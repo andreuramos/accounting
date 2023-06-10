@@ -29,7 +29,7 @@ class RegisterUserUseCase
     private function assignUserItsOwnAccount(Email $email): void
     {
         $user = $this->userRepository->getByEmailOrFail($email);
-        $account = $this->accountRepository->getByOwnerEmail($email);
+        $account = $this->accountRepository->getByOwnerEmailOrFail($email);
 
         $user->setAccountId($account->id);
         $this->userRepository->save($user);

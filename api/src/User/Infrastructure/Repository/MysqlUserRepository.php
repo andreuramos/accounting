@@ -4,6 +4,7 @@ namespace App\User\Infrastructure\Repository;
 
 use App\Shared\Domain\ValueObject\Id;
 use App\User\Domain\Entity\User;
+use App\User\Domain\Exception\UserNotFoundException;
 use App\User\Domain\Model\UserRepositoryInterface;
 use App\User\Domain\ValueObject\AuthToken;
 use App\User\Domain\ValueObject\Email;
@@ -20,21 +21,26 @@ class MysqlUserRepository implements UserRepositoryInterface
         $email = $user->email()->toString();
         $password = $user->passwordHash();
         $refreshToken = (string) $user->refreshToken();
+        $accountId = $this->getAccountId($user);
 
         if (null === $user->id()->getInt()) {
             $stmt = $this->PDO->prepare(
-                "INSERT INTO user (email, password, refresh_token) VALUES (:email, :password, :refresh_token)"
+                "INSERT INTO user (email, password, refresh_token, account_id) " .
+                "VALUES (:email, :password, :refresh_token, :account_id)"
             );
         } else {
             $userId = $user->id()->getInt();
             $stmt = $this->PDO->prepare(
-                "UPDATE user SET email = :email, password = :password, refresh_token = :refresh_token WHERE id = :id"
+                "UPDATE user SET " .
+                "email = :email, password = :password, refresh_token = :refresh_token, account_id = :account_id " .
+                "WHERE id = :id"
             );
             $stmt->bindParam(':id', $userId);
         }
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':password', $password);
         $stmt->bindParam(':refresh_token', $refreshToken);
+        $stmt->bindParam(':account_id', $accountId);
 
         $stmt->execute();
     }
@@ -92,5 +98,10 @@ class MysqlUserRepository implements UserRepositoryInterface
         $stmt->bindParam('userID', $userIdInt);
         $stmt->bindParam('businessId', $business['id']);
         $stmt->execute();
+    }
+
+    private function getAccountId(User $user): int|null
+    {
+        return $user->accountId()?->getInt();
     }
 }

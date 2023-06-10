@@ -48,6 +48,11 @@ class User
         $this->accountId = $accountId;
     }
 
+    public function accountId(): ?Id
+    {
+        return $this->accountId;
+    }
+
     public function toExposableArray(): array
     {
         return [

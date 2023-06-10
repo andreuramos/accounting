@@ -38,7 +38,7 @@ class RegisterUserUseCaseTest extends TestCase
         $this->userRepository->save(Argument::type(User::class));
         $this->userRepository->getByEmailOrFail(Argument::type(Email::class))
             ->willReturn($this->createdUser->reveal());
-        $this->accountRepository->getByOwnerEmail(Argument::type(Email::class))
+        $this->accountRepository->getByOwnerEmailOrFail(Argument::type(Email::class))
             ->willReturn(new Account(new Id(1), new Id(1)));
     }
 
@@ -72,7 +72,7 @@ class RegisterUserUseCaseTest extends TestCase
             $accountId,
             $userId,
         );
-        $this->accountRepository->getByOwnerEmail($email)
+        $this->accountRepository->getByOwnerEmailOrFail($email)
             ->willReturn($account);
         $this->createdUser->setAccountId($accountId)->shouldBeCalled();
         $this->userRepository->save($this->createdUser)->shouldBeCalled();
