@@ -5,12 +5,11 @@ import {
   RouterProvider,
 } from "react-router-dom"
 import { DashboardView } from './views/Dashboard.view'
+import { LoginView } from './views/Login.view'
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <DashboardView />,
-  },
+  { path: "/", element: <DashboardView /> },
+  { path: "/login", element: <LoginView /> },
 ])
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(

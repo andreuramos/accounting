@@ -7,11 +7,14 @@ const login = new LoginUseCase(new ApiAuthService())
 
 export class AuthService {
     static async doAuth(credentials: LoginDTO) {
-        try {
-            const res = await login.execute(credentials)
-            console.log(res)  
-        } catch(err) {
-            console.error(err)
+        const result = await login.execute(credentials)
+        
+        if (result.isLeft()) {
+            const error = result.value
+            console.log(error)
+            return error
         }
+
+        return result.value.getValue()
     }
 }

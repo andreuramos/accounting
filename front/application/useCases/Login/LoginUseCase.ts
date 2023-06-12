@@ -7,8 +7,7 @@ import { LoginErrors } from './LoginErrors'
 
 type Response = Either<
     ApplicationErrors.UnexpectedError |
-    LoginErrors.WrongUserOrPassword |
-    Result<any>,
+    LoginErrors.WrongUserOrPassword,
     Result<LoginDTOResponse>
 >
 

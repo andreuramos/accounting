@@ -7,7 +7,6 @@ const credentials = {
 	"password": "password"
 }
 
-
 export const DashboardView = () => {
     useEffect(() => {
         ;(async () => {
