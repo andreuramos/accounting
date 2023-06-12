@@ -1,7 +1,8 @@
-import { FormEvent, useEffect } from 'react'
+import { FormEvent } from 'react'
 import { AuthService } from 'src/services/auth.service'
 import { LoginDTO } from '@application/useCases/Login/LoginDTO'
-import { Button, Grid, Input } from '@mui/joy'
+import { Grid } from '@mui/joy'
+import { Button, Input } from 'src/components'
 
 interface FormElements extends HTMLFormControlsCollection {
     email: HTMLInputElement
@@ -28,13 +29,13 @@ export const LoginView = () => {
         <form onSubmit={handleSubmit}>
             <Grid container spacing={2} sx={{ flexGrow: 1 }}>
                 <Grid xs={8}>
-                    <Input name="email" color="neutral" variant="outlined" value="my@hotmail.com" />
+                    <Input name="email" value="my@hotmail.com" />
                 </Grid>
                 <Grid xs={8}>
-                    <Input name="password" type="password" color="neutral" variant="outlined" value="password" />
+                    <Input name="password" type="password" value="password" />
                 </Grid>
                 <Grid xs={8}>
-                    <Button type="submit" variant="solid">Login</Button>
+                    <Button type="submit">Login</Button>
                 </Grid>
             </Grid>
         </form>
