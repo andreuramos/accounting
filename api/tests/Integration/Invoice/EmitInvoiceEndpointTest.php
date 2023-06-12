@@ -6,7 +6,6 @@ use Test\Integration\EndpointTest;
 
 class EmitInvoiceEndpointTest extends EndpointTest
 {
-    private const EMAIL = "create@invoice.test";
     private $incomeId;
     private $invoiceNumber;
 
@@ -19,8 +18,8 @@ class EmitInvoiceEndpointTest extends EndpointTest
 
     public function test_no_business_authorized_user_fails()
     {
-        $this->registerUser(self::EMAIL, "");
-        $this->login(self::EMAIL, "");
+        $this->registerUser($this->email, "");
+        $this->login($this->email, "");
         $income = $this->createIncome();
         $this->incomeId = (int) $income['id'];
 
@@ -41,8 +40,8 @@ class EmitInvoiceEndpointTest extends EndpointTest
 
     public function test_authroized_returns_invoice_number()
     {
-        $this->registerUser(self::EMAIL, "");
-        $this->login(self::EMAIL, "");
+        $this->registerUser($this->email, "");
+        $this->login($this->email, "");
         $this->setBusinessData();
         $income = $this->createIncome();
         $this->incomeId = (int) $income['id'];
@@ -70,14 +69,12 @@ class EmitInvoiceEndpointTest extends EndpointTest
     public function tearDown(): void
     {
         parent::tearDown();
-        $this->deleteUser(self::EMAIL);
+        $this->deleteUser($this->email);
         if ($this->incomeId) {
             $this->pdo->query('DELETE FROM income WHERE id=' . $this->incomeId . ';');
         }
-        $this->pdo->query('DELETE FROM tax_data WHERE tax_number = "435678122F";');
-        $this->pdo->query('DELETE FROM tax_data WHERE tax_number = "EMIT0012300TEST";');
-        $this->pdo->query('DELETE FROM business WHERE name = "CUSTOMER Bar"');
-        $this->pdo->query('DELETE FROM business WHERE name = "test emitinvoice"');
+        $this->pdo->query('DELETE FROM business WHERE tax_id = "435678122F";');
+        $this->pdo->query('DELETE FROM business WHERE tax_id = "EMIT0012300TEST";');
         $this->pdo->query('DELETE FROM invoice WHERE number = "'.$this->invoiceNumber.'"');
     }
 

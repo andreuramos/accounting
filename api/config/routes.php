@@ -2,10 +2,10 @@
 
 require_once './vendor/autoload.php';
 
+use App\Business\Infrastructure\Controller\SetUserTaxDataController;
 use App\Invoice\Infrastructure\Controller\EmitInvoiceController;
 use App\Shared\Infrastructure\Controller\SharedDomainController;
 use App\Shared\Infrastructure\Controller\StatusCheckController;
-use App\Tax\Infrastructure\Controller\SetUserTaxDataController;
 use App\Transaction\Infrastructure\Controller\CreateExpenseController;
 use App\Transaction\Infrastructure\Controller\CreateIncomeController;
 use App\Transaction\Infrastructure\Controller\GetExpensesController;

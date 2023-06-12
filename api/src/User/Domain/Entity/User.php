@@ -9,11 +9,12 @@ use App\User\Domain\ValueObject\Email;
 class User
 {
     private ?AuthToken $refreshToken = null;
+    private ?Id $accountId = null;
 
     public function __construct(
         private readonly Id $id,
         private readonly Email $email,
-        private readonly string $passwordHash
+        private readonly string $passwordHash,
     ) {
     }
 
@@ -40,6 +41,16 @@ class User
     public function refreshToken(): ?AuthToken
     {
         return $this->refreshToken;
+    }
+
+    public function setAccountId(Id $accountId): void
+    {
+        $this->accountId = $accountId;
+    }
+
+    public function accountId(): ?Id
+    {
+        return $this->accountId;
     }
 
     public function toExposableArray(): array

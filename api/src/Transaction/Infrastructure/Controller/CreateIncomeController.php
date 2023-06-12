@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CreateIncomeController extends AuthorizedController
 {
-    const MANDATORY_PARAMETERS = ['amount', 'description', 'date'];
+    private const MANDATORY_PARAMETERS = ['amount', 'description', 'date'];
 
     public function __construct(
         JWTDecoder $tokenDecoder,

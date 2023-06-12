@@ -6,12 +6,10 @@ use Test\Integration\EndpointTest;
 
 class CreateExpenseEndpointTest extends EndpointTest
 {
-    const EMAIL = "expense@email.com";
-
     public function test_expense_can_be_created()
     {
-        $this->registerUser(self::EMAIL, "pass");
-        $this->login(self::EMAIL, "pass");
+        $this->registerUser($this->email, "pass");
+        $this->login($this->email, "pass");
 
         $response = $this->client->post('/expense',[
             'body' => json_encode([
@@ -30,7 +28,7 @@ class CreateExpenseEndpointTest extends EndpointTest
     public function tearDown(): void
     {
         parent::tearDown();
-        $this->deleteUser(self::EMAIL);
+        $this->deleteUser($this->email);
         $this->pdo->query('DELETE FROM expense WHERE description="test_expense_created";');
     }
 }

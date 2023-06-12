@@ -2,16 +2,15 @@
 
 namespace App\Invoice\Application\UseCase;
 
+use App\Business\Domain\Entity\Business;
+use App\Business\Domain\Model\BusinessRepositoryInterface;
+use App\Business\Domain\ValueObject\Address;
 use App\Invoice\Application\Command\EmitInvoiceCommand;
-use App\Invoice\Domain\Entity\Business;
 use App\Invoice\Domain\Entity\Invoice;
-use App\Invoice\Domain\Model\BusinessRepositoryInterface;
 use App\Invoice\Domain\Model\InvoiceRepositoryInterface;
 use App\Invoice\Domain\Service\InvoiceNumberGenerator;
 use App\Invoice\Domain\ValueObject\InvoiceNumber;
 use App\Shared\Domain\ValueObject\Id;
-use App\Tax\Domain\Entity\TaxData;
-use App\Tax\Domain\ValueObject\Address;
 use App\Transaction\Domain\Exception\IncomeNotFoundException;
 use App\Transaction\Domain\Model\IncomeRepositoryInterface;
 
@@ -59,14 +58,11 @@ class EmitInvoiceUseCase
         $business = new Business(
             new Id(null),
             $command->customerName,
-            new TaxData(
-                new Id(null),
-                $command->customerTaxName,
-                $command->customerTaxNumber,
-                new Address(
-                    $command->customerTaxAddress,
-                    $command->customerTaxZipCode
-                )
+            $command->customerTaxName,
+            $command->customerTaxNumber,
+            new Address(
+                $command->customerTaxAddress,
+                $command->customerTaxZipCode
             )
         );
         $this->businessRepository->save($business);

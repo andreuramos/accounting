@@ -15,8 +15,8 @@ use Symfony\Component\HttpFoundation\Request;
 class EmitInvoiceController extends AuthorizedController
 {
     public function __construct(
-        JWTDecoder                          $tokenDecoder,
-        UserRepositoryInterface             $userRepository,
+        JWTDecoder $tokenDecoder,
+        UserRepositoryInterface $userRepository,
         private readonly EmitInvoiceUseCase $emitInvoiceUseCase,
     ) {
         parent::__construct($tokenDecoder, $userRepository);

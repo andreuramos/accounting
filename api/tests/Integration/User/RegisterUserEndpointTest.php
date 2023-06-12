@@ -7,19 +7,43 @@ use Test\Integration\EndpointTest;
 
 class RegisterUserEndpointTest extends EndpointTest
 {
-    const SUCCESS_EMAIL = 'some@email.com';
-
     public function test_registers_a_user()
     {
         $response = $this->client->request('POST', '/user', [
             'body' => json_encode([
                 'name' => 'some name',
-                'email' => self::SUCCESS_EMAIL,
+                'email' => $this->email,
                 'password' => 'encodedPassword',
             ], JSON_THROW_ON_ERROR)
         ]);
 
         $this->assertEquals(200, $response->getStatusCode());
+        $user = $this->pdo
+            ->query('SELECT * FROM user WHERE email = "' . $this->email . '"')
+            ->fetch();
+        $this->assertNotNull($user);
+    }
+
+    public function test_creates_an_account_associated_to_the_user()
+    {
+        $response = $this->client->request('POST', '/user', [
+            'body' => json_encode([
+                'name' => 'some name',
+                'email' => $this->email,
+                'password' => 'encodedPassword',
+            ], JSON_THROW_ON_ERROR)
+        ]);
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $user = $this->pdo
+            ->query('SELECT * FROM user WHERE email = "' . $this->email . '"')
+            ->fetch();
+        $this->assertArrayHasKey('account_id', $user);
+        $account = $this->pdo
+            ->query('SELECT * FROM account WHERE main_user_id = ' . $user['id'])
+            ->fetch();
+        $this->assertNotNull($account);
+        $this->assertEquals($user['account_id'], $account['id']);
     }
 
     public function test_fails_if_no_email()
@@ -44,7 +68,7 @@ class RegisterUserEndpointTest extends EndpointTest
         $this->client->request('POST', '/user', [
             'body' => json_encode(
                 [
-                'email' => self::SUCCESS_EMAIL,
+                'email' => $this->email,
                 'password' => "anything",
                 ], JSON_THROW_ON_ERROR)
         ]);
@@ -52,7 +76,7 @@ class RegisterUserEndpointTest extends EndpointTest
             $response = $this->client->request('POST', '/user', [
                 'body' => json_encode([
                     'name' => 'other name',
-                    'email' => self::SUCCESS_EMAIL,
+                    'email' => $this->email,
                     'password' => 'IdonTk4r3.com'
                 ], JSON_THROW_ON_ERROR)
             ]);
@@ -81,6 +105,6 @@ class RegisterUserEndpointTest extends EndpointTest
     public function tearDown(): void
     {
         parent::tearDown();
-        $this->deleteUser(self::SUCCESS_EMAIL);
+        $this->deleteUser($this->email);
     }
 }

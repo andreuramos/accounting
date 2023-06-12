@@ -2,15 +2,11 @@
 
 namespace App\Invoice\Infrastructure\Repository;
 
-use App\Invoice\Domain\Entity\Business;
+use App\Business\Domain\Entity\Business;
 use App\Invoice\Domain\Entity\Invoice;
 use App\Invoice\Domain\Model\InvoiceRepositoryInterface;
 use App\Invoice\Domain\ValueObject\InvoiceNumber;
 use App\Shared\Domain\ValueObject\Id;
-use App\Tax\Domain\Entity\TaxData;
-use App\Tax\Domain\ValueObject\Address;
-use App\Transaction\Domain\Entity\Income;
-use App\Transaction\Domain\ValueObject\Money;
 use PDO;
 
 class MysqlInvoiceRepository implements InvoiceRepositoryInterface

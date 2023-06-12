@@ -7,7 +7,7 @@ use DI\ContainerBuilder;
 
 class ContainerFactory
 {
-    const DEFINITIONS_FOLDER = __DIR__ . '/../../../config/definitions/';
+    private const DEFINITIONS_FOLDER = __DIR__ . '/../../../config/definitions/';
 
     public static function create(): Container
     {

@@ -2,17 +2,14 @@
 
 namespace Test\Unit\Invoice\Domain\Service;
 
-use App\Invoice\Domain\Entity\Business;
+use App\Business\Domain\Entity\Business;
+use App\Business\Domain\ValueObject\Address;
 use App\Invoice\Domain\Entity\Invoice;
 use App\Invoice\Domain\Model\InvoiceRepositoryInterface;
 use App\Invoice\Domain\Service\InvoiceNumberGenerator;
 use App\Invoice\Domain\ValueObject\InvoiceNumber;
 use App\Shared\Application\Service\Timestamper;
 use App\Shared\Domain\ValueObject\Id;
-use App\Tax\Domain\Entity\TaxData;
-use App\Tax\Domain\ValueObject\Address;
-use App\Transaction\Domain\Entity\Income;
-use App\Transaction\Domain\ValueObject\Money;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -31,7 +28,7 @@ class InvoiceNumberGeneratorTest extends TestCase
         $this->invoiceRepository = $this->prophesize(InvoiceRepositoryInterface::class);
         $this->timestamper = $this->prophesize(Timestamper::class);
         $this->business = new Business(
-            new Id(1), "mybusiness", new TaxData(new Id(1), "-", "", new Address("", ""))
+            new Id(1), "mybusiness", "-", "", new Address("", "")
         );
     }
 

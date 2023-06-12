@@ -32,7 +32,7 @@ init-db:
 	export DB_NAME=$(DB_NAME) && \
 	envsubst < ./api/config/db-init.sql | docker exec -i $(DB_CONTAINER)_1 mysql -uroot -p$(DB_ROOT_PASSWORD)
 
-test: test-unit test-integration
+test: test-static test-unit test-integration
 
 test-integration: # runs all tests
 	docker exec -u 1000 $(BE_NAME)_1 vendor/bin/phinx migrate --configuration=config/phinx.php -e testing
@@ -40,6 +40,9 @@ test-integration: # runs all tests
 
 test-unit:
 	docker exec $(BE_NAME)_1 vendor/bin/phpunit --colors=always --testsuite unit
+
+test-static:
+	docker exec $(BE_NAME)_1 vendor/bin/phpcs src/ --standard=PSR12
 
 migration: create-migration
 

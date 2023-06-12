@@ -2,19 +2,18 @@
 
 namespace Test\Unit\Invoice\Application\UseCase;
 
+use App\Business\Domain\Entity\Business;
+use App\Business\Domain\Exception\BusinessNotFoundException;
+use App\Business\Domain\Model\BusinessRepositoryInterface;
+use App\Business\Domain\Model\TaxDataAggregateRepositoryInterface;
+use App\Business\Domain\ValueObject\Address;
 use App\Invoice\Application\Command\EmitInvoiceCommand;
 use App\Invoice\Application\UseCase\EmitInvoiceUseCase;
-use App\Invoice\Domain\Entity\Business;
 use App\Invoice\Domain\Entity\Invoice;
-use App\Invoice\Domain\Exception\BusinessNotFoundException;
-use App\Invoice\Domain\Model\BusinessRepositoryInterface;
 use App\Invoice\Domain\Model\InvoiceRepositoryInterface;
 use App\Invoice\Domain\Service\InvoiceNumberGenerator;
 use App\Invoice\Domain\ValueObject\InvoiceNumber;
 use App\Shared\Domain\ValueObject\Id;
-use App\Tax\Domain\Entity\TaxData;
-use App\Tax\Domain\Model\TaxDataAggregateRepositoryInterface;
-use App\Tax\Domain\ValueObject\Address;
 use App\Transaction\Domain\Entity\Income;
 use App\Transaction\Domain\Exception\IncomeNotFoundException;
 use App\Transaction\Domain\Model\IncomeRepositoryInterface;
@@ -109,7 +108,7 @@ class EmitInvoiceUseCaseTest extends TestCase
         $receiverBusiness = new Business(
             new Id(1),
             "Receiver Company",
-            $this->generateTaxData(),
+            ... $this->generateTaxData(),
         );
         $this->incomeRepository->getByIdOrFail($incomeId)
             ->willReturn($income);
@@ -144,7 +143,7 @@ class EmitInvoiceUseCaseTest extends TestCase
             ->willReturn(null);
         $this->businessRepository->getByUserIdOrFail($this->user->id())
             ->willReturn(new Business(
-                new Id(1), "company", $this->generateTaxData()
+                new Id(1), "company", ...$this->generateTaxData()
             ));
         $this->invoiceNumberGenerator->__invoke(Argument::any())
             ->willReturn(new InvoiceNumber('123'));
@@ -175,12 +174,12 @@ class EmitInvoiceUseCaseTest extends TestCase
         $receiverBusiness = new Business(
             new Id(1),
             "Receiver Company",
-            $this->generateTaxData(),
+            ...$this->generateTaxData(),
         );
         $userBusiness = new Business(
             new Id(2),
             "Emitter Company",
-            $this->generateTaxData(),
+            ...$this->generateTaxData(),
         );
         $invoiceNumber = new InvoiceNumber('20230001');
         $this->businessRepository->getByTaxNumber($taxNumber)
@@ -210,13 +209,12 @@ class EmitInvoiceUseCaseTest extends TestCase
         );
     }
 
-    private function generateTaxData(): TaxData
+    private function generateTaxData(): array
     {
-        return new TaxData(
-            new Id(random_int(1, 100)),
+        return [
             "brand " . random_int(0, 100),
             "B" . random_int(1000000,9999999),
             new Address("Fake street", "07013")
-        );
+        ];
     }
 }
