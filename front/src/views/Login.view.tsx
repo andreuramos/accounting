@@ -1,8 +1,7 @@
 import { FormEvent } from 'react'
 import { AuthService } from 'src/services/auth.service'
 import { LoginDTO } from '@application/useCases/Login/LoginDTO'
-import { Grid } from '@mui/joy'
-import { Button, Input } from 'src/components'
+import { Button, Grid, Input } from 'src/components'
 
 interface FormElements extends HTMLFormControlsCollection {
     email: HTMLInputElement
@@ -27,7 +26,7 @@ export const LoginView = () => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <Grid container spacing={2} sx={{ flexGrow: 1 }}>
+            <Grid container spacing={2}>
                 <Grid xs={8}>
                     <Input name="email" value="my@hotmail.com" />
                 </Grid>
