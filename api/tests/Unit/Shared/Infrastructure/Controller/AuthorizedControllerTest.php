@@ -27,6 +27,7 @@ abstract class AuthorizedControllerTest extends TestCase
         $this->userRepository = $this->prophesize(UserRepositoryInterface::class);
 
         $this->user = new User(new Id(1), new Email("any@email.com"), "pass");
+        $this->user->setAccountId(new Id(2));
         $this->tokenDecoder->__invoke(self::TOKEN)->willReturn([
             'user' => $this->user->email()->toString(),
             'expiration' => date_create()->getTimestamp() + 1000,

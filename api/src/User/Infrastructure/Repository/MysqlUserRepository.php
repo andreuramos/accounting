@@ -66,6 +66,7 @@ class MysqlUserRepository implements UserRepositoryInterface
         );
         $token = new AuthToken($result['refresh_token']);
         $user->setRefreshToken($token);
+        $user->setAccountId(new Id($result['account_id']));
 
         return $user;
     }

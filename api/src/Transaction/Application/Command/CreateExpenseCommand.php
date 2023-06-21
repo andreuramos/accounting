@@ -10,7 +10,8 @@ class CreateExpenseCommand
         public readonly int $amountCents,
         public readonly string $description,
         public readonly string $date,
-        public readonly Id $userId
+        public readonly Id $userId,
+        public readonly Id $accountId,
     ) {
     }
 }

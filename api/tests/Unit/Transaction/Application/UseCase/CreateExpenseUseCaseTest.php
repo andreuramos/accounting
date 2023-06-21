@@ -29,7 +29,8 @@ class CreateExpenseUseCaseTest extends TestCase
             1,
             "porros",
             '2022-04-27',
-            new Id(1)
+            new Id(1),
+            new Id(2),
         );
         $expense = new Expense(
             new Id(null),
