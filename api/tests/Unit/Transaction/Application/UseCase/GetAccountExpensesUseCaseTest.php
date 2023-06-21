@@ -4,16 +4,14 @@ namespace Test\Unit\Transaction\Application\UseCase;
 
 use App\Shared\Domain\ValueObject\Id;
 use App\Transaction\Application\Command\GetAccountExpensesCommand;
-use App\Transaction\Application\UseCase\GetUserExpensesUseCase;
+use App\Transaction\Application\UseCase\GetAccountExpensesUseCase;
 use App\Transaction\Domain\Entity\Expense;
 use App\Transaction\Domain\Model\ExpenseRepositoryInterface;
 use App\Transaction\Domain\ValueObject\Money;
-use App\User\Domain\Entity\User;
-use App\User\Domain\ValueObject\Email;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-class GetUserExpensesUseCaseTest extends TestCase
+class GetAccountExpensesUseCaseTest extends TestCase
 {
     use ProphecyTrait;
 
@@ -29,7 +27,7 @@ class GetUserExpensesUseCaseTest extends TestCase
     {
         $accountId = new Id(2);
         $this->expenseRepository->getByAccountId($accountId)->willReturn([]);
-        $useCase = new GetUserExpensesUseCase(
+        $useCase = new GetAccountExpensesUseCase(
             $this->expenseRepository->reveal()
         );
         $command = new GetAccountExpensesCommand($accountId);
@@ -63,7 +61,7 @@ class GetUserExpensesUseCaseTest extends TestCase
             ->willReturn([
                 $expense1, $expense2
             ]);
-        $useCase = new GetUserExpensesUseCase(
+        $useCase = new GetAccountExpensesUseCase(
             $this->expenseRepository->reveal()
         );
         $command = new GetAccountExpensesCommand($accountId);

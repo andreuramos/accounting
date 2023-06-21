@@ -5,7 +5,7 @@ namespace Test\Unit\Transaction\Infrastructure\Controller;
 use App\Shared\Domain\ValueObject\Id;
 use App\Transaction\Application\Command\GetAccountExpensesCommand;
 use App\Transaction\Application\Result\UserExpenses;
-use App\Transaction\Application\UseCase\GetUserExpensesUseCase;
+use App\Transaction\Application\UseCase\GetAccountExpensesUseCase;
 use App\Transaction\Domain\Entity\Expense;
 use App\Transaction\Domain\ValueObject\Money;
 use App\Transaction\Infrastructure\Controller\GetExpensesController;
@@ -23,7 +23,7 @@ class GetExpensesControllerTest extends AuthorizedControllerTest
     public function setUp(): void
     {
         parent::setUp();
-        $this->useCase = $this->prophesize(GetUserExpensesUseCase::class);
+        $this->useCase = $this->prophesize(GetAccountExpensesUseCase::class);
     }
 
     public function test_fails_if_no_authorized()

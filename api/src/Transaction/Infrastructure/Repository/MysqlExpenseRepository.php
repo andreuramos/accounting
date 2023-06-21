@@ -6,7 +6,6 @@ use App\Shared\Domain\ValueObject\Id;
 use App\Transaction\Domain\Entity\Expense;
 use App\Transaction\Domain\Model\ExpenseRepositoryInterface;
 use App\Transaction\Domain\ValueObject\Money;
-use App\User\Domain\Entity\User;
 use PDO;
 
 class MysqlExpenseRepository implements ExpenseRepositoryInterface
