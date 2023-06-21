@@ -9,6 +9,5 @@ use App\User\Domain\Entity\User;
 interface ExpenseRepositoryInterface
 {
     public function save(Expense $expense): void;
-    public function getByUser(User $user): array;
     public function getByAccountId(Id $accountId): array;
 }

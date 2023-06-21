@@ -37,31 +37,6 @@ class MysqlExpenseRepository implements ExpenseRepositoryInterface
         $stmt->execute();
     }
 
-    public function getByUser(User $user): array
-    {
-        $userId = $user->id()->getInt();
-
-        $stmt = $this->PDO->prepare(
-            'SELECT * FROM expense WHERE user_id = :user_id'
-        );
-        $stmt->bindParam(':user_id', $userId);
-        $stmt->execute();
-
-        $results = [];
-        foreach ($stmt->fetchAll() as $result) {
-            $results[] = new Expense(
-                new Id($result['id']),
-                new Id($result['user_id']),
-                new Id($result['account_id']),
-                new Money($result['amount']),
-                $result['description'],
-                new \DateTime($result['date'])
-            );
-        }
-
-        return $results;
-    }
-
     public function getByAccountId(Id $accountId): array
     {
         $accountIdInt = $accountId->getInt();
