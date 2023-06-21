@@ -27,12 +27,12 @@ class GetUserExpensesUseCaseTest extends TestCase
 
     public function test_no_expenses()
     {
-        $user = new User(new Id(1), new Email("getexpenses@usecase.app"), "");
-        $this->expenseRepository->getByUser($user)->willReturn([]);
+        $accountId = new Id(2);
+        $this->expenseRepository->getByAccountId($accountId)->willReturn([]);
         $useCase = new GetUserExpensesUseCase(
             $this->expenseRepository->reveal()
         );
-        $command = new GetAccountExpensesCommand($user);
+        $command = new GetAccountExpensesCommand($accountId);
 
         $result = $useCase($command);
 
@@ -41,11 +41,11 @@ class GetUserExpensesUseCaseTest extends TestCase
 
     public function test_usecase_returns_same_expenses_than_repo()
     {
-        $user = new User(new Id(1), new Email("getexpenses@usecase.app"), "");
+        $accountId = new Id(2);
         $expense1 = new Expense(
             new Id(1),
             new Id(1),
-            new Id(2),
+            $accountId,
             new Money(200, "EUR"),
             "expense 1",
             new \DateTime()
@@ -53,12 +53,12 @@ class GetUserExpensesUseCaseTest extends TestCase
         $expense2 = new Expense(
             new Id(2),
             new Id(1),
-            new Id(2),
+            $accountId,
             new Money(100, "EUR"),
             "expense 2",
             new \DateTime()
         );
-        $this->expenseRepository->getByUser($user)
+        $this->expenseRepository->getByAccountId($accountId)
             ->shouldBeCalled()
             ->willReturn([
                 $expense1, $expense2
@@ -66,7 +66,7 @@ class GetUserExpensesUseCaseTest extends TestCase
         $useCase = new GetUserExpensesUseCase(
             $this->expenseRepository->reveal()
         );
-        $command = new GetAccountExpensesCommand($user);
+        $command = new GetAccountExpensesCommand($accountId);
 
         $result = $useCase($command);
 

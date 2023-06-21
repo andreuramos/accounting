@@ -2,12 +2,12 @@
 
 namespace App\Transaction\Application\Command;
 
-use App\User\Domain\Entity\User;
+use App\Shared\Domain\ValueObject\Id;
 
 class GetAccountExpensesCommand
 {
     public function __construct(
-        public readonly User $user
+        public readonly Id $accountId
     ) {
     }
 }

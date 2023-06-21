@@ -15,7 +15,7 @@ class GetUserExpensesUseCase
 
     public function __invoke(GetAccountExpensesCommand $command): UserExpenses
     {
-        $expenses = $this->expenseRepository->getByUser($command->user);
+        $expenses = $this->expenseRepository->getByAccountId($command->accountId);
 
         return new UserExpenses($expenses);
     }

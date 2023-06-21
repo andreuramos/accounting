@@ -25,7 +25,7 @@ class GetExpensesController extends AuthorizedController
     {
         $this->auth($request);
 
-        $command = new GetAccountExpensesCommand($this->authUser);
+        $command = new GetAccountExpensesCommand($this->authUser->accountId());
         $userExpenses = ($this->getUserExpensesUseCase)($command);
 
         $response = array_map(function (Expense $expense) {

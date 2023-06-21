@@ -40,7 +40,7 @@ class GetExpensesControllerTest extends AuthorizedControllerTest
     {
         $request = new Request();
         $request->headers->set('Authorization', 'Bearer ' . self::TOKEN);
-        $command = new GetAccountExpensesCommand($this->user);
+        $command = new GetAccountExpensesCommand($this->user->accountId());
         $userExpense = new Expense(
             new Id(null),
             $this->user->id(),
