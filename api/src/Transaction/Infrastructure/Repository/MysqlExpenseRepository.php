@@ -18,16 +18,18 @@ class MysqlExpenseRepository implements ExpenseRepositoryInterface
     public function save(Expense $expense): void
     {
         $stmt = $this->PDO->prepare(
-            "INSERT INTO expense (user_id, amount, description, date) " .
-            "VALUES (:user_id, :amount, :description, :date)"
+            "INSERT INTO expense (user_id, account_id, amount, description, date) " .
+            "VALUES (:user_id, :account_id, :amount, :description, :date)"
         );
 
         $userId = $expense->userId->getInt();
+        $accountId = $expense->accountId->getInt();
         $amountCents = $expense->amount->amountCents;
         $description = $expense->description;
         $date = $expense->date->format('Y-m-d');
 
         $stmt->bindParam(':user_id', $userId);
+        $stmt->bindParam(':account_id', $accountId);
         $stmt->bindParam(':amount', $amountCents);
         $stmt->bindParam(':description', $description);
         $stmt->bindParam(':date', $date);
@@ -50,7 +52,7 @@ class MysqlExpenseRepository implements ExpenseRepositoryInterface
             $results[] = new Expense(
                 new Id($result['id']),
                 new Id($result['user_id']),
-                new Id(null),
+                new Id($result['account_id']),
                 new Money($result['amount']),
                 $result['description'],
                 new \DateTime($result['date'])
