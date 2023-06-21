@@ -3,7 +3,7 @@
 namespace Test\Unit\Transaction\Infrastructure\Controller;
 
 use App\Shared\Domain\ValueObject\Id;
-use App\Transaction\Application\Command\GetUserExpensesCommand;
+use App\Transaction\Application\Command\GetAccountExpensesCommand;
 use App\Transaction\Application\Result\UserExpenses;
 use App\Transaction\Application\UseCase\GetUserExpensesUseCase;
 use App\Transaction\Domain\Entity\Expense;
@@ -40,7 +40,7 @@ class GetExpensesControllerTest extends AuthorizedControllerTest
     {
         $request = new Request();
         $request->headers->set('Authorization', 'Bearer ' . self::TOKEN);
-        $command = new GetUserExpensesCommand($this->user);
+        $command = new GetAccountExpensesCommand($this->user);
         $userExpense = new Expense(
             new Id(null),
             $this->user->id(),

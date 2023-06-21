@@ -3,7 +3,7 @@
 namespace Test\Unit\Transaction\Application\UseCase;
 
 use App\Shared\Domain\ValueObject\Id;
-use App\Transaction\Application\Command\GetUserExpensesCommand;
+use App\Transaction\Application\Command\GetAccountExpensesCommand;
 use App\Transaction\Application\UseCase\GetUserExpensesUseCase;
 use App\Transaction\Domain\Entity\Expense;
 use App\Transaction\Domain\Model\ExpenseRepositoryInterface;
@@ -32,7 +32,7 @@ class GetUserExpensesUseCaseTest extends TestCase
         $useCase = new GetUserExpensesUseCase(
             $this->expenseRepository->reveal()
         );
-        $command = new GetUserExpensesCommand($user);
+        $command = new GetAccountExpensesCommand($user);
 
         $result = $useCase($command);
 
@@ -66,7 +66,7 @@ class GetUserExpensesUseCaseTest extends TestCase
         $useCase = new GetUserExpensesUseCase(
             $this->expenseRepository->reveal()
         );
-        $command = new GetUserExpensesCommand($user);
+        $command = new GetAccountExpensesCommand($user);
 
         $result = $useCase($command);
 

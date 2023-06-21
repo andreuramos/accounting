@@ -4,7 +4,7 @@ namespace App\Transaction\Application\Command;
 
 use App\User\Domain\Entity\User;
 
-class GetUserExpensesCommand
+class GetAccountExpensesCommand
 {
     public function __construct(
         public readonly User $user

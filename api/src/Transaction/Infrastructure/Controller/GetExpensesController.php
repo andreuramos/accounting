@@ -4,7 +4,7 @@ namespace App\Transaction\Infrastructure\Controller;
 
 use App\Shared\Infrastructure\ApiResponse;
 use App\Shared\Infrastructure\Controller\AuthorizedController;
-use App\Transaction\Application\Command\GetUserExpensesCommand;
+use App\Transaction\Application\Command\GetAccountExpensesCommand;
 use App\Transaction\Application\UseCase\GetUserExpensesUseCase;
 use App\Transaction\Domain\Entity\Expense;
 use App\User\Domain\Model\UserRepositoryInterface;
@@ -25,7 +25,7 @@ class GetExpensesController extends AuthorizedController
     {
         $this->auth($request);
 
-        $command = new GetUserExpensesCommand($this->authUser);
+        $command = new GetAccountExpensesCommand($this->authUser);
         $userExpenses = ($this->getUserExpensesUseCase)($command);
 
         $response = array_map(function (Expense $expense) {
