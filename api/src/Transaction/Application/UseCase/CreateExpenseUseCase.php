@@ -20,6 +20,7 @@ class CreateExpenseUseCase
         $expense = new Expense(
             new Id(null),
             $command->userId,
+            $command->accountId,
             new Money($command->amountCents, 'EUR'),
             $command->description,
             date_create($command->date)

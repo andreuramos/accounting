@@ -35,6 +35,7 @@ class CreateExpenseUseCaseTest extends TestCase
         $expense = new Expense(
             new Id(null),
             new Id(1),
+            new Id(2),
             new Money(1, "EUR"),
             "porros",
             date_create('2022-04-27')

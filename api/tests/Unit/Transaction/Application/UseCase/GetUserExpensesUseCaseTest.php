@@ -45,6 +45,7 @@ class GetUserExpensesUseCaseTest extends TestCase
         $expense1 = new Expense(
             new Id(1),
             new Id(1),
+            new Id(2),
             new Money(200, "EUR"),
             "expense 1",
             new \DateTime()
@@ -52,6 +53,7 @@ class GetUserExpensesUseCaseTest extends TestCase
         $expense2 = new Expense(
             new Id(2),
             new Id(1),
+            new Id(2),
             new Money(100, "EUR"),
             "expense 2",
             new \DateTime()

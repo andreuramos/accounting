@@ -50,6 +50,7 @@ class MysqlExpenseRepository implements ExpenseRepositoryInterface
             $results[] = new Expense(
                 new Id($result['id']),
                 new Id($result['user_id']),
+                new Id(null),
                 new Money($result['amount']),
                 $result['description'],
                 new \DateTime($result['date'])
