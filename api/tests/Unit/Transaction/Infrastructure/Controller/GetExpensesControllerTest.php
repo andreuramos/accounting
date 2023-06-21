@@ -43,7 +43,6 @@ class GetExpensesControllerTest extends AuthorizedControllerTest
         $command = new GetAccountExpensesCommand($this->user->accountId());
         $userExpense = new Expense(
             new Id(null),
-            $this->user->id(),
             $this->user->accountId(),
             new Money(100, "EUR"),
             "",

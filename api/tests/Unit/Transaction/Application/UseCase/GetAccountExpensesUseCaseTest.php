@@ -42,7 +42,6 @@ class GetAccountExpensesUseCaseTest extends TestCase
         $accountId = new Id(2);
         $expense1 = new Expense(
             new Id(1),
-            new Id(1),
             $accountId,
             new Money(200, "EUR"),
             "expense 1",
@@ -50,7 +49,6 @@ class GetAccountExpensesUseCaseTest extends TestCase
         );
         $expense2 = new Expense(
             new Id(2),
-            new Id(1),
             $accountId,
             new Money(100, "EUR"),
             "expense 2",
