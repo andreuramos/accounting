@@ -31,6 +31,7 @@ class CreateIncomeController extends AuthorizedController
 
         $command = new CreateIncomeCommand(
             $this->authUser,
+            $this->authUser->accountId(),
             $requestContent['amount'],
             $requestContent['description'],
             $requestContent['date'],

@@ -27,8 +27,10 @@ class CreateIncomeUseCaseTest extends TestCase
     public function test_repository_is_called_with_a_new_income()
     {
         $user = new User(new Id(1), new Email("createincome@usecase.test"), "");
+        $user->setAccountId(new Id(2));
         $commmand = new CreateIncomeCommand(
             $user,
+            new Id(2),
             1000,
             "test repository is called with a new income",
             '2023-05-03',
