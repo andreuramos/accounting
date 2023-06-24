@@ -78,6 +78,7 @@ class MysqlIncomeRepository implements IncomeRepositoryInterface
         return new Income(
             new Id($dbIncome['id']),
             new Id($dbIncome['user_id']),
+            new Id(null),
             new Money($dbIncome['amount']),
             $dbIncome['description'],
             new \DateTime($dbIncome['date'])

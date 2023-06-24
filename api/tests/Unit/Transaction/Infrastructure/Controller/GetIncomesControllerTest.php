@@ -44,9 +44,10 @@ class GetIncomesControllerTest extends AuthorizedControllerTest
         $userIncome = new Income(
             new Id(123),
             $this->user->id(),
+            $this->user->accountId(),
             new Money(100, "EUR"),
             "Capsa 12 Moixa Amber Ale",
-            new \DateTime('2023-05-07')
+            new \DateTime('2023-05-07'),
         );
         $this->getUserIncomesUseCase->__invoke($command)
             ->shouldBeCalled()

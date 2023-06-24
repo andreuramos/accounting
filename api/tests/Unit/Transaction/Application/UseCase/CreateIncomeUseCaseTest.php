@@ -39,6 +39,7 @@ class CreateIncomeUseCaseTest extends TestCase
         $expectedIncome = new Income(
             new Id(null),
             $user->id(),
+            $user->accountId(),
             new Money(1000, "EUR"),
             "test repository is called with a new income",
             new \DateTime('2023-05-03'),

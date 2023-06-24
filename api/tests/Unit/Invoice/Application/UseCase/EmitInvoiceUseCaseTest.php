@@ -44,6 +44,7 @@ class EmitInvoiceUseCaseTest extends TestCase
         $this->invoiceRepository = $this->prophesize(InvoiceRepositoryInterface::class);
         $this->invoiceNumberGenerator = $this->prophesize(InvoiceNumberGenerator::class);
         $this->user = new User(new Id(1), new Email('a@b.com'), "");
+        $this->user->setAccountId(new Id(2));
     }
 
     public function test_fails_when_income_not_found()
@@ -72,7 +73,14 @@ class EmitInvoiceUseCaseTest extends TestCase
     {
         $useCase = $this->buildUseCase();
         $incomeId = new Id(123);
-        $income = new Income($incomeId, new Id(2), new Money(100), "", new \DateTime());
+        $income = new Income(
+            $incomeId,
+            new Id(2),
+            new Id(2),
+            new Money(100),
+            "",
+            new \DateTime(),
+        );
         $command = new EmitInvoiceCommand(
             $this->user,
             $incomeId,
@@ -94,7 +102,7 @@ class EmitInvoiceUseCaseTest extends TestCase
     {
         $useCase = $this->buildUseCase();
         $incomeId = new Id(123);
-        $income = new Income($incomeId, $this->user->id(), new Money(100), "", new \DateTime());
+        $income = $this->buildIncome($incomeId);
         $taxNumber = "B071892093";
         $command = new EmitInvoiceCommand(
             $this->user,
@@ -126,7 +134,7 @@ class EmitInvoiceUseCaseTest extends TestCase
     {
         $useCase = $this->buildUseCase();
         $incomeId = new Id(123);
-        $income = new Income($incomeId, $this->user->id(), new Money(100), "", new \DateTime());
+        $income = $this->buildIncome($incomeId);
         $taxNumber = "B071892093";
         $command = new EmitInvoiceCommand(
             $this->user,
@@ -158,7 +166,7 @@ class EmitInvoiceUseCaseTest extends TestCase
     {
         $useCase = $this->buildUseCase();
         $incomeId = new Id(123);
-        $income = new Income($incomeId, $this->user->id(), new Money(100), "", new \DateTime());
+        $income = $this->buildIncome($incomeId);
         $taxNumber = "B071892093";
         $command = new EmitInvoiceCommand(
             $this->user,
@@ -216,5 +224,17 @@ class EmitInvoiceUseCaseTest extends TestCase
             "B" . random_int(1000000,9999999),
             new Address("Fake street", "07013")
         ];
+    }
+
+    private function buildIncome(Id $incomeId): Income
+    {
+        return new Income(
+            $incomeId,
+            $this->user->id(),
+            $this->user->accountId(),
+            new Money(100),
+            "",
+            new \DateTime(),
+        );
     }
 }

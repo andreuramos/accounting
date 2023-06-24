@@ -20,9 +20,10 @@ class CreateIncomeUseCase
         $income = new Income(
             new Id(null),
             $command->user->id(),
+            $command->user->accountId(),
             new Money($command->amountCents),
             $command->description,
-            new \DateTime($command->date)
+            new \DateTime($command->date),
         );
 
         return $this->incomeRepository->save($income);

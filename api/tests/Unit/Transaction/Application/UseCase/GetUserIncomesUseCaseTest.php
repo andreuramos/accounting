@@ -4,8 +4,6 @@ namespace Test\Unit\Transaction\Application\UseCase;
 
 use App\Shared\Domain\ValueObject\Id;
 use App\Transaction\Application\Command\GetUserIncomesCommand;
-use App\Transaction\Application\Result\UserExpenses;
-use App\Transaction\Application\Result\UserIncomes;
 use App\Transaction\Application\UseCase\GetUserIncomesUseCase;
 use App\Transaction\Domain\Entity\Income;
 use App\Transaction\Domain\Model\IncomeRepositoryInterface;
@@ -43,9 +41,11 @@ class GetUserIncomesUseCaseTest extends TestCase
     public function test_returns_many_incomes()
     {
         $user = new User(new Id(1), new Email("manyincomes@usecase.test"), "");
+        $user->setAccountId(new Id(2));
         $income1 = new Income(
             new Id(123),
             $user->id(),
+            $user->accountId(),
             new Money(100, "EUR"),
             "income 1",
             new \DateTime()
@@ -53,6 +53,7 @@ class GetUserIncomesUseCaseTest extends TestCase
         $income2 = new Income(
             new Id(124),
             $user->id(),
+            $user->accountId(),
             new Money(200, "EUR"),
             "income 2",
             new \DateTime()
