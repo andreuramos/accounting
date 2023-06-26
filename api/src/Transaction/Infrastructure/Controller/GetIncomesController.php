@@ -5,7 +5,7 @@ namespace App\Transaction\Infrastructure\Controller;
 use App\Shared\Infrastructure\ApiResponse;
 use App\Shared\Infrastructure\Controller\AuthorizedController;
 use App\Transaction\Application\Command\GetAccountIncomesCommand;
-use App\Transaction\Application\UseCase\GetUserIncomesUseCase;
+use App\Transaction\Application\UseCase\GetAccountIncomesUseCase;
 use App\Transaction\Domain\Entity\Income;
 use App\User\Domain\Model\UserRepositoryInterface;
 use App\User\Infrastructure\Auth\JWTDecoder;
@@ -16,7 +16,7 @@ class GetIncomesController extends AuthorizedController
     public function __construct(
         JWTDecoder $tokenDecoder,
         UserRepositoryInterface $userRepository,
-        private readonly GetUserIncomesUseCase $getUserIncomesUseCase,
+        private readonly GetAccountIncomesUseCase $getUserIncomesUseCase,
     ) {
         parent::__construct($tokenDecoder, $userRepository);
     }

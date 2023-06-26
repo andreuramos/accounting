@@ -6,7 +6,7 @@ use App\Shared\Domain\ValueObject\Id;
 use App\Shared\Infrastructure\ApiResponse;
 use App\Transaction\Application\Command\GetAccountIncomesCommand;
 use App\Transaction\Application\Result\UserIncomes;
-use App\Transaction\Application\UseCase\GetUserIncomesUseCase;
+use App\Transaction\Application\UseCase\GetAccountIncomesUseCase;
 use App\Transaction\Domain\Entity\Income;
 use App\Transaction\Domain\ValueObject\Money;
 use App\Transaction\Infrastructure\Controller\GetIncomesController;
@@ -19,12 +19,12 @@ use Test\Unit\Shared\Infrastructure\Controller\AuthorizedControllerTest;
 class GetIncomesControllerTest extends AuthorizedControllerTest
 {
     use ProphecyTrait;
-    private $getUserIncomesUseCase;
+    private $getAccountIncomesUseCase;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->getUserIncomesUseCase = $this->prophesize(GetUserIncomesUseCase::class);
+        $this->getAccountIncomesUseCase = $this->prophesize(GetAccountIncomesUseCase::class);
     }
 
     public function test_fails_when_unauthorized()
@@ -49,7 +49,7 @@ class GetIncomesControllerTest extends AuthorizedControllerTest
             "Capsa 12 Moixa Amber Ale",
             new \DateTime('2023-05-07'),
         );
-        $this->getUserIncomesUseCase->__invoke(Argument::type(GetAccountIncomesCommand::class))
+        $this->getAccountIncomesUseCase->__invoke(Argument::type(GetAccountIncomesCommand::class))
             ->shouldBeCalled()
             ->willReturn(new UserIncomes([$userIncome]));
         $controller = $this->getController();
@@ -67,7 +67,7 @@ class GetIncomesControllerTest extends AuthorizedControllerTest
         return new GetIncomesController(
             $this->tokenDecoder->reveal(),
             $this->userRepository->reveal(),
-            $this->getUserIncomesUseCase->reveal(),
+            $this->getAccountIncomesUseCase->reveal(),
         );
     }
 }

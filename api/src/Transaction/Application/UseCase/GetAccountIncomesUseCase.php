@@ -6,7 +6,7 @@ use App\Transaction\Application\Command\GetAccountIncomesCommand;
 use App\Transaction\Application\Result\UserIncomes;
 use App\Transaction\Domain\Model\IncomeRepositoryInterface;
 
-class GetUserIncomesUseCase
+class GetAccountIncomesUseCase
 {
     public function __construct(
         private readonly IncomeRepositoryInterface $incomeRepository

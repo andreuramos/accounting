@@ -4,17 +4,16 @@ namespace Test\Unit\Transaction\Application\UseCase;
 
 use App\Shared\Domain\ValueObject\Id;
 use App\Transaction\Application\Command\GetAccountIncomesCommand;
-use App\Transaction\Application\UseCase\GetUserIncomesUseCase;
+use App\Transaction\Application\UseCase\GetAccountIncomesUseCase;
 use App\Transaction\Domain\Entity\Income;
 use App\Transaction\Domain\Model\IncomeRepositoryInterface;
 use App\Transaction\Domain\ValueObject\Money;
 use App\User\Domain\Entity\User;
 use App\User\Domain\ValueObject\Email;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-class GetUserIncomesUseCaseTest extends TestCase
+class GetAccountIcomesUseCaseTest extends TestCase
 {
     use ProphecyTrait;
     private $incomeRepository;
@@ -71,8 +70,8 @@ class GetUserIncomesUseCaseTest extends TestCase
         $this->assertCount(2, $result->incomes);
     }
 
-    private function getUseCase(): GetUserIncomesUseCase
+    private function getUseCase(): GetAccountIncomesUseCase
     {
-        return new GetUserIncomesUseCase($this->incomeRepository->reveal());
+        return new GetAccountIncomesUseCase($this->incomeRepository->reveal());
     }
 }
