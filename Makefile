@@ -23,7 +23,7 @@ init-fe:
 	docker exec -it $(FE_NAME)_1
 
 enter-db:
-	docker exec -it $(DB_CONTAINER)_1 mysql -uaccounting -p
+	docker exec -it $(DB_CONTAINER)_1 mysql -u$(DB_USER) -p$(DB_PWD) $(DB_NAME)
 
 init-db:
 	@echo "Initing database ..."
