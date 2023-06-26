@@ -13,7 +13,7 @@ use App\User\Domain\ValueObject\Email;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-class GetAccountIcomesUseCaseTest extends TestCase
+class GetAccountIncomesUseCaseTest extends TestCase
 {
     use ProphecyTrait;
     private $incomeRepository;
