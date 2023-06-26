@@ -3,7 +3,7 @@
 namespace Test\Unit\Transaction\Application\UseCase;
 
 use App\Shared\Domain\ValueObject\Id;
-use App\Transaction\Application\Command\GetUserIncomesCommand;
+use App\Transaction\Application\Command\GetAccountIncomesCommand;
 use App\Transaction\Application\UseCase\GetUserIncomesUseCase;
 use App\Transaction\Domain\Entity\Income;
 use App\Transaction\Domain\Model\IncomeRepositoryInterface;
@@ -11,6 +11,7 @@ use App\Transaction\Domain\ValueObject\Money;
 use App\User\Domain\Entity\User;
 use App\User\Domain\ValueObject\Email;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 class GetUserIncomesUseCaseTest extends TestCase
@@ -27,11 +28,12 @@ class GetUserIncomesUseCaseTest extends TestCase
     public function test_no_incomes()
     {
         $user = new User(new Id(1), new Email("noincomes@usecase.test"), "");
-        $this->incomeRepository->getByUser($user)
+        $user->setAccountId(new Id(2));
+        $this->incomeRepository->getByAccountId($user->accountId())
             ->shouldBeCalled()
             ->willReturn([]);
         $useCase = $this->getUseCase();
-        $command = new GetUserIncomesCommand($user);
+        $command = new GetAccountIncomesCommand(new Id(2));
 
         $result = $useCase($command);
 
@@ -58,11 +60,11 @@ class GetUserIncomesUseCaseTest extends TestCase
             "income 2",
             new \DateTime()
         );
-        $this->incomeRepository->getByUser($user)
+        $this->incomeRepository->getByAccountId($user->accountId())
             ->shouldBeCalled()
             ->willReturn([$income1, $income2]);
         $useCase = $this->getUseCase();
-        $command = new GetUserIncomesCommand($user);
+        $command = new GetAccountIncomesCommand($user->accountId());
 
         $result = $useCase($command);
 

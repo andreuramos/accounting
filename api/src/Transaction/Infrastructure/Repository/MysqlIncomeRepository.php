@@ -20,16 +20,18 @@ class MysqlIncomeRepository implements IncomeRepositoryInterface
     {
         $stmt = $this->pdo->prepare(
             'INSERT INTO income ' .
-            '(user_id, amount, description, date) ' .
-            'VALUES (:user_id, :amount, :description, :date)'
+            '(user_id, account_id, amount, description, date) ' .
+            'VALUES (:user_id, :account_id, :amount, :description, :date)'
         );
 
         $userId = $income->userId->getInt();
+        $accountId = $income->accountId->getInt();
         $amountCents = $income->amount->amountCents;
         $description = $income->description;
         $date = $income->date->format('Y-m-d');
 
         $stmt->bindParam(':user_id', $userId);
+        $stmt->bindParam(':account_id', $accountId);
         $stmt->bindParam(':amount', $amountCents);
         $stmt->bindParam(':description', $description);
         $stmt->bindParam(':date', $date);
@@ -40,14 +42,14 @@ class MysqlIncomeRepository implements IncomeRepositoryInterface
         return new Id($lastInsertId);
     }
 
-    public function getByUser(User $user): array
+    public function getByAccountId(Id $accountId): array
     {
         $stmt = $this->pdo->prepare(
-            'SELECT * FROM income WHERE user_id = :user_id'
+            'SELECT * FROM income WHERE account_id = :account_id'
         );
 
-        $userId = $user->id()->getInt();
-        $stmt->bindParam(':user_id', $userId);
+        $accountIdInt = $accountId->getInt();
+        $stmt->bindParam(':account_id', $accountIdInt);
         $stmt->execute();
 
         $results = [];
@@ -78,7 +80,7 @@ class MysqlIncomeRepository implements IncomeRepositoryInterface
         return new Income(
             new Id($dbIncome['id']),
             new Id($dbIncome['user_id']),
-            new Id(null),
+            new Id($dbIncome['account_id']),
             new Money($dbIncome['amount']),
             $dbIncome['description'],
             new \DateTime($dbIncome['date'])

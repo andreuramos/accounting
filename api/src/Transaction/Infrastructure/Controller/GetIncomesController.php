@@ -4,7 +4,7 @@ namespace App\Transaction\Infrastructure\Controller;
 
 use App\Shared\Infrastructure\ApiResponse;
 use App\Shared\Infrastructure\Controller\AuthorizedController;
-use App\Transaction\Application\Command\GetUserIncomesCommand;
+use App\Transaction\Application\Command\GetAccountIncomesCommand;
 use App\Transaction\Application\UseCase\GetUserIncomesUseCase;
 use App\Transaction\Domain\Entity\Income;
 use App\User\Domain\Model\UserRepositoryInterface;
@@ -25,7 +25,7 @@ class GetIncomesController extends AuthorizedController
     {
         $this->auth($request);
 
-        $command = new GetUserIncomesCommand($this->authUser);
+        $command = new GetAccountIncomesCommand($this->authUser->accountId());
         $userIncomes = ($this->getUserIncomesUseCase)($command);
 
         $response = array_map(function (Income $income) {
