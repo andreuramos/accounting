@@ -25,7 +25,7 @@ class EmitInvoiceController extends AuthorizedController
     private const MANDATORY_PARAMETERS = [
         'income_id', 'customer_name', 'customer_tax_name',
         'customer_tax_number', 'customer_tax_address',
-        'customer_tax_zip_code'
+        'customer_tax_zip_code', 'date', 'amount', 'concept',
     ];
 
     public function __invoke(Request $request): ApiResponse

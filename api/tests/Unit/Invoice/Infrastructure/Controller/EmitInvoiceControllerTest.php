@@ -51,6 +51,23 @@ class EmitInvoiceControllerTest extends AuthorizedControllerTest
         $controller($request);
     }
 
+    public function test_fails_if_missing_income_data()
+    {
+        $request = $this->buildAuthorizedRequest([
+            "income_id" => 123,
+            "customer_name" => "Atomic Garden",
+            "customer_tax_name" => "Atomic Garden SL",
+            "customer_tax_number" => "43568953F",
+            "customer_tax_address" => "Carrer fals 123",
+            "customer_tax_zip_code" => "07014"
+        ]);
+        $controller = $this->getController();
+
+        $this->expectException(MissingMandatoryParameterException::class);
+
+        $controller($request);
+    }
+
     public function test_calls_usecase_and_returns_result()
     {
         $request = $this->buildAuthorizedRequest([
@@ -60,6 +77,9 @@ class EmitInvoiceControllerTest extends AuthorizedControllerTest
             "customer_tax_number" => "43568953F",
             "customer_tax_address" => "Carrer fals 123",
             "customer_tax_zip_code" => "07014",
+            "date" => "2023-06-27",
+            "amount" => 1000,
+            "concept" => "Capsa de 12 Moixes",
         ]);
         $invoiceNumber = new InvoiceNumber('2023000001');
         $this->useCase->__invoke(Argument::type(EmitInvoiceCommand::class))
