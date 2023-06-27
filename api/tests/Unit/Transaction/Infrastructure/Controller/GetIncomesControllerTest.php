@@ -5,7 +5,7 @@ namespace Test\Unit\Transaction\Infrastructure\Controller;
 use App\Shared\Domain\ValueObject\Id;
 use App\Shared\Infrastructure\ApiResponse;
 use App\Transaction\Application\Command\GetAccountIncomesCommand;
-use App\Transaction\Application\Result\UserIncomes;
+use App\Transaction\Application\Result\AccountIncomes;
 use App\Transaction\Application\UseCase\GetAccountIncomesUseCase;
 use App\Transaction\Domain\Entity\Income;
 use App\Transaction\Domain\ValueObject\Money;
@@ -51,7 +51,7 @@ class GetIncomesControllerTest extends AuthorizedControllerTest
         );
         $this->getAccountIncomesUseCase->__invoke(Argument::type(GetAccountIncomesCommand::class))
             ->shouldBeCalled()
-            ->willReturn(new UserIncomes([$userIncome]));
+            ->willReturn(new AccountIncomes([$userIncome]));
         $controller = $this->getController();
 
         $result = $controller($request);

@@ -3,7 +3,7 @@
 namespace App\Transaction\Application\UseCase;
 
 use App\Transaction\Application\Command\GetAccountIncomesCommand;
-use App\Transaction\Application\Result\UserIncomes;
+use App\Transaction\Application\Result\AccountIncomes;
 use App\Transaction\Domain\Model\IncomeRepositoryInterface;
 
 class GetAccountIncomesUseCase
@@ -13,12 +13,12 @@ class GetAccountIncomesUseCase
     ) {
     }
 
-    public function __invoke(GetAccountIncomesCommand $command): UserIncomes
+    public function __invoke(GetAccountIncomesCommand $command): AccountIncomes
     {
         $incomes = $this->incomeRepository->getByAccountId(
             $command->accountId
         );
 
-        return new UserIncomes($incomes);
+        return new AccountIncomes($incomes);
     }
 }

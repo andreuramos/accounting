@@ -3,7 +3,7 @@
 namespace App\Transaction\Application\UseCase;
 
 use App\Transaction\Application\Command\GetAccountExpensesCommand;
-use App\Transaction\Application\Result\UserExpenses;
+use App\Transaction\Application\Result\AccountExpenses;
 use App\Transaction\Domain\Model\ExpenseRepositoryInterface;
 
 class GetAccountExpensesUseCase
@@ -13,10 +13,10 @@ class GetAccountExpensesUseCase
     ) {
     }
 
-    public function __invoke(GetAccountExpensesCommand $command): UserExpenses
+    public function __invoke(GetAccountExpensesCommand $command): AccountExpenses
     {
         $expenses = $this->expenseRepository->getByAccountId($command->accountId);
 
-        return new UserExpenses($expenses);
+        return new AccountExpenses($expenses);
     }
 }

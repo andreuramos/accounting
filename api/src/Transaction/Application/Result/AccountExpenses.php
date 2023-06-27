@@ -4,7 +4,7 @@ namespace App\Transaction\Application\Result;
 
 use App\Transaction\Domain\Entity\Expense;
 
-class UserExpenses
+class AccountExpenses
 {
     public function __construct(public readonly array $expenses)
     {

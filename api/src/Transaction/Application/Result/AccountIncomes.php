@@ -4,7 +4,7 @@ namespace App\Transaction\Application\Result;
 
 use App\Transaction\Domain\Entity\Income;
 
-class UserIncomes
+class AccountIncomes
 {
     public function __construct(
         public readonly array $incomes

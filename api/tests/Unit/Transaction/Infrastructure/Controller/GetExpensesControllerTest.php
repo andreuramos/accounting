@@ -4,7 +4,7 @@ namespace Test\Unit\Transaction\Infrastructure\Controller;
 
 use App\Shared\Domain\ValueObject\Id;
 use App\Transaction\Application\Command\GetAccountExpensesCommand;
-use App\Transaction\Application\Result\UserExpenses;
+use App\Transaction\Application\Result\AccountExpenses;
 use App\Transaction\Application\UseCase\GetAccountExpensesUseCase;
 use App\Transaction\Domain\Entity\Expense;
 use App\Transaction\Domain\ValueObject\Money;
@@ -50,7 +50,7 @@ class GetExpensesControllerTest extends AuthorizedControllerTest
         );
         $this->useCase->__invoke($command)
             ->shouldBeCalled()
-            ->willReturn(new UserExpenses([$userExpense]));
+            ->willReturn(new AccountExpenses([$userExpense]));
         $controller = $this->getController();
 
         $response = $controller($request);
