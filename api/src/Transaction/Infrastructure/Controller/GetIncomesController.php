@@ -26,20 +26,8 @@ class GetIncomesController extends AuthorizedController
         $this->auth($request);
 
         $command = new GetAccountIncomesCommand($this->authUser->accountId());
-        $userIncomes = ($this->getUserIncomesUseCase)($command);
+        $accountIncomes = ($this->getUserIncomesUseCase)($command);
 
-        $response = array_map(function (Income $income) {
-            return [
-                'id' => $income->id->getInt(),
-                'user_id' => $income->userId->getInt(),
-                'amount_cents' => $income->amount->amountCents,
-                'currency' => $income->amount->currency,
-                'description' => $income->description,
-                'date' => $income->date->format('Y-m-d'),
-            ];
-        }, $userIncomes->incomes);
-
-
-        return new ApiResponse($response);
+        return new ApiResponse($accountIncomes->toArray());
     }
 }
