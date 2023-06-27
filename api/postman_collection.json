@@ -66,9 +66,44 @@
 				},
 				{
 					"name": "Income",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('last_income_id', pm.response.json().id)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\": 1000,\n    \"description\": \"Capsa 12 Moixa Amber Ale\",\n    \"date\": \"2023-06-04\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/income",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"income"
+							]
+						}
 					},
 					"response": []
 				},
@@ -225,6 +260,43 @@
 			]
 		},
 		{
+			"name": "Invoice",
+			"item": [
+				{
+					"name": "Emit Invoice",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"income_id\": {{last_income_id}},\n    \"customer_name\": \"Atomic Garden\",\n    \"customer_tax_name\": \"Atomic Garden SL\",\n    \"customer_tax_number\": \"435638953F\",\n    \"customer_tax_address\": \"Carrer fals 123\",\n    \"customer_tax_zip_code\": \"07014\",\n    \"date\": \"2023-06-27\",\n    \"amount\": 1000,\n    \"concept\": \"Capsa de 12 Moixes\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/invoice",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"invoice"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "status",
 			"request": {
 				"method": "GET",
@@ -368,6 +440,10 @@
 		},
 		{
 			"key": "refreshToken",
+			"value": ""
+		},
+		{
+			"key": "last_income_id",
 			"value": ""
 		}
 	]

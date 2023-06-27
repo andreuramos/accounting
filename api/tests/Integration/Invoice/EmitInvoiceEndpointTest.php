@@ -31,6 +31,9 @@ class EmitInvoiceEndpointTest extends EndpointTest
                 'customer_tax_number' => "435678122F",
                 'customer_tax_address' => "Cardenal despuig 41",
                 'customer_tax_zip_code' => "07013",
+                'date' => '2023-06-27',
+                'amount' => 1000,
+                'concept' => 'Capsa de 12 Moixes',
             ], JSON_THROW_ON_ERROR),
             'headers' => ['Authorization' => 'Bearer ' . $this->authToken],
         ]);
@@ -54,6 +57,9 @@ class EmitInvoiceEndpointTest extends EndpointTest
                 'customer_tax_number' => "435678122F",
                 'customer_tax_address' => "Cardenal despuig 41",
                 'customer_tax_zip_code' => "07013",
+                'date' => '2023-06-27',
+                'amount' => 1000,
+                'concept' => 'Capsa de 12 Moixes',
             ], JSON_THROW_ON_ERROR),
             'headers' => ['Authorization' => 'Bearer ' . $this->authToken],
         ]);
