@@ -26,19 +26,8 @@ class GetExpensesController extends AuthorizedController
         $this->auth($request);
 
         $command = new GetAccountExpensesCommand($this->authUser->accountId());
-        $userExpenses = ($this->getUserExpensesUseCase)($command);
+        $accountExpenses = ($this->getUserExpensesUseCase)($command);
 
-        $response = array_map(function (Expense $expense) {
-            return [
-                'id' => $expense->id->getInt(),
-                'account_id' => $expense->accountId->getInt(),
-                'amount_cents' => $expense->amount->amountCents,
-                'currency' => $expense->amount->currency,
-                'description' => $expense->description,
-                'date' => $expense->date->format('Y-m-d')
-            ];
-        }, $userExpenses->expenses);
-
-        return new ApiResponse($response);
+        return new ApiResponse($accountExpenses->toArray());
     }
 }
