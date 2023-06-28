@@ -37,7 +37,7 @@ class GetIncomesController extends AuthorizedController
         return array_map(function (Income $income) {
             return [
                 'id' => $income->id->getInt(),
-                'user_id' => $income->userId->getInt(),
+                'account_id' => $income->accountId->getInt(),
                 'amount_cents' => $income->amount->amountCents,
                 'currency' => $income->amount->currency,
                 'description' => $income->description,
