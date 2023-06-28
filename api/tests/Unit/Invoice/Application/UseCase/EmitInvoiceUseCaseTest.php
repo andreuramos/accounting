@@ -75,7 +75,6 @@ class EmitInvoiceUseCaseTest extends TestCase
         $incomeId = new Id(123);
         $income = new Income(
             $incomeId,
-            new Id(2),
             new Id(3),
             new Money(100),
             "",
@@ -230,7 +229,6 @@ class EmitInvoiceUseCaseTest extends TestCase
     {
         return new Income(
             $incomeId,
-            $this->user->id(),
             $this->user->accountId(),
             new Money(100),
             "",

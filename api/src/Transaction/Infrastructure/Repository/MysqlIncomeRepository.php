@@ -24,7 +24,6 @@ class MysqlIncomeRepository implements IncomeRepositoryInterface
             'VALUES (:account_id, :amount, :description, :date)'
         );
 
-        $userId = $income->userId->getInt();
         $accountId = $income->accountId->getInt();
         $amountCents = $income->amount->amountCents;
         $description = $income->description;
@@ -78,7 +77,6 @@ class MysqlIncomeRepository implements IncomeRepositoryInterface
     {
         return new Income(
             new Id($dbIncome['id']),
-            new Id(null),
             new Id($dbIncome['account_id']),
             new Money($dbIncome['amount']),
             $dbIncome['description'],

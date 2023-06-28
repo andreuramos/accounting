@@ -43,7 +43,6 @@ class GetIncomesControllerTest extends AuthorizedControllerTest
         $request->headers->set('Authorization', 'Bearer '.self::TOKEN);
         $userIncome = new Income(
             new Id(123),
-            $this->user->id(),
             $this->user->accountId(),
             new Money(100, "EUR"),
             "Capsa 12 Moixa Amber Ale",

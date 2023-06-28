@@ -45,7 +45,6 @@ class GetAccountIncomesUseCaseTest extends TestCase
         $user->setAccountId(new Id(2));
         $income1 = new Income(
             new Id(123),
-            $user->id(),
             $user->accountId(),
             new Money(100, "EUR"),
             "income 1",
@@ -53,7 +52,6 @@ class GetAccountIncomesUseCaseTest extends TestCase
         );
         $income2 = new Income(
             new Id(124),
-            $user->id(),
             $user->accountId(),
             new Money(200, "EUR"),
             "income 2",

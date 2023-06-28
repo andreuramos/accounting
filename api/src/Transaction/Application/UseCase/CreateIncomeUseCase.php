@@ -19,7 +19,6 @@ class CreateIncomeUseCase
     {
         $income = new Income(
             new Id(null),
-            $command->user->id(),
             $command->user->accountId(),
             new Money($command->amountCents),
             $command->description,

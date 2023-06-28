@@ -38,7 +38,6 @@ class CreateIncomeUseCaseTest extends TestCase
         $usecase = new CreateIncomeUseCase($this->incomeRepository->reveal());
         $expectedIncome = new Income(
             new Id(null),
-            $user->id(),
             $user->accountId(),
             new Money(1000, "EUR"),
             "test repository is called with a new income",
