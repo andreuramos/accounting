@@ -15,18 +15,4 @@ class AccountIncomes
             }
         }
     }
-
-    public function toArray(): array
-    {
-        return array_map(function (Income $income) {
-            return [
-                'id' => $income->id->getInt(),
-                'user_id' => $income->userId->getInt(),
-                'amount_cents' => $income->amount->amountCents,
-                'currency' => $income->amount->currency,
-                'description' => $income->description,
-                'date' => $income->date->format('Y-m-d'),
-            ];
-        }, $this->incomes);
-    }
 }

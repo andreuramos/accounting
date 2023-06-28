@@ -5,6 +5,7 @@ namespace App\Transaction\Infrastructure\Controller;
 use App\Shared\Infrastructure\ApiResponse;
 use App\Shared\Infrastructure\Controller\AuthorizedController;
 use App\Transaction\Application\Command\GetAccountExpensesCommand;
+use App\Transaction\Application\Result\AccountExpenses;
 use App\Transaction\Application\UseCase\GetAccountExpensesUseCase;
 use App\Transaction\Domain\Entity\Expense;
 use App\User\Domain\Model\UserRepositoryInterface;
@@ -28,6 +29,20 @@ class GetExpensesController extends AuthorizedController
         $command = new GetAccountExpensesCommand($this->authUser->accountId());
         $accountExpenses = ($this->getUserExpensesUseCase)($command);
 
-        return new ApiResponse($accountExpenses->toArray());
+        return new ApiResponse($this->exposableArray($accountExpenses));
+    }
+
+    private function exposableArray(AccountExpenses $accountExpenses): array
+    {
+        return array_map(function (Expense $expense) {
+            return [
+                'id' => $expense->id->getInt(),
+                'account_id' => $expense->accountId->getInt(),
+                'amount_cents' => $expense->amount->amountCents,
+                'currency' => $expense->amount->currency,
+                'description' => $expense->description,
+                'date' => $expense->date->format('Y-m-d')
+            ];
+        }, $accountExpenses->expenses);
     }
 }
