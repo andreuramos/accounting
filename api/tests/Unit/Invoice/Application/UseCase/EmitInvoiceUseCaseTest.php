@@ -76,7 +76,7 @@ class EmitInvoiceUseCaseTest extends TestCase
         $income = new Income(
             $incomeId,
             new Id(2),
-            new Id(2),
+            new Id(3),
             new Money(100),
             "",
             new \DateTime(),

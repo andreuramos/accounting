@@ -20,8 +20,8 @@ class MysqlIncomeRepository implements IncomeRepositoryInterface
     {
         $stmt = $this->pdo->prepare(
             'INSERT INTO income ' .
-            '(user_id, account_id, amount, description, date) ' .
-            'VALUES (:user_id, :account_id, :amount, :description, :date)'
+            '(account_id, amount, description, date) ' .
+            'VALUES (:account_id, :amount, :description, :date)'
         );
 
         $userId = $income->userId->getInt();
@@ -30,7 +30,6 @@ class MysqlIncomeRepository implements IncomeRepositoryInterface
         $description = $income->description;
         $date = $income->date->format('Y-m-d');
 
-        $stmt->bindParam(':user_id', $userId);
         $stmt->bindParam(':account_id', $accountId);
         $stmt->bindParam(':amount', $amountCents);
         $stmt->bindParam(':description', $description);
@@ -79,7 +78,7 @@ class MysqlIncomeRepository implements IncomeRepositoryInterface
     {
         return new Income(
             new Id($dbIncome['id']),
-            new Id($dbIncome['user_id']),
+            new Id(null),
             new Id($dbIncome['account_id']),
             new Money($dbIncome['amount']),
             $dbIncome['description'],

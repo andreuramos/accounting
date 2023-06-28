@@ -26,7 +26,7 @@ class EmitInvoiceUseCase
     public function __invoke(EmitInvoiceCommand $command): InvoiceNumber
     {
         $income = $this->incomeRepository->getByIdOrFail($command->incomeId);
-        if ($income->userId->getInt() !== $command->user->id()->getInt()) {
+        if ($income->accountId->getInt() !== $command->user->accountId()->getInt()) {
             throw new IncomeNotFoundException();
         }
 
