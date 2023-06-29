@@ -58,6 +58,9 @@ class EmitInvoiceUseCaseTest extends TestCase
             "TAX123",
             "Fake st 123",
             "07013",
+            date_create('2023-06-29'),
+            1000,
+            "Invoice concept"
         );
         $this->incomeRepository->getByIdOrFail($incomeId)
             ->shouldBeCalled()
@@ -88,6 +91,9 @@ class EmitInvoiceUseCaseTest extends TestCase
             "TAX123",
             "Fake St 123",
             "07041",
+            date_create('2023-06-29'),
+            1000,
+            "Invoice concept"
         );
         $this->incomeRepository->getByIdOrFail($incomeId)
             ->willReturn($income);
@@ -111,6 +117,9 @@ class EmitInvoiceUseCaseTest extends TestCase
             $taxNumber,
             "Fake st 123",
             "07001",
+            date_create('2023-06-29'),
+            1000,
+            "Invoice concept"
         );
         $receiverBusiness = new Business(
             new Id(1),
@@ -143,6 +152,9 @@ class EmitInvoiceUseCaseTest extends TestCase
             $taxNumber,
             "Fake st 123",
             "07001",
+            date_create('2023-06-29'),
+            1000,
+            "Invoice concept"
         );
         $this->incomeRepository->getByIdOrFail($incomeId)
             ->willReturn($income);
@@ -175,6 +187,9 @@ class EmitInvoiceUseCaseTest extends TestCase
             $taxNumber,
             "Fake st 123",
             "07001",
+            date_create('2023-06-29'),
+            1000,
+            "Invoice concept"
         );
         $this->incomeRepository->getByIdOrFail($incomeId)
             ->willReturn($income);

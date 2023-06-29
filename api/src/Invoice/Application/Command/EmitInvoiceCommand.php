@@ -15,6 +15,9 @@ class EmitInvoiceCommand
         public readonly string $customerTaxNumber,
         public readonly string $customerTaxAddress,
         public readonly string $customerTaxZipCode,
+        public readonly \DateTime $date,
+        public readonly int $amount,
+        public readonly string $concept,
     ) {
     }
 }

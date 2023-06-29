@@ -42,6 +42,9 @@ class EmitInvoiceController extends AuthorizedController
             $requestContent['customer_tax_number'],
             $requestContent['customer_tax_address'],
             $requestContent['customer_tax_zip_code'],
+            date_create($requestContent['date']),
+            $requestContent['amount'],
+            $requestContent['concept'],
         );
         $invoiceNumber = ($this->emitInvoiceUseCase)($command);
 
