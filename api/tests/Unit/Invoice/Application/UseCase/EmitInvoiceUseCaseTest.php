@@ -54,7 +54,6 @@ class EmitInvoiceUseCaseTest extends TestCase
         $taxNumber = "B071892093";
         $command = new EmitInvoiceCommand(
             $this->user,
-            $incomeId,
             "My Business",
             "My Business SL",
             $taxNumber,
@@ -101,7 +100,6 @@ class EmitInvoiceUseCaseTest extends TestCase
             ->willReturn(new InvoiceNumber("1230"));
         $command = new EmitInvoiceCommand(
             $this->user,
-            $incomeId,
             "My Business",
             "My Business SL",
             $taxNumber,
@@ -122,7 +120,6 @@ class EmitInvoiceUseCaseTest extends TestCase
         $taxNumber = "B071892093";
         $command = new EmitInvoiceCommand(
             $this->user,
-            $incomeId,
             "My Business",
             "My Business SL",
             $taxNumber,
@@ -156,7 +153,6 @@ class EmitInvoiceUseCaseTest extends TestCase
         $taxNumber = "B071892093";
         $command = new EmitInvoiceCommand(
             $this->user,
-            $incomeId,
             "My Business",
             "My Business SL",
             $taxNumber,

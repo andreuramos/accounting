@@ -9,7 +9,6 @@ class EmitInvoiceCommand
 {
     public function __construct(
         public readonly User $user,
-        public readonly Id $incomeId,
         public readonly string $customerName,
         public readonly string $customerTaxName,
         public readonly string $customerTaxNumber,

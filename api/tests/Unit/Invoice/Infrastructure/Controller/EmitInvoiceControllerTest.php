@@ -54,7 +54,6 @@ class EmitInvoiceControllerTest extends AuthorizedControllerTest
     public function test_fails_if_missing_income_data()
     {
         $request = $this->buildAuthorizedRequest([
-            "income_id" => 123,
             "customer_name" => "Atomic Garden",
             "customer_tax_name" => "Atomic Garden SL",
             "customer_tax_number" => "43568953F",
@@ -71,7 +70,6 @@ class EmitInvoiceControllerTest extends AuthorizedControllerTest
     public function test_calls_usecase_and_returns_result()
     {
         $request = $this->buildAuthorizedRequest([
-            "income_id" => 123,
             "customer_name" => "Atomic Garden",
             "customer_tax_name" => "Atomic Garden SL",
             "customer_tax_number" => "43568953F",

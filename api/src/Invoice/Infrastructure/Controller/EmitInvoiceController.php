@@ -23,7 +23,7 @@ class EmitInvoiceController extends AuthorizedController
     }
 
     private const MANDATORY_PARAMETERS = [
-        'income_id', 'customer_name', 'customer_tax_name',
+        'customer_name', 'customer_tax_name',
         'customer_tax_number', 'customer_tax_address',
         'customer_tax_zip_code', 'date', 'amount', 'concept',
     ];
@@ -36,7 +36,6 @@ class EmitInvoiceController extends AuthorizedController
 
         $command = new EmitInvoiceCommand(
             $this->authUser,
-            new Id($requestContent['income_id']),
             $requestContent['customer_name'],
             $requestContent['customer_tax_name'],
             $requestContent['customer_tax_number'],
