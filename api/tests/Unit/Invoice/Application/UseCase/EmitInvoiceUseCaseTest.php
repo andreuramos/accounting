@@ -47,67 +47,10 @@ class EmitInvoiceUseCaseTest extends TestCase
         $this->user->setAccountId(new Id(2));
     }
 
-    public function test_fails_when_income_not_found()
-    {
-        $incomeId = new Id(123);
-        $command = new EmitInvoiceCommand(
-            $this->user,
-            $incomeId,
-            "My Business",
-            "My Business SL",
-            "TAX123",
-            "Fake st 123",
-            "07013",
-            date_create('2023-06-29'),
-            1000,
-            "Invoice concept"
-        );
-        $this->incomeRepository->getByIdOrFail($incomeId)
-            ->shouldBeCalled()
-            ->willThrow(IncomeNotFoundException::class);
-        $useCase = $this->buildUseCase();
-
-        $this->expectException(IncomeNotFoundException::class);
-
-        $useCase($command);
-    }
-
-    public function test_fails_when_found_income_does_not_match_with_logged_user()
-    {
-        $useCase = $this->buildUseCase();
-        $incomeId = new Id(123);
-        $income = new Income(
-            $incomeId,
-            new Id(3),
-            new Money(100),
-            "",
-            new \DateTime(),
-        );
-        $command = new EmitInvoiceCommand(
-            $this->user,
-            $incomeId,
-            "My Business",
-            "My Business SL",
-            "TAX123",
-            "Fake St 123",
-            "07041",
-            date_create('2023-06-29'),
-            1000,
-            "Invoice concept"
-        );
-        $this->incomeRepository->getByIdOrFail($incomeId)
-            ->willReturn($income);
-
-        $this->expectException(IncomeNotFoundException::class);
-
-        $useCase($command);
-    }
-
     public function test_fails_if_user_has_no_tax_data()
     {
         $useCase = $this->buildUseCase();
         $incomeId = new Id(123);
-        $income = $this->buildIncome($incomeId);
         $taxNumber = "B071892093";
         $command = new EmitInvoiceCommand(
             $this->user,
@@ -126,8 +69,8 @@ class EmitInvoiceUseCaseTest extends TestCase
             "Receiver Company",
             ... $this->generateTaxData(),
         );
-        $this->incomeRepository->getByIdOrFail($incomeId)
-            ->willReturn($income);
+        $this->incomeRepository->save(Argument::type(Income::class))
+            ->willReturn($incomeId);
         $this->businessRepository->getByTaxNumber($taxNumber)
             ->willReturn($receiverBusiness);
         $this->businessRepository->getByUserIdOrFail($this->user->id())
@@ -138,11 +81,44 @@ class EmitInvoiceUseCaseTest extends TestCase
         $useCase($command);
     }
 
+    public function test_creates_an_income(): void
+    {
+        $useCase = $this->buildUseCase();
+        $incomeId = new Id(1234);
+        $taxNumber = "B071892093";
+        $this->incomeRepository->save(Argument::type(Income::class))
+            ->shouldBeCalled()
+            ->willReturn($incomeId);
+        $this->businessRepository->getByUserIdOrFail($this->user->id())
+            ->willReturn(new Business(
+                new Id(1), "company", ...$this->generateTaxData()
+            ));
+        $this->businessRepository->getByTaxNumber($taxNumber)
+            ->willReturn(new Business(
+                new Id(2), 'customer', ...$this->generateTaxData()
+            ));
+        $this->invoiceNumberGenerator->__invoke(Argument::any())
+            ->willReturn(new InvoiceNumber("1230"));
+        $command = new EmitInvoiceCommand(
+            $this->user,
+            $incomeId,
+            "My Business",
+            "My Business SL",
+            $taxNumber,
+            "Fake st 123",
+            "07001",
+            date_create('2023-06-29'),
+            1000,
+            "Invoice concept"
+        );
+
+        $useCase($command);
+    }
+
     public function test_creates_business_for_customer()
     {
         $useCase = $this->buildUseCase();
         $incomeId = new Id(123);
-        $income = $this->buildIncome($incomeId);
         $taxNumber = "B071892093";
         $command = new EmitInvoiceCommand(
             $this->user,
@@ -156,8 +132,8 @@ class EmitInvoiceUseCaseTest extends TestCase
             1000,
             "Invoice concept"
         );
-        $this->incomeRepository->getByIdOrFail($incomeId)
-            ->willReturn($income);
+        $this->incomeRepository->save(Argument::type(Income::class))
+            ->willReturn($incomeId);
         $this->businessRepository->getByTaxNumber($taxNumber)
             ->willReturn(null);
         $this->businessRepository->getByUserIdOrFail($this->user->id())
@@ -177,7 +153,6 @@ class EmitInvoiceUseCaseTest extends TestCase
     {
         $useCase = $this->buildUseCase();
         $incomeId = new Id(123);
-        $income = $this->buildIncome($incomeId);
         $taxNumber = "B071892093";
         $command = new EmitInvoiceCommand(
             $this->user,
@@ -191,8 +166,8 @@ class EmitInvoiceUseCaseTest extends TestCase
             1000,
             "Invoice concept"
         );
-        $this->incomeRepository->getByIdOrFail($incomeId)
-            ->willReturn($income);
+        $this->incomeRepository->save(Argument::type(Income::class))
+            ->willReturn($incomeId);
         $receiverBusiness = new Business(
             new Id(1),
             "Receiver Company",

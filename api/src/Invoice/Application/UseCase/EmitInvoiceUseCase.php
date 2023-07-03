@@ -11,8 +11,10 @@ use App\Invoice\Domain\Model\InvoiceRepositoryInterface;
 use App\Invoice\Domain\Service\InvoiceNumberGenerator;
 use App\Invoice\Domain\ValueObject\InvoiceNumber;
 use App\Shared\Domain\ValueObject\Id;
+use App\Transaction\Domain\Entity\Income;
 use App\Transaction\Domain\Exception\IncomeNotFoundException;
 use App\Transaction\Domain\Model\IncomeRepositoryInterface;
+use App\Transaction\Domain\ValueObject\Money;
 
 class EmitInvoiceUseCase
 {
@@ -25,10 +27,14 @@ class EmitInvoiceUseCase
     }
     public function __invoke(EmitInvoiceCommand $command): InvoiceNumber
     {
-        $income = $this->incomeRepository->getByIdOrFail($command->incomeId);
-        if ($income->accountId->getInt() !== $command->user->accountId()->getInt()) {
-            throw new IncomeNotFoundException();
-        }
+        $income = new Income(
+            new Id(null),
+            $command->user->accountId(),
+            new Money($command->amount, 'EUR'),
+            $command->concept,
+            $command->date,
+        );
+        $incomeId = $this->incomeRepository->save($income);
 
         $receiverBusiness = $this->getReceiverBusinessId($command);
         $emitterBusiness = $this->businessRepository->getByUserIdOrFail($command->user->id());
@@ -37,7 +43,7 @@ class EmitInvoiceUseCase
         $invoice = new Invoice(
             new Id(null),
             $invoiceNumber,
-            $income->id,
+            $incomeId,
             $emitterBusiness->id,
             $receiverBusiness->id,
             new \DateTime()
