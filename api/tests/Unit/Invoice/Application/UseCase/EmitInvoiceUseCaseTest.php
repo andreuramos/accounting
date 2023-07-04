@@ -15,7 +15,6 @@ use App\Invoice\Domain\Service\InvoiceNumberGenerator;
 use App\Invoice\Domain\ValueObject\InvoiceNumber;
 use App\Shared\Domain\ValueObject\Id;
 use App\Transaction\Domain\Entity\Income;
-use App\Transaction\Domain\Exception\IncomeNotFoundException;
 use App\Transaction\Domain\Model\IncomeRepositoryInterface;
 use App\Transaction\Domain\ValueObject\Money;
 use App\User\Domain\Entity\User;
@@ -50,7 +49,6 @@ class EmitInvoiceUseCaseTest extends TestCase
     public function test_fails_if_user_has_no_tax_data()
     {
         $useCase = $this->buildUseCase();
-        $incomeId = new Id(123);
         $taxNumber = "B071892093";
         $command = new EmitInvoiceCommand(
             $this->user,
@@ -68,6 +66,7 @@ class EmitInvoiceUseCaseTest extends TestCase
             "Receiver Company",
             ... $this->generateTaxData(),
         );
+        $incomeId = new Id(123);
         $this->incomeRepository->save(Argument::type(Income::class))
             ->willReturn($incomeId);
         $this->businessRepository->getByTaxNumber($taxNumber)
