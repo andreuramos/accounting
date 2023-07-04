@@ -27,6 +27,10 @@ class EmitInvoiceUseCase
     }
     public function __invoke(EmitInvoiceCommand $command): InvoiceNumber
     {
+        $receiverBusiness = $this->getReceiverBusinessId($command);
+        $emitterBusiness = $this->businessRepository->getByUserIdOrFail($command->user->id());
+        $invoiceNumber = ($this->invoiceNumberGenerator)($emitterBusiness);
+
         $income = new Income(
             new Id(null),
             $command->user->accountId(),
@@ -35,10 +39,6 @@ class EmitInvoiceUseCase
             $command->date,
         );
         $incomeId = $this->incomeRepository->save($income);
-
-        $receiverBusiness = $this->getReceiverBusinessId($command);
-        $emitterBusiness = $this->businessRepository->getByUserIdOrFail($command->user->id());
-        $invoiceNumber = ($this->invoiceNumberGenerator)($emitterBusiness);
 
         $invoice = new Invoice(
             new Id(null),

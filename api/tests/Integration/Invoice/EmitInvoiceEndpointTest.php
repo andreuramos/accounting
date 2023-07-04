@@ -20,12 +20,9 @@ class EmitInvoiceEndpointTest extends EndpointTest
     {
         $this->registerUser($this->email, "");
         $this->login($this->email, "");
-        $income = $this->createIncome();
-        $this->incomeId = (int) $income['id'];
 
         $response = $this->client->post('/invoice', [
             'body' => json_encode([
-                'income_id' => $income['id'],
                 'customer_name' => "CUSTOMER Bar",
                 'customer_tax_name' => "Jaume de s'Atomic",
                 'customer_tax_number' => "435678122F",
@@ -33,7 +30,7 @@ class EmitInvoiceEndpointTest extends EndpointTest
                 'customer_tax_zip_code' => "07013",
                 'date' => '2023-06-27',
                 'amount' => 1000,
-                'concept' => 'Capsa de 12 Moixes',
+                'concept' => 'Caja de 12 Moixes',
             ], JSON_THROW_ON_ERROR),
             'headers' => ['Authorization' => 'Bearer ' . $this->authToken],
         ]);
@@ -46,12 +43,9 @@ class EmitInvoiceEndpointTest extends EndpointTest
         $this->registerUser($this->email, "");
         $this->login($this->email, "");
         $this->setBusinessData();
-        $income = $this->createIncome();
-        $this->incomeId = (int) $income['id'];
 
         $response = $this->client->post('/invoice', [
             'body' => json_encode([
-                'income_id' => $income['id'],
                 'customer_name' => "CUSTOMER Bar",
                 'customer_tax_name' => "Jaume de s'Atomic",
                 'customer_tax_number' => "435678122F",
@@ -81,20 +75,8 @@ class EmitInvoiceEndpointTest extends EndpointTest
         }
         $this->pdo->query('DELETE FROM business WHERE tax_id = "435678122F";');
         $this->pdo->query('DELETE FROM business WHERE tax_id = "EMIT0012300TEST";');
+        $this->pdo->query('DELETE FROM income WHERE id IN (SELECT income_id FROM invoice WHERE number="' . $this->invoiceNumber . '")');
         $this->pdo->query('DELETE FROM invoice WHERE number = "'.$this->invoiceNumber.'"');
-    }
-
-       private function createIncome(): array
-    {
-        $incomeResponse = $this->client->post('/income', [
-            'body' => json_encode([
-                'amount' => 1000,
-                'description' => "stuff",
-                'date' => '2023-05-14',
-            ], JSON_THROW_ON_ERROR),
-            'headers' => ['Authorization' => 'Bearer ' . $this->authToken],
-        ]);
-        return json_decode($incomeResponse->getBody(), true);
     }
 
     private function setBusinessData(): void
