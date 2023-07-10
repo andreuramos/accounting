@@ -6,7 +6,6 @@ use Test\Integration\EndpointTest;
 
 class EmitInvoiceEndpointTest extends EndpointTest
 {
-    private $incomeId;
     private $invoiceNumber;
 
     public function test_unauthorized_fails()
@@ -70,9 +69,6 @@ class EmitInvoiceEndpointTest extends EndpointTest
     {
         parent::tearDown();
         $this->deleteUser($this->email);
-        if ($this->incomeId) {
-            $this->pdo->query('DELETE FROM income WHERE id=' . $this->incomeId . ';');
-        }
         $this->pdo->query('DELETE FROM business WHERE tax_id = "435678122F";');
         $this->pdo->query('DELETE FROM business WHERE tax_id = "EMIT0012300TEST";');
         $this->pdo->query('DELETE FROM income WHERE id IN (SELECT income_id FROM invoice WHERE number="' . $this->invoiceNumber . '")');
