@@ -51,14 +51,15 @@ class EmitInvoiceControllerTest extends AuthorizedControllerTest
         $controller($request);
     }
 
-    public function test_fails_if_missing_income_data()
+    public function test_fails_if_missing_empty_lines()
     {
         $request = $this->buildAuthorizedRequest([
             "customer_name" => "Atomic Garden",
             "customer_tax_name" => "Atomic Garden SL",
             "customer_tax_number" => "43568953F",
             "customer_tax_address" => "Carrer fals 123",
-            "customer_tax_zip_code" => "07014"
+            "customer_tax_zip_code" => "07014",
+            "lines" => [],
         ]);
         $controller = $this->getController();
 
@@ -76,8 +77,13 @@ class EmitInvoiceControllerTest extends AuthorizedControllerTest
             "customer_tax_address" => "Carrer fals 123",
             "customer_tax_zip_code" => "07014",
             "date" => "2023-06-27",
-            "amount" => 1000,
-            "concept" => "Capsa de 12 Moixes",
+            "lines" => [
+                [
+                    "amount" => 1000,
+                    "concept" => "Capsa de 12 Moixes",
+                    "vat_percent" => 21,
+                ],
+            ],
         ]);
         $invoiceNumber = new InvoiceNumber('2023000001');
         $this->useCase->__invoke(Argument::type(EmitInvoiceCommand::class))

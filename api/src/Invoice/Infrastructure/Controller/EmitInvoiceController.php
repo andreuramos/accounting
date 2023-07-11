@@ -25,7 +25,7 @@ class EmitInvoiceController extends AuthorizedController
     private const MANDATORY_PARAMETERS = [
         'customer_name', 'customer_tax_name',
         'customer_tax_number', 'customer_tax_address',
-        'customer_tax_zip_code', 'date', 'amount', 'concept',
+        'customer_tax_zip_code', 'date', 'lines',
     ];
 
     public function __invoke(Request $request): ApiResponse
@@ -42,8 +42,8 @@ class EmitInvoiceController extends AuthorizedController
             $requestContent['customer_tax_address'],
             $requestContent['customer_tax_zip_code'],
             date_create($requestContent['date']),
-            $requestContent['amount'],
-            $requestContent['concept'],
+            $requestContent['lines'][0]['amount'],
+            $requestContent['lines'][0]['concept'],
         );
         $invoiceNumber = ($this->emitInvoiceUseCase)($command);
 
@@ -55,7 +55,7 @@ class EmitInvoiceController extends AuthorizedController
     private function guardMandatoryParameters(mixed $requestContent): void
     {
         foreach (self::MANDATORY_PARAMETERS as $parameter) {
-            if (!isset($requestContent[$parameter])) {
+            if (!isset($requestContent[$parameter]) || empty($requestContent[$parameter])) {
                 throw new MissingMandatoryParameterException($parameter);
             }
         }
