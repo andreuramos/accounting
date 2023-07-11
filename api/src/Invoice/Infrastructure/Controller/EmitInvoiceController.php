@@ -55,7 +55,7 @@ class EmitInvoiceController extends AuthorizedController
     private function guardMandatoryParameters(mixed $requestContent): void
     {
         foreach (self::MANDATORY_PARAMETERS as $parameter) {
-            if (!isset($requestContent[$parameter]) || empty($requestContent[$parameter])) {
+            if (empty($requestContent[$parameter])) {
                 throw new MissingMandatoryParameterException($parameter);
             }
         }
