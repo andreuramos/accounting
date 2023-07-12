@@ -58,8 +58,7 @@ class EmitInvoiceUseCaseTest extends TestCase
             "Fake st 123",
             "07001",
             date_create('2023-06-29'),
-            1000,
-            "Invoice concept"
+            [['amount' => 10, 'concept' => "this", 'vat_percent' => 21]],
         );
         $receiverBusiness = new Business(
             new Id(1),
@@ -105,8 +104,7 @@ class EmitInvoiceUseCaseTest extends TestCase
             "Fake st 123",
             "07001",
             date_create('2023-06-29'),
-            1000,
-            "Invoice concept"
+            [['amount' => 10, 'concept' => "this", 'vat_percent' => 21]],
         );
 
         $useCase($command);
@@ -125,8 +123,7 @@ class EmitInvoiceUseCaseTest extends TestCase
             "Fake st 123",
             "07001",
             date_create('2023-06-29'),
-            1000,
-            "Invoice concept"
+            [['amount' => 10, 'concept' => "this", 'vat_percent' => 21]],
         );
         $this->incomeRepository->save(Argument::type(Income::class))
             ->willReturn($incomeId);
@@ -158,8 +155,7 @@ class EmitInvoiceUseCaseTest extends TestCase
             "Fake st 123",
             "07001",
             date_create('2023-06-29'),
-            1000,
-            "Invoice concept"
+            [['amount' => 10, 'concept' => "this", 'vat_percent' => 21]],
         );
         $this->incomeRepository->save(Argument::type(Income::class))
             ->willReturn($incomeId);

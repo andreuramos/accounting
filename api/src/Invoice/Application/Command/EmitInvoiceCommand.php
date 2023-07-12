@@ -7,6 +7,8 @@ use App\User\Domain\Entity\User;
 
 class EmitInvoiceCommand
 {
+    public readonly int $invoiceAmount;
+
     public function __construct(
         public readonly User $user,
         public readonly string $customerName,
@@ -15,8 +17,12 @@ class EmitInvoiceCommand
         public readonly string $customerTaxAddress,
         public readonly string $customerTaxZipCode,
         public readonly \DateTime $date,
-        public readonly int $amount,
-        public readonly string $concept,
+        public readonly array $invoiceLines,
     ) {
+        $invoiceAmount = 0;
+        foreach ($this->invoiceLines as $line) {
+            $invoiceAmount += $line['amount'];
+        }
+        $this->invoiceAmount = $invoiceAmount;
     }
 }

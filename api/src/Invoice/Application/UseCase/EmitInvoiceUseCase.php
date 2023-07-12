@@ -34,8 +34,8 @@ class EmitInvoiceUseCase
         $income = new Income(
             new Id(null),
             $command->user->accountId(),
-            new Money($command->amount, 'EUR'),
-            $command->concept,
+            new Money($command->invoiceAmount, 'EUR'),
+            "invoice " . $invoiceNumber,
             $command->date,
         );
         $incomeId = $this->incomeRepository->save($income);
