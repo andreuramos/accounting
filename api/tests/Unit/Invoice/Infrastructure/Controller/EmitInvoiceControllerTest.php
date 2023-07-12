@@ -51,7 +51,7 @@ class EmitInvoiceControllerTest extends AuthorizedControllerTest
         $controller($request);
     }
 
-    public function test_fails_if_missing_empty_lines()
+    public function test_fails_if_lines_is_empty()
     {
         $request = $this->buildAuthorizedRequest([
             "customer_name" => "Atomic Garden",
