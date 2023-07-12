@@ -68,6 +68,29 @@ class EmitInvoiceControllerTest extends AuthorizedControllerTest
         $controller($request);
     }
 
+    public function test_invalid_invoice_line_fails()
+    {
+        $request = $this->buildAuthorizedRequest([
+            "customer_name" => "Atomic Garden",
+            "customer_tax_name" => "Atomic Garden SL",
+            "customer_tax_number" => "43568953F",
+            "customer_tax_address" => "Carrer fals 123",
+            "customer_tax_zip_code" => "07014",
+            "date" => "2023-06-27",
+            "lines" => [
+                [
+                    "amount" => 1000,
+                    "concept" => "Capsa de 12 Moixes",
+                ],
+            ],
+        ]);
+        $controller = $this->getController();
+
+        $this->expectException(MissingMandatoryParameterException::class);
+
+        $controller($request);
+    }
+
     public function test_calls_usecase_and_returns_result()
     {
         $request = $this->buildAuthorizedRequest([

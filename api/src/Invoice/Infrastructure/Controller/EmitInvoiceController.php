@@ -27,12 +27,16 @@ class EmitInvoiceController extends AuthorizedController
         'customer_tax_number', 'customer_tax_address',
         'customer_tax_zip_code', 'date', 'lines',
     ];
+    private const LINE_PARAMETERS = [
+        'amount', 'concept', 'vat_percent',
+    ];
 
     public function __invoke(Request $request): ApiResponse
     {
         $this->auth($request);
         $requestContent = json_decode($request->getContent(), true);
         $this->guardMandatoryParameters($requestContent);
+        $this->guardInvoiceLines($requestContent['lines']);
 
         $command = new EmitInvoiceCommand(
             $this->authUser,
@@ -52,11 +56,22 @@ class EmitInvoiceController extends AuthorizedController
         ]);
     }
 
-    private function guardMandatoryParameters(mixed $requestContent): void
+    private function guardMandatoryParameters(array $requestContent): void
     {
         foreach (self::MANDATORY_PARAMETERS as $parameter) {
             if (empty($requestContent[$parameter])) {
                 throw new MissingMandatoryParameterException($parameter);
+            }
+        }
+    }
+
+    private function guardInvoiceLines(array $requestLines): void
+    {
+        foreach ($requestLines as $requestLine) {
+            foreach (self::LINE_PARAMETERS as $parameter) {
+                if (empty($requestLine[$parameter])) {
+                    throw new MissingMandatoryParameterException($parameter);
+                }
             }
         }
     }
