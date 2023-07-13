@@ -66,7 +66,8 @@ class InvoiceNumberGeneratorTest extends TestCase
             new Id(1),
             $this->business->id,
             new Id(23),
-            new \DateTime()
+            new \DateTime(),
+            [],
         );
         $this->invoiceRepository->getLastEmittedByBusiness(Argument::type(Business::class))
             ->willReturn($lastInvoice);

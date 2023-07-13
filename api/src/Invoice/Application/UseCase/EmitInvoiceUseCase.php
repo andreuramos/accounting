@@ -7,6 +7,7 @@ use App\Business\Domain\Model\BusinessRepositoryInterface;
 use App\Business\Domain\ValueObject\Address;
 use App\Invoice\Application\Command\EmitInvoiceCommand;
 use App\Invoice\Domain\Entity\Invoice;
+use App\Invoice\Domain\Entity\InvoiceLine;
 use App\Invoice\Domain\Model\InvoiceRepositoryInterface;
 use App\Invoice\Domain\Service\InvoiceNumberGenerator;
 use App\Invoice\Domain\ValueObject\InvoiceNumber;
@@ -40,15 +41,27 @@ class EmitInvoiceUseCase
         );
         $incomeId = $this->incomeRepository->save($income);
 
+        $lines = [];
+        foreach ($command->invoiceLines as $invoiceLine) {
+            $product = $invoiceLine['concept'];
+            $quantity = 1;
+            $amount = $invoiceLine['amount'];
+            $lines[] = new InvoiceLine(
+                $product,
+                $quantity,
+                new Money($amount),
+            );
+        }
+
         $invoice = new Invoice(
             new Id(null),
             $invoiceNumber,
             $incomeId,
             $emitterBusiness->id,
             $receiverBusiness->id,
-            new \DateTime()
+            new \DateTime(),
+            $lines
         );
-
         $this->invoiceRepository->save($invoice);
 
         return $invoiceNumber;
