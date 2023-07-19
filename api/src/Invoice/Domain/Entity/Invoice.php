@@ -16,17 +16,6 @@ class Invoice
         public readonly Id $emitterBusinessId,
         public readonly Id $receiverBusinessId,
         public readonly DateTime $dateTime,
-        public readonly array $invoiceLines
     ) {
-        $this->guardLines($this->invoiceLines);
-    }
-
-    private function guardLines(array $invoiceLines): void
-    {
-        foreach ($invoiceLines as $line) {
-            if (!$line instanceof InvoiceLine) {
-                throw new InvalidArgumentException();
-            }
-        }
     }
 }

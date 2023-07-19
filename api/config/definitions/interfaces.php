@@ -4,7 +4,9 @@ use App\Business\Domain\Model\BusinessRepositoryInterface;
 use App\Business\Domain\Model\TaxDataAggregateRepositoryInterface;
 use App\Business\Infrastructure\Repository\MysqlBusinessRepository;
 use App\Business\Infrastructure\Repository\MysqlTaxDataAggregateRepository;
+use App\Invoice\Domain\Model\InvoiceLineRepositoryInterface;
 use App\Invoice\Domain\Model\InvoiceRepositoryInterface;
+use App\Invoice\Infrastructure\Repository\MysqlInvoiceLineRepository;
 use App\Invoice\Infrastructure\Repository\MysqlInvoiceRepository;
 use App\Shared\Application\Service\HasherInterface;
 use App\Shared\Infrastructure\Service\Md5Hasher;
@@ -34,6 +36,7 @@ return [
     HasherInterface::class => DI\get(Md5Hasher::class),
     IncomeRepositoryInterface::class => DI\get(MysqlIncomeRepository::class),
     InvoiceRepositoryInterface::class => DI\get(MysqlInvoiceRepository::class),
+    InvoiceLineRepositoryInterface::class => DI\get(MysqlInvoiceLineRepository::class),
     MessageBusInterface::class => DI\get(MessageBus::class),
     RefreshTokenGeneratorInterface::class => DI\get(JWTRefreshTokenGenerator::class),
     TaxDataAggregateRepositoryInterface::class => DI\get(MysqlTaxDataAggregateRepository::class),

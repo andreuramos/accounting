@@ -8,6 +8,7 @@ use App\Business\Domain\ValueObject\Address;
 use App\Invoice\Application\Command\EmitInvoiceCommand;
 use App\Invoice\Domain\Entity\Invoice;
 use App\Invoice\Domain\Entity\InvoiceLine;
+use App\Invoice\Domain\Model\InvoiceLineRepositoryInterface;
 use App\Invoice\Domain\Model\InvoiceRepositoryInterface;
 use App\Invoice\Domain\Service\InvoiceNumberGenerator;
 use App\Invoice\Domain\ValueObject\InvoiceNumber;
@@ -24,8 +25,10 @@ class EmitInvoiceUseCase
         private readonly BusinessRepositoryInterface $businessRepository,
         private readonly InvoiceRepositoryInterface $invoiceRepository,
         private readonly InvoiceNumberGenerator $invoiceNumberGenerator,
+        private readonly InvoiceLineRepositoryInterface $invoiceLineRepository,
     ) {
     }
+
     public function __invoke(EmitInvoiceCommand $command): InvoiceNumber
     {
         $receiverBusiness = $this->getReceiverBusinessId($command);
@@ -41,18 +44,6 @@ class EmitInvoiceUseCase
         );
         $incomeId = $this->incomeRepository->save($income);
 
-        $lines = [];
-        foreach ($command->invoiceLines as $invoiceLine) {
-            $product = $invoiceLine['concept'];
-            $quantity = 1;
-            $amount = $invoiceLine['amount'];
-            $lines[] = new InvoiceLine(
-                $product,
-                $quantity,
-                new Money($amount),
-            );
-        }
-
         $invoice = new Invoice(
             new Id(null),
             $invoiceNumber,
@@ -60,9 +51,23 @@ class EmitInvoiceUseCase
             $emitterBusiness->id,
             $receiverBusiness->id,
             new \DateTime(),
-            $lines
         );
         $this->invoiceRepository->save($invoice);
+
+        foreach ($command->invoiceLines as $invoiceLine) {
+            $product = $invoiceLine['concept'];
+            $quantity = 1;
+            $amount = $invoiceLine['amount'];
+            $line = new InvoiceLine(
+                $product,
+                $quantity,
+                new Money($amount),
+            );
+            $this->invoiceLineRepository->addToInvoice(
+                $invoiceNumber,
+                $line,
+            );
+        }
 
         return $invoiceNumber;
     }

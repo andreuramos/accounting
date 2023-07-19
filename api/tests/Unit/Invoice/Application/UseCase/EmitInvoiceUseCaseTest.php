@@ -10,6 +10,8 @@ use App\Business\Domain\ValueObject\Address;
 use App\Invoice\Application\Command\EmitInvoiceCommand;
 use App\Invoice\Application\UseCase\EmitInvoiceUseCase;
 use App\Invoice\Domain\Entity\Invoice;
+use App\Invoice\Domain\Entity\InvoiceLine;
+use App\Invoice\Domain\Model\InvoiceLineRepositoryInterface;
 use App\Invoice\Domain\Model\InvoiceRepositoryInterface;
 use App\Invoice\Domain\Service\InvoiceNumberGenerator;
 use App\Invoice\Domain\ValueObject\InvoiceNumber;
@@ -31,6 +33,7 @@ class EmitInvoiceUseCaseTest extends TestCase
     private $businessRepository;
     private $taxDataAggregateRepository;
     private $invoiceRepository;
+    private $invoiceLineRepository;
     private $invoiceNumberGenerator;
     private User $user;
 
@@ -41,6 +44,7 @@ class EmitInvoiceUseCaseTest extends TestCase
         $this->businessRepository = $this->prophesize(BusinessRepositoryInterface::class);
         $this->taxDataAggregateRepository = $this->prophesize(TaxDataAggregateRepositoryInterface::class);
         $this->invoiceRepository = $this->prophesize(InvoiceRepositoryInterface::class);
+        $this->invoiceLineRepository = $this->prophesize(InvoiceLineRepositoryInterface::class);
         $this->invoiceNumberGenerator = $this->prophesize(InvoiceNumberGenerator::class);
         $this->user = new User(new Id(1), new Email('a@b.com'), "");
         $this->user->setAccountId(new Id(2));
@@ -142,6 +146,49 @@ class EmitInvoiceUseCaseTest extends TestCase
         $useCase($command);
     }
 
+    public function test_stores_invoice_lines()
+    {
+        $useCase = $this->buildUseCase();
+        $incomeId = new Id(123);
+        $taxNumber = "B071892093";
+        $command = new EmitInvoiceCommand(
+            $this->user,
+            "My Business",
+            "My Business SL",
+            $taxNumber,
+            "Fake st 123",
+            "07001",
+            date_create('2023-06-29'),
+            [['amount' => 10, 'concept' => "this", 'vat_percent' => 21]],
+        );
+        $this->incomeRepository->save(Argument::type(Income::class))
+            ->willReturn($incomeId);
+        $receiverBusiness = new Business(
+            new Id(1),
+            "Receiver Company",
+            ...$this->generateTaxData(),
+        );
+        $userBusiness = new Business(
+            new Id(2),
+            "Emitter Company",
+            ...$this->generateTaxData(),
+        );
+        $invoiceNumber = new InvoiceNumber('20230001');
+        $this->businessRepository->getByTaxNumber($taxNumber)
+            ->willReturn($receiverBusiness);
+        $this->businessRepository->save(Argument::type(Business::class))
+            ->shouldNotBeCalled();
+        $this->businessRepository->getByUserIdOrFail($this->user->id())
+            ->willReturn($userBusiness);
+        $this->invoiceNumberGenerator->__invoke($userBusiness)
+            ->willReturn($invoiceNumber);
+
+        $this->invoiceLineRepository->addToInvoice($invoiceNumber, Argument::type(InvoiceLine::class))
+            ->shouldBeCalled();
+
+        $useCase($command);
+    }
+
     public function test_creates_invoice_with_business_id()
     {
         $useCase = $this->buildUseCase();
@@ -194,6 +241,7 @@ class EmitInvoiceUseCaseTest extends TestCase
             $this->businessRepository->reveal(),
             $this->invoiceRepository->reveal(),
             $this->invoiceNumberGenerator->reveal(),
+            $this->invoiceLineRepository->reveal(),
         );
     }
 
@@ -204,16 +252,5 @@ class EmitInvoiceUseCaseTest extends TestCase
             "B" . random_int(1000000,9999999),
             new Address("Fake street", "07013")
         ];
-    }
-
-    private function buildIncome(Id $incomeId): Income
-    {
-        return new Income(
-            $incomeId,
-            $this->user->accountId(),
-            new Money(100),
-            "",
-            new \DateTime(),
-        );
     }
 }
