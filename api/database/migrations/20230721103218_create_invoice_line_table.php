@@ -21,6 +21,7 @@ final class CreateInvoiceLineTable extends AbstractMigration
         $table = $this->table('invoice_line');
 
         $table->addColumn('invoice_id', 'integer');
+        $table->addColumn('product', 'string');
         $table->addColumn('amount_cents', 'integer');
         $table->addColumn('quantity', 'integer');
         $table->addColumn('vat_percent', 'float', ['default' => '21.00']);
