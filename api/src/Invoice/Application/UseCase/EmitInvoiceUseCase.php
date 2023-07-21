@@ -64,10 +64,7 @@ class EmitInvoiceUseCase
                 $quantity,
                 new Money($amount),
             );
-            $this->invoiceLineRepository->addToInvoice(
-                $invoiceNumber,
-                $line,
-            );
+            $this->invoiceLineRepository->save($line);
         }
 
         return $invoiceNumber;

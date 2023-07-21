@@ -190,7 +190,7 @@ class EmitInvoiceUseCaseTest extends TestCase
         $this->invoiceRepository->save(Argument::type(Invoice::class))
             ->willReturn(new Id(4));
 
-        $this->invoiceLineRepository->addToInvoice($invoiceNumber, Argument::type(InvoiceLine::class))
+        $this->invoiceLineRepository->save(Argument::type(InvoiceLine::class))
             ->shouldBeCalled();
 
         $useCase($command);

@@ -12,4 +12,9 @@ class Id
     {
         return $this->id;
     }
+
+    public function __toString(): string
+    {
+        return (string) $this->id;
+    }
 }
