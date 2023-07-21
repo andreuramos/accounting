@@ -59,6 +59,7 @@ class EmitInvoiceUseCase
             $quantity = 1;
             $amount = $invoiceLine['amount'];
             $line = new InvoiceLine(
+                $invoice->id,
                 $product,
                 $quantity,
                 new Money($amount),
