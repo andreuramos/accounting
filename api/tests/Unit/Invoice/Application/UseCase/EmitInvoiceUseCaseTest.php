@@ -21,6 +21,7 @@ use App\Transaction\Domain\Model\IncomeRepositoryInterface;
 use App\Transaction\Domain\ValueObject\Money;
 use App\User\Domain\Entity\User;
 use App\User\Domain\ValueObject\Email;
+use PhpParser\Node\Arg;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -100,6 +101,8 @@ class EmitInvoiceUseCaseTest extends TestCase
             ));
         $this->invoiceNumberGenerator->__invoke(Argument::any())
             ->willReturn(new InvoiceNumber("1230"));
+        $this->invoiceRepository->save(Argument::type(Invoice::class))
+            ->willReturn(new Id(8));
         $command = new EmitInvoiceCommand(
             $this->user,
             "My Business",
@@ -139,6 +142,8 @@ class EmitInvoiceUseCaseTest extends TestCase
             ));
         $this->invoiceNumberGenerator->__invoke(Argument::any())
             ->willReturn(new InvoiceNumber('123'));
+        $this->invoiceRepository->save(Argument::type(Invoice::class))
+            ->willReturn(new Id(6));
 
         $this->businessRepository->save(Argument::type(Business::class))
             ->shouldBeCalled();
@@ -182,6 +187,8 @@ class EmitInvoiceUseCaseTest extends TestCase
             ->willReturn($userBusiness);
         $this->invoiceNumberGenerator->__invoke($userBusiness)
             ->willReturn($invoiceNumber);
+        $this->invoiceRepository->save(Argument::type(Invoice::class))
+            ->willReturn(new Id(4));
 
         $this->invoiceLineRepository->addToInvoice($invoiceNumber, Argument::type(InvoiceLine::class))
             ->shouldBeCalled();

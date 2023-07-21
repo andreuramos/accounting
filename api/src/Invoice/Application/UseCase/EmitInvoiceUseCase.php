@@ -52,14 +52,14 @@ class EmitInvoiceUseCase
             $receiverBusiness->id,
             new \DateTime(),
         );
-        $this->invoiceRepository->save($invoice);
+        $invoiceId = $this->invoiceRepository->save($invoice);
 
         foreach ($command->invoiceLines as $invoiceLine) {
             $product = $invoiceLine['concept'];
             $quantity = 1;
             $amount = $invoiceLine['amount'];
             $line = new InvoiceLine(
-                $invoice->id,
+                $invoiceId,
                 $product,
                 $quantity,
                 new Money($amount),

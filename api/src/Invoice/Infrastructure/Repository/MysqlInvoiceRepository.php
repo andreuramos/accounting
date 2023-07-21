@@ -15,7 +15,7 @@ class MysqlInvoiceRepository implements InvoiceRepositoryInterface
     {
     }
 
-    public function save(Invoice $invoice): void
+    public function save(Invoice $invoice): Id
     {
         $stmt = $this->PDO->prepare(
             'INSERT INTO invoice (number, emitter_id, receiver_id, date, income_id) ' .
@@ -34,6 +34,8 @@ class MysqlInvoiceRepository implements InvoiceRepositoryInterface
         $stmt->bindParam(':income_id', $incomeId);
 
         $stmt->execute();
+
+        return new Id($this->PDO->lastInsertId());
     }
 
     public function getLastEmittedByBusiness(Business $business): ?Invoice
