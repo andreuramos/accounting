@@ -51,3 +51,6 @@ create-migration:
 
 migrate:
 	docker exec -u 1000 -it $(BE_NAME)_1 vendor/bin/phinx migrate --configuration=config/phinx.php -e development
+
+run-command:
+	docker exec -u 1000 -it $(BE_NAME)_1 php config/console.php $(command)
