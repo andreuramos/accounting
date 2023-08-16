@@ -20,6 +20,8 @@ class RenderInvoiceCommandTest extends TestCase
 
         $commandTester->execute([
             'command' => $command->getName(),
+            'accountId' => 1,
+            'invoiceNumber' => '20230001',
         ]);
 
         $this->assertEquals(0, $commandTester->getStatusCode());
