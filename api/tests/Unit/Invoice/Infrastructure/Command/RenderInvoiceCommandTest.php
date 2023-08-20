@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\NullOutput;
 
 class RenderInvoiceCommandTest extends TestCase
 {
-    public function test_null_account_fails(): void
+    public function test_null_account_returns_invalid(): void
     {
         $input = new ArrayInput([
             'accountId' => null,
@@ -23,7 +23,7 @@ class RenderInvoiceCommandTest extends TestCase
         $this->assertEquals(Command::INVALID, $resultStatusCode);
     }
 
-    public function test_null_invoice_fails(): void
+    public function test_null_invoice_returns_invalid(): void
     {
         $input = new ArrayInput([
             'accountId' => 1,
