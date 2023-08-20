@@ -22,4 +22,17 @@ class RenderInvoiceCommandTest extends TestCase
 
         $this->assertEquals(Command::INVALID, $resultStatusCode);
     }
+
+    public function test_null_invoice_fails(): void
+    {
+        $input = new ArrayInput([
+            'accountId' => 1,
+            'invoiceNumber' => null,
+        ]);
+        $command = new RenderInvoiceCommand();
+
+        $resultStatusCode = $command->run($input, new NullOutput());
+
+        $this->assertEquals(Command::INVALID, $resultStatusCode);
+    }
 }
