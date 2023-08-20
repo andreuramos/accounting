@@ -30,7 +30,7 @@ class RenderInvoiceCommand extends Command
         try {
             $applicationCommand = new ApplicationCommand($accountId, $invoiceNumber);
         } catch (\Throwable $throwable) {
-            $output->write("Error with the arguments");
+            $output->write($throwable->getMessage());
             return Command::INVALID;
         }
 
