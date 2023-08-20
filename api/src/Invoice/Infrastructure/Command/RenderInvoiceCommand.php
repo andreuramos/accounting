@@ -2,6 +2,7 @@
 
 namespace App\Invoice\Infrastructure\Command;
 
+use App\Invoice\Application\Command\RenderInvoiceCommand as ApplicationCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -24,6 +25,14 @@ class RenderInvoiceCommand extends Command
     {
         $accountId = $input->getArgument('accountId');
         $invoiceNumber = $input->getArgument('invoiceNumber');
+
+        try {
+            $applicationCommand = new ApplicationCommand($accountId);
+        } catch (\Throwable $throwable) {
+            $output->write("Error with the arguments");
+            return Command::INVALID;
+        }
+
         $output->write("Rendering Invoice $invoiceNumber of account $accountId");
         return Command::SUCCESS;
     }
