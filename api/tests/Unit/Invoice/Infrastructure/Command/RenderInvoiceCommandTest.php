@@ -65,6 +65,19 @@ class RenderInvoiceCommandTest extends TestCase
         $this->assertEquals(Command::FAILURE, $resultStatusCode);
     }
 
+    public function test_all_good_returns_success(): void
+    {
+        $input = new ArrayInput([
+            'accountId' => 1,
+            'invoiceNumber' => "202300001",
+        ]);
+        $command = $this->buildCommand();
+
+        $resultStatusCode = $command->run($input, new NullOutput());
+
+        $this->assertEquals(Command::SUCCESS, $resultStatusCode);
+    }
+
     private function buildCommand(): RenderInvoiceCommand
     {
         return new RenderInvoiceCommand($this->renderInvoiceUseCase->reveal());
