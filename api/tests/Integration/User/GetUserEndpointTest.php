@@ -9,7 +9,7 @@ class GetUserEndpointTest extends EndpointTest
 {
     public function test_unauthorized_returns_401()
     {
-        $response = $this->client->get('/user');
+        $response = $this->client->get('user');
         $this->assertEquals(401, $response->getStatusCode());
     }
 
@@ -19,7 +19,7 @@ class GetUserEndpointTest extends EndpointTest
             $this->registerUser($this->email,"mypass");
             $this->login($this->email, "mypass");
 
-            $response = $this->client->get('/user',[
+            $response = $this->client->get('user',[
                 'headers' => [
                     'Authorization' => 'Bearer '.$this->authToken
                 ]

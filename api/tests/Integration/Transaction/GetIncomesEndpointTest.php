@@ -11,7 +11,7 @@ class GetIncomesEndpointTest extends EndpointTest
         $this->registerUser($this->email, "123");
         $this->login($this->email, "123");
 
-        $this->client->post('/income', [
+        $this->client->post('income', [
             'body' => json_encode([
                 'amount' => 100,
                 'description' => "test_returns_created_income",
@@ -20,7 +20,7 @@ class GetIncomesEndpointTest extends EndpointTest
             'headers' => ['Authorization' => 'Bearer ' . $this->authToken]
         ]);
 
-        $response = $this->client->get('/income', [
+        $response = $this->client->get('income', [
             'headers' => ['Authorization' => "Bearer " . $this->authToken,]
         ]);
 

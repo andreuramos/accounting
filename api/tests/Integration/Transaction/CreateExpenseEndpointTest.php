@@ -11,7 +11,7 @@ class CreateExpenseEndpointTest extends EndpointTest
         $this->registerUser($this->email, "pass");
         $this->login($this->email, "pass");
 
-        $response = $this->client->post('/expense',[
+        $response = $this->client->post('expense',[
             'body' => json_encode([
                 'amount' => 3000,
                 'description' => "test_expense_created",

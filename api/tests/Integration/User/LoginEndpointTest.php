@@ -11,7 +11,7 @@ class LoginEndpointTest extends EndpointTest
     {
         try {
             $this->registerUser($this->email, "correctPassword");
-            $response = $this->client->post('/login', [
+            $response = $this->client->post('login', [
                 'body' => json_encode([
                     'email' => $this->email,
                     'password' => "correctPassword"
@@ -27,7 +27,7 @@ class LoginEndpointTest extends EndpointTest
     {
         try {
             $this->registerUser($this->email, "correctPassword");
-            $response = $this->client->post('/login', [
+            $response = $this->client->post('login', [
                 'body' => json_encode([
                     'email' => $this->email,
                     'password' => "correctPassword"
@@ -44,7 +44,7 @@ class LoginEndpointTest extends EndpointTest
     {
         try {
             $this->registerUser($this->email, "correctPassword");
-            $response = $this->client->post('/login', [
+            $response = $this->client->post('login', [
                 'body' => json_encode([
                     'email' => $this->email,
                     'password' => "wrongPassword"
