@@ -35,7 +35,7 @@ test: test-static test-unit test-integration
 
 test-integration: # runs all tests
 	mkdir -p api/tmp
-	docker compose exec -u 1000 api vendor/bin/phinx migrate --configuration=config/phinx.php -e testing
+	docker compose exec -u $(shell id -u) api vendor/bin/phinx migrate --configuration=config/phinx.php -e testing
 	docker compose exec api vendor/bin/phpunit --colors=always --testsuite integration
 
 test-unit:
@@ -47,10 +47,10 @@ test-static:
 migration: create-migration
 
 create-migration:
-	docker compose exec -u 1000 api vendor/bin/phinx create $(name) --configuration=config/phinx.php
+	docker compose exec -u $(shell id -u) api vendor/bin/phinx create $(name) --configuration=config/phinx.php
 
 migrate:
-	docker compose exec -u 1000 api vendor/bin/phinx migrate --configuration=config/phinx.php -e development
+	docker compose exec -u $(shell id -u) api vendor/bin/phinx migrate --configuration=config/phinx.php -e development
 
 run-command:
-	docker compose exec -u 1000 api php config/console.php $(command)
+	docker compose exec -u $(shell id -u) api php config/console.php $(command)
