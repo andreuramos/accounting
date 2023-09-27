@@ -34,6 +34,7 @@ init-db:
 test: test-static test-unit test-integration
 
 test-integration: # runs all tests
+	mkdir -p api/tmp
 	docker compose exec -u 1000 api vendor/bin/phinx migrate --configuration=config/phinx.php -e testing
 	docker compose exec api vendor/bin/phpunit --colors=always --testsuite integration
 
