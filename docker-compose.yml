@@ -8,7 +8,7 @@ services:
       - ./api:/api
       - ./site.conf:/etc/nginx/conf.d/default.conf
     links:
-      - php
+      - api
     networks:
       - backend-network
 
@@ -24,7 +24,7 @@ services:
     networks:
       - backend-network
 
-  php:
+  api:
     build: ./api
     volumes:
       - ./api:/api
