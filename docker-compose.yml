@@ -50,6 +50,8 @@ services:
       - ./front:/code
     ports:
       - 5173:5173
+    networks:
+      - backend-network
     command: ["sh", "-c", "npm i && npm run dev -- --host=0.0.0.0"]
 
 networks:

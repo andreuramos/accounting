@@ -1,12 +1,19 @@
 ## Requisites
 
-* Docker
 * Docker Compose
 
 ## Run
 
-`make up && make init-be && make migrate`
+```
+$ docker compose up
+```
 
-Then use to `localhost:8080` to make requests to the API
+If it's your first run, first install dependencies and migrate database
+```
+$ make init-be
+$ make migrate
+```
 
-Or access `localhost:3000` to load the frontend 
+Goto http://localhost:8080 to see the frontend
+
+The API endpoint is in http://localhost:8080/api/ 
