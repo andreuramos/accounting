@@ -24,13 +24,6 @@ init-fe:
 enter-db:
 	docker compose exec mysql mysql -u$(DB_USER) -p$(DB_PWD) $(DB_NAME)
 
-init-db:
-	@echo "Initing database ..."
-	export DB_USER=$(DB_USER) && \
-	export DB_PWD=$(DB_PWD) && \
-	export DB_NAME=$(DB_NAME) && \
-	envsubst < ./api/config/db-init.sql | docker compose exec -T mysql mysql -uroot -p$(DB_ROOT_PASSWORD)
-
 test: test-static test-unit test-integration
 
 test-integration: # runs all tests

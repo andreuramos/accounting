@@ -5,7 +5,7 @@
 
 ## Run
 
-`make up && make init-be && make init-db && make migrate`
+`make up && make init-be && make migrate`
 
 Then use to `localhost:8080` to make requests to the API
 

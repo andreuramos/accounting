@@ -17,8 +17,10 @@ services:
     ports:
       - "3036:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: "container-root-password"
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
       MYSQL_DATABASE: "accounting-db"
+      MYSQL_USER: "accounting"
+      MYSQL_PASSWORD: "accpwd"
     volumes:
       - mysql:/var/lib/mysql
     networks:
@@ -32,6 +34,14 @@ services:
       - mysql
     networks:
       - backend-network
+    environment:
+      DB_DRIVER: "mysql"
+      DB_NAME: "accounting-db"
+      DB_USER: "accounting"
+      DB_PWD: "accpwd"
+      DB_PORT: "3306"
+      DB_HOST: "mysql"
+      PHINX_DB_HOST: "mysql"
 
   frontend:
     image: node:16-alpine
