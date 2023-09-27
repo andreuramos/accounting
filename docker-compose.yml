@@ -33,6 +33,15 @@ services:
     networks:
       - backend-network
 
+  frontend:
+    image: node:16-alpine
+    working_dir: /code
+    volumes:
+      - ./front:/code
+    ports:
+      - 5173:5173
+    command: ["sh", "-c", "npm i && npm run dev -- --host=0.0.0.0"]
+
 networks:
   backend-network:
     driver: bridge
