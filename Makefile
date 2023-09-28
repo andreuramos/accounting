@@ -13,7 +13,7 @@ down: # unmount dev environment
 	docker compose down
 
 init-be: # inits php app
-	docker compose exec api composer install
+	docker compose run --no-deps api composer install
 
 enter-be: # execs shell inside php container
 	docker compose exec api /bin/bash
