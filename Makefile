@@ -1,5 +1,6 @@
 #!/bin/bash
 DB_CONTAINER := accounting_mysql
+CURRENT_USER := $(shell id -u):$(shell id -g)
 include api/.env
 
 help: # lists commands
@@ -24,22 +25,23 @@ test: test-static test-unit test-integration
 
 test-integration: # runs all tests
 	mkdir -p api/tmp
-	docker compose exec -u $(shell id -u) api vendor/bin/phinx migrate --configuration=config/phinx.php -e testing
-	docker compose exec api vendor/bin/phpunit --colors=always --testsuite integration
+	docker compose up -d --wait
+	docker compose run api vendor/bin/phinx migrate --configuration=config/phinx.php -e testing
+	docker compose run api vendor/bin/phpunit --colors=always --testsuite integration
 
 test-unit:
-	docker compose exec api vendor/bin/phpunit --colors=always --testsuite unit
+	docker compose run api vendor/bin/phpunit --colors=always --testsuite unit
 
 test-static:
-	docker compose exec api vendor/bin/phpcs src/ --standard=PSR12
+	docker compose run api vendor/bin/phpcs src/ --standard=PSR12
 
 migration: create-migration
 
 create-migration:
-	docker compose exec -u $(shell id -u) api vendor/bin/phinx create $(name) --configuration=config/phinx.php
+	docker compose run -u $(CURRENT_USER) api vendor/bin/phinx create $(name) --configuration=config/phinx.php
 
 migrate:
-	docker compose exec -u $(shell id -u) api vendor/bin/phinx migrate --configuration=config/phinx.php -e development
+	docker compose run -u $(CURRENT_USER) api vendor/bin/phinx migrate --configuration=config/phinx.php -e development
 
 run-command:
-	docker compose exec -u $(shell id -u) api php config/console.php $(command)
+	docker compose run -u $(CURRENT_USER) api php config/console.php $(command)

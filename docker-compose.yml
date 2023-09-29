@@ -11,6 +11,10 @@ services:
       - api
     networks:
       - backend-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/api/status"]
+      interval: 3s
+      timeout: 1s
 
   mysql:
     image: mysql:latest
@@ -25,6 +29,10 @@ services:
       - mysql:/var/lib/mysql
     networks:
       - backend-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-u", "$MYSQL_USER", "-p$MYSQL_PASSWORD"]
+      interval: 3s
+      timeout: 1s
 
   api:
     build: ./api
@@ -53,6 +61,10 @@ services:
     networks:
       - backend-network
     command: ["sh", "-c", "npm i && npm run dev -- --host=0.0.0.0"]
+    healthcheck:
+      test: ["CMD", "wget", "-S", "--spider", "http://localhost:5173/index.html"]
+      interval: 3s
+      timeout: 1s
 
 networks:
   backend-network:
