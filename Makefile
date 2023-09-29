@@ -1,5 +1,4 @@
 #!/bin/bash
-FE_NAME := accounting_node
 DB_CONTAINER := accounting_mysql
 include api/.env
 
@@ -17,9 +16,6 @@ init-be: # inits php app
 
 enter-be: # execs shell inside php container
 	docker compose exec api /bin/bash
-
-init-fe:
-	docker exec -it $(FE_NAME)_1
 
 enter-db:
 	docker compose exec mysql mysql -u$(DB_USER) -p$(DB_PWD) $(DB_NAME)
