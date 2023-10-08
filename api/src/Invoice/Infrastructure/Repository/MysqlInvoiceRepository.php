@@ -4,6 +4,7 @@ namespace App\Invoice\Infrastructure\Repository;
 
 use App\Business\Domain\Entity\Business;
 use App\Invoice\Domain\Entity\Invoice;
+use App\Invoice\Domain\Exception\InvoiceNotFoundException;
 use App\Invoice\Domain\Model\InvoiceRepositoryInterface;
 use App\Invoice\Domain\ValueObject\InvoiceNumber;
 use App\Shared\Domain\ValueObject\Id;
@@ -63,5 +64,10 @@ class MysqlInvoiceRepository implements InvoiceRepositoryInterface
             new Id($result['receiver_id']),
             new \DateTime()
         );
+    }
+
+    public function findByBusinessIdAndNumber(Id $businessId, InvoiceNumber $invoiceNumber): Invoice
+    {
+        throw new InvoiceNotFoundException((string) $invoiceNumber);
     }
 }
