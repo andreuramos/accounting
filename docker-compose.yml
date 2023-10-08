@@ -7,31 +7,64 @@ services:
     volumes:
       - ./api:/api
       - ./site.conf:/etc/nginx/conf.d/default.conf
-    links:
-      - php
+    depends_on:
+      - api
     networks:
       - backend-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/api/status"]
+      interval: 3s
+      timeout: 1s
 
   mysql:
     image: mysql:latest
     ports:
       - "3036:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: "container-root-password"
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
       MYSQL_DATABASE: "accounting-db"
+      MYSQL_USER: "accounting"
+      MYSQL_PASSWORD: "accpwd"
     volumes:
       - mysql:/var/lib/mysql
     networks:
       - backend-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-u", "$MYSQL_USER", "-p$MYSQL_PASSWORD"]
+      interval: 3s
+      timeout: 1s
 
-  php:
+  api:
     build: ./api
     volumes:
       - ./api:/api
-    links:
+    depends_on:
       - mysql
     networks:
       - backend-network
+    environment:
+      DB_DRIVER: "mysql"
+      DB_NAME: "accounting-db"
+      DB_USER: "accounting"
+      DB_PWD: "accpwd"
+      DB_PORT: "3306"
+      DB_HOST: "mysql"
+      PHINX_DB_HOST: "mysql"
+
+  frontend:
+    image: node:16-alpine
+    working_dir: /code
+    volumes:
+      - ./front:/code
+    ports:
+      - 5173:5173
+    networks:
+      - backend-network
+    command: ["sh", "-c", "npm i && npm run dev -- --host=0.0.0.0"]
+    healthcheck:
+      test: ["CMD", "wget", "-S", "--spider", "http://localhost:5173/index.html"]
+      interval: 3s
+      timeout: 1s
 
 networks:
   backend-network:

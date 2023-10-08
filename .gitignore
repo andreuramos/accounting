@@ -3,6 +3,5 @@ api/config/definitions/shared-values.json
 api/tmp/
 api/vendor/
 api/.env
-api/composer.lock
 web/node_modules/*
 web/package-lock.json

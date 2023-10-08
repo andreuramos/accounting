@@ -24,7 +24,7 @@ jobs:
       run: make up
 
     - name: Init BE
-      run: docker exec -t accounting_php_1 composer install
+      run: make init-be
 
     - name: run phpunit
       run: make test-unit

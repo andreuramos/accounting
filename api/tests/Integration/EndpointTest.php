@@ -19,7 +19,7 @@ abstract class EndpointTest extends TestCase
     {
         parent::setUp();
         $this->client = new Client([
-            'base_uri' => 'http://nginx',
+            'base_uri' => 'http://nginx/api/',
             'http_errors' => false
         ]);
         $this->container = ContainerFactory::create();
@@ -33,7 +33,7 @@ abstract class EndpointTest extends TestCase
 
     protected function registerUser(string $email, string $password)
     {
-        $this->client->post('/user',[
+        $this->client->post('user',[
             'body' => json_encode([
                 'email' => $email,
                 'password' => $password
@@ -43,7 +43,7 @@ abstract class EndpointTest extends TestCase
 
     protected function login(string $email, string $password)
     {
-        $response = $this->client->post('/login', [
+        $response = $this->client->post('login', [
             'body' => json_encode([
                 'email' => $email,
                 'password' => $password

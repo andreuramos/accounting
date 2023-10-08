@@ -30,7 +30,15 @@ try {
 } catch (InvalidCredentialsException $exception) {
     $response = new Response("APP ERROR: Unauthorized ", Response::HTTP_UNAUTHORIZED);
 } catch (Throwable $exception) {
-    $response = new Response("APP ERROR: " . $exception->getMessage(), Response::HTTP_BAD_REQUEST);
+    $className = get_class($exception);
+    $errorText = <<<EOF
+    ${className}:
+    
+    {$exception->getTraceAsString()}
+    EOF;
+    $response = new Response($errorText, Response::HTTP_INTERNAL_SERVER_ERROR, [
+        'Content-Type' => 'text/plain',
+    ]);
 }
 
 $response->send();

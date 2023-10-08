@@ -11,7 +11,7 @@ class GetExpensesEndpointTest extends EndpointTest
         $this->registerUser($this->email, "124");
         $this->login($this->email, "124");
 
-        $response = $this->client->get('/expense', [
+        $response = $this->client->get('expense', [
             'headers' => [
                 'Authorization' => "Bearer " . $this->authToken,
             ]
@@ -25,7 +25,7 @@ class GetExpensesEndpointTest extends EndpointTest
         $this->registerUser($this->email, "124");
         $this->login($this->email, "124");
 
-        $this->client->post('/expense', [
+        $this->client->post('expense', [
             'body' => json_encode([
                 'amount' => 100,
                 'description' => "test_returns_created_expense",
@@ -34,7 +34,7 @@ class GetExpensesEndpointTest extends EndpointTest
             'headers' => ['Authorization' => 'Bearer ' . $this->authToken]
         ]);
 
-        $response = $this->client->get('/expense', [
+        $response = $this->client->get('expense', [
             'headers' => ['Authorization' => "Bearer " . $this->authToken,]
         ]);
 
@@ -50,7 +50,7 @@ class GetExpensesEndpointTest extends EndpointTest
     {
         $this->registerUser('other@GetExpensesEndpointTest.com', '1');
         $this->login('other@GetExpensesEndpointTest.com', '1');
-        $this->client->post('/expense', [
+        $this->client->post('expense', [
             'body' => json_encode([
                 'amount' => 10,
                 'description' => 'should not be listed',
@@ -62,7 +62,7 @@ class GetExpensesEndpointTest extends EndpointTest
         $this->registerUser($this->email, "124");
         $this->login($this->email, "124");
 
-        $this->client->post('/expense', [
+        $this->client->post('expense', [
             'body' => json_encode([
                 'amount' => 100,
                 'description' => "expense from logged user",
@@ -71,7 +71,7 @@ class GetExpensesEndpointTest extends EndpointTest
             'headers' => ['Authorization' => 'Bearer ' . $this->authToken]
         ]);
 
-        $response = $this->client->get('/expense', [
+        $response = $this->client->get('expense', [
             'headers' => ['Authorization' => "Bearer " . $this->authToken,]
         ]);
 

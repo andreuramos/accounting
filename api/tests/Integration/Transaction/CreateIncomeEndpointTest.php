@@ -10,7 +10,7 @@ class CreateIncomeEndpointTest extends EndpointTest
     {
         $this->registerUser($this->email, "");
         $this->login($this->email, "");
-        $response = $this->client->post('/income',[
+        $response = $this->client->post('income',[
             'body' => json_encode([
                 'amount' => 100,
                 'description' => 'test_income_created',
@@ -26,7 +26,7 @@ class CreateIncomeEndpointTest extends EndpointTest
     {
         $this->registerUser($this->email, "");
         $this->login($this->email, "");
-        $response = $this->client->post('/income',[
+        $response = $this->client->post('income',[
             'body' => json_encode([
                 'amount' => 100,
                 'description' => 'test_income_created',
