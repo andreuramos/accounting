@@ -2,14 +2,14 @@
 
 namespace Test\Unit\Transaction\Infrastructure\Controller;
 
+use App\Application\UseCase\GetAccountExpenses\AccountExpenses;
+use App\Application\UseCase\GetAccountExpenses\GetAccountExpensesCommand;
+use App\Application\UseCase\GetAccountExpenses\GetAccountExpensesUseCase;
 use App\Domain\Exception\InvalidCredentialsException;
 use App\Domain\Expense;
 use App\Domain\Id;
 use App\Domain\Money;
 use App\Infrastructure\Controller\GetExpensesController;
-use App\UseCase\GetAccountExpenses\AccountExpenses;
-use App\UseCase\GetAccountExpenses\GetAccountExpensesCommand;
-use App\UseCase\GetAccountExpenses\GetAccountExpensesUseCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Test\Unit\Shared\Infrastructure\Controller\AuthorizedControllerTest;

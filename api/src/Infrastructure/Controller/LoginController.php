@@ -2,11 +2,11 @@
 
 namespace App\Infrastructure\Controller;
 
-use App\Domain\MissingMandatoryParameterException;
+use App\Application\UseCase\Login\LoginCommand;
+use App\Application\UseCase\Login\LoginUseCase;
+use App\Domain\Exception\MissingMandatoryParameterException;
 use App\Domain\ValueObject\Email;
 use App\Infrastructure\ApiResponse;
-use App\UseCase\Login\LoginCommand;
-use App\UseCase\Login\LoginUseCase;
 use Symfony\Component\HttpFoundation\Request;
 
 class LoginController

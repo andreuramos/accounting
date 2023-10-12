@@ -4,8 +4,8 @@ namespace App\Infrastructure\Repository;
 
 use App\Domain\Address;
 use App\Domain\Business;
-use App\Domain\BusinessNotFoundException;
 use App\Domain\BusinessRepositoryInterface;
+use App\Domain\Exception\BusinessNotFoundException;
 use App\Domain\Id;
 use PDO;
 

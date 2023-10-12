@@ -2,9 +2,9 @@
 
 namespace Test\Unit\User\Infrastructure\Controller;
 
+use App\Application\UseCase\GetUser\GetUserUseCase;
 use App\Domain\Exception\InvalidCredentialsException;
 use App\Infrastructure\Controller\GetUserController;
-use App\UseCase\GetUser\GetUserUseCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Test\Unit\Shared\Infrastructure\Controller\AuthorizedControllerTest;

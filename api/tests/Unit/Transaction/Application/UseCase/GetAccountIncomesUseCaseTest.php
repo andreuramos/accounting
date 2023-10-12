@@ -2,14 +2,14 @@
 
 namespace Test\Unit\Transaction\Application\UseCase;
 
+use App\Application\UseCase\GetAccountIncomes\GetAccountIncomesCommand;
+use App\Application\UseCase\GetAccountIncomes\GetAccountIncomesUseCase;
 use App\Domain\Id;
 use App\Domain\Income;
 use App\Domain\IncomeRepositoryInterface;
 use App\Domain\Money;
 use App\Domain\User;
 use App\Domain\ValueObject\Email;
-use App\UseCase\GetAccountIncomes\GetAccountIncomesCommand;
-use App\UseCase\GetAccountIncomes\GetAccountIncomesUseCase;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 

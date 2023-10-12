@@ -2,14 +2,14 @@
 
 namespace Test\Unit\Invoice\Domain\Service;
 
+use App\Application\Service\Timestamper;
+use App\Application\UseCase\EmitInvoice\InvoiceNumberGenerator;
 use App\Domain\Address;
 use App\Domain\Business;
 use App\Domain\Id;
 use App\Domain\Invoice;
 use App\Domain\InvoiceNumber;
 use App\Domain\InvoiceRepositoryInterface;
-use App\Service\Timestamper;
-use App\UseCase\EmitInvoice\InvoiceNumberGenerator;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;

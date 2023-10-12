@@ -2,10 +2,10 @@
 
 namespace App\Infrastructure\Controller;
 
+use App\Application\UseCase\GetUser\GetUserUseCase;
 use App\Domain\UserRepositoryInterface;
 use App\Infrastructure\ApiResponse;
 use App\Infrastructure\Auth\JWTDecoder;
-use App\UseCase\GetUser\GetUserUseCase;
 use Symfony\Component\HttpFoundation\Request;
 
 class GetUserController extends AuthorizedController

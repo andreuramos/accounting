@@ -2,12 +2,12 @@
 
 namespace App\Infrastructure\Controller;
 
-use App\Domain\MissingMandatoryParameterException;
+use App\Application\UseCase\CreateIncome\CreateIncomeCommand;
+use App\Application\UseCase\CreateIncome\CreateIncomeUseCase;
+use App\Domain\Exception\MissingMandatoryParameterException;
 use App\Domain\UserRepositoryInterface;
 use App\Infrastructure\ApiResponse;
 use App\Infrastructure\Auth\JWTDecoder;
-use App\UseCase\CreateIncome\CreateIncomeCommand;
-use App\UseCase\CreateIncome\CreateIncomeUseCase;
 use Symfony\Component\HttpFoundation\Request;
 
 class CreateIncomeController extends AuthorizedController

@@ -3,6 +3,11 @@
 namespace Test\Unit\User\Application\UseCase;
 
 use App\Application\Auth\AuthTokenGeneratorInterface;
+use App\Application\Service\HasherInterface;
+use App\Application\UseCase\Login\LoginCommand;
+use App\Application\UseCase\Login\LoginResult;
+use App\Application\UseCase\Login\LoginUseCase;
+use App\Application\UseCase\RefreshToken\RefreshTokenGeneratorInterface;
 use App\Domain\Exception\InvalidCredentialsException;
 use App\Domain\Exception\UserNotFoundException;
 use App\Domain\Id;
@@ -10,11 +15,6 @@ use App\Domain\User;
 use App\Domain\UserRepositoryInterface;
 use App\Domain\ValueObject\AuthToken;
 use App\Domain\ValueObject\Email;
-use App\Service\HasherInterface;
-use App\UseCase\Login\LoginCommand;
-use App\UseCase\Login\LoginResult;
-use App\UseCase\Login\LoginUseCase;
-use App\UseCase\RefreshToken\RefreshTokenGeneratorInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;

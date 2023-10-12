@@ -2,13 +2,13 @@
 
 namespace Test\Unit\User\Domain\Service;
 
+use App\Application\Service\AccountCreator;
 use App\Domain\Account;
 use App\Domain\AccountRepositoryInterface;
 use App\Domain\Id;
 use App\Domain\User;
 use App\Domain\UserRepositoryInterface;
 use App\Domain\ValueObject\Email;
-use App\Service\AccountCreator;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;

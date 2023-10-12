@@ -2,13 +2,13 @@
 
 namespace App\Infrastructure\Controller;
 
+use App\Application\UseCase\GetAccountIncomes\AccountIncomes;
+use App\Application\UseCase\GetAccountIncomes\GetAccountIncomesCommand;
+use App\Application\UseCase\GetAccountIncomes\GetAccountIncomesUseCase;
 use App\Domain\Income;
 use App\Domain\UserRepositoryInterface;
 use App\Infrastructure\ApiResponse;
 use App\Infrastructure\Auth\JWTDecoder;
-use App\UseCase\GetAccountIncomes\AccountIncomes;
-use App\UseCase\GetAccountIncomes\GetAccountIncomesCommand;
-use App\UseCase\GetAccountIncomes\GetAccountIncomesUseCase;
 use Symfony\Component\HttpFoundation\Request;
 
 class GetIncomesController extends AuthorizedController

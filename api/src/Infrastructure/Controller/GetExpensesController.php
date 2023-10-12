@@ -2,13 +2,13 @@
 
 namespace App\Infrastructure\Controller;
 
+use App\Application\UseCase\GetAccountExpenses\AccountExpenses;
+use App\Application\UseCase\GetAccountExpenses\GetAccountExpensesCommand;
+use App\Application\UseCase\GetAccountExpenses\GetAccountExpensesUseCase;
 use App\Domain\Expense;
 use App\Domain\UserRepositoryInterface;
 use App\Infrastructure\ApiResponse;
 use App\Infrastructure\Auth\JWTDecoder;
-use App\UseCase\GetAccountExpenses\AccountExpenses;
-use App\UseCase\GetAccountExpenses\GetAccountExpensesCommand;
-use App\UseCase\GetAccountExpenses\GetAccountExpensesUseCase;
 use Symfony\Component\HttpFoundation\Request;
 
 class GetExpensesController extends AuthorizedController

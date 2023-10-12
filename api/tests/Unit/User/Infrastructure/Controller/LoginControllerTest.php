@@ -2,14 +2,14 @@
 
 namespace Test\Unit\User\Infrastructure\Controller;
 
+use App\Application\UseCase\Login\LoginCommand;
+use App\Application\UseCase\Login\LoginResult;
+use App\Application\UseCase\Login\LoginUseCase;
 use App\Domain\Exception\InvalidCredentialsException;
-use App\Domain\MissingMandatoryParameterException;
+use App\Domain\Exception\MissingMandatoryParameterException;
 use App\Domain\ValueObject\AuthToken;
 use App\Domain\ValueObject\Email;
 use App\Infrastructure\Controller\LoginController;
-use App\UseCase\Login\LoginCommand;
-use App\UseCase\Login\LoginResult;
-use App\UseCase\Login\LoginUseCase;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\Request;

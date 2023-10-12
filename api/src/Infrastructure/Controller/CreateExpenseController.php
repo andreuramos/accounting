@@ -3,11 +3,11 @@
 namespace App\Infrastructure\Controller;
 
 use App\Application\Auth\AuthTokenDecoderInterface;
-use App\Domain\MissingMandatoryParameterException;
+use App\Application\UseCase\CreateExpense\CreateExpenseCommand;
+use App\Application\UseCase\CreateExpense\CreateExpenseUseCase;
+use App\Domain\Exception\MissingMandatoryParameterException;
 use App\Domain\UserRepositoryInterface;
 use App\Infrastructure\ApiResponse;
-use App\UseCase\CreateExpense\CreateExpenseCommand;
-use App\UseCase\CreateExpense\CreateExpenseUseCase;
 use Symfony\Component\HttpFoundation\Request;
 
 class CreateExpenseController extends AuthorizedController

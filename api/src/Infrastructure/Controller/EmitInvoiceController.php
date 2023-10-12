@@ -2,12 +2,12 @@
 
 namespace App\Infrastructure\Controller;
 
-use App\Domain\MissingMandatoryParameterException;
+use App\Application\UseCase\EmitInvoice\EmitInvoiceCommand;
+use App\Application\UseCase\EmitInvoice\EmitInvoiceUseCase;
+use App\Domain\Exception\MissingMandatoryParameterException;
 use App\Domain\UserRepositoryInterface;
 use App\Infrastructure\ApiResponse;
 use App\Infrastructure\Auth\JWTDecoder;
-use App\UseCase\EmitInvoice\EmitInvoiceCommand;
-use App\UseCase\EmitInvoice\EmitInvoiceUseCase;
 use Symfony\Component\HttpFoundation\Request;
 
 class EmitInvoiceController extends AuthorizedController

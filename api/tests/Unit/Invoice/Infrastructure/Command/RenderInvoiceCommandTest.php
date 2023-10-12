@@ -2,10 +2,10 @@
 
 namespace Test\Unit\Invoice\Infrastructure\Command;
 
-use App\Domain\InvoiceNotFoundException;
+use App\Application\UseCase\RenderInvoice\RenderInvoiceCommand as ApplicationCommand;
+use App\Application\UseCase\RenderInvoice\RenderInvoiceUseCase;
+use App\Domain\Exception\InvoiceNotFoundException;
 use App\Infrastructure\Command\RenderInvoiceCommand;
-use App\UseCase\RenderInvoice\RenderInvoiceCommand as ApplicationCommand;
-use App\UseCase\RenderInvoice\RenderInvoiceUseCase;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;

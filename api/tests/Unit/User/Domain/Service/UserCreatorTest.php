@@ -2,14 +2,14 @@
 
 namespace Test\Unit\User\Domain\Service;
 
+use App\Application\Service\HasherInterface;
+use App\Application\Service\UserCreator;
+use App\Application\UseCase\RegisterUser\RegisterUserCommand;
 use App\Domain\Exception\UserAlreadyExistsException;
 use App\Domain\Id;
 use App\Domain\User;
 use App\Domain\UserRepositoryInterface;
 use App\Domain\ValueObject\Email;
-use App\Service\HasherInterface;
-use App\Service\UserCreator;
-use App\UseCase\RegisterUser\RegisterUserCommand;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;

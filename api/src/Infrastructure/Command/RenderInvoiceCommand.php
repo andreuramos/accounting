@@ -2,8 +2,8 @@
 
 namespace App\Infrastructure\Command;
 
-use App\UseCase\RenderInvoice\RenderInvoiceCommand as ApplicationCommand;
-use App\UseCase\RenderInvoice\RenderInvoiceUseCase;
+use App\Application\UseCase\RenderInvoice\RenderInvoiceCommand as ApplicationCommand;
+use App\Application\UseCase\RenderInvoice\RenderInvoiceUseCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

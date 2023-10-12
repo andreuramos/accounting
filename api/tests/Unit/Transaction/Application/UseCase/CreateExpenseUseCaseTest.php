@@ -2,12 +2,12 @@
 
 namespace Test\Unit\Transaction\Application\UseCase;
 
+use App\Application\UseCase\CreateExpense\CreateExpenseCommand;
+use App\Application\UseCase\CreateExpense\CreateExpenseUseCase;
 use App\Domain\Expense;
 use App\Domain\ExpenseRepositoryInterface;
 use App\Domain\Id;
 use App\Domain\Money;
-use App\UseCase\CreateExpense\CreateExpenseCommand;
-use App\UseCase\CreateExpense\CreateExpenseUseCase;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 

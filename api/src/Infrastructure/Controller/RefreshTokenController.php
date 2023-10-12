@@ -2,10 +2,10 @@
 
 namespace App\Infrastructure\Controller;
 
-use App\Domain\MissingMandatoryParameterException;
+use App\Application\UseCase\RefreshToken\RefreshTokensCommand;
+use App\Application\UseCase\RefreshToken\RefreshTokensUseCase;
+use App\Domain\Exception\MissingMandatoryParameterException;
 use App\Infrastructure\ApiResponse;
-use App\UseCase\RefreshToken\RefreshTokensCommand;
-use App\UseCase\RefreshToken\RefreshTokensUseCase;
 use Symfony\Component\HttpFoundation\Request;
 
 class RefreshTokenController

@@ -2,10 +2,10 @@
 
 namespace App\Infrastructure\Controller;
 
-use App\Domain\MissingMandatoryParameterException;
+use App\Application\UseCase\RegisterUser\RegisterUserCommand;
+use App\Application\UseCase\RegisterUser\RegisterUserUseCase;
+use App\Domain\Exception\MissingMandatoryParameterException;
 use App\Infrastructure\ApiResponse;
-use App\UseCase\RegisterUser\RegisterUserCommand;
-use App\UseCase\RegisterUser\RegisterUserUseCase;
 use Symfony\Component\HttpFoundation\Request;
 
 class RegisterUserController

@@ -2,10 +2,13 @@
 
 namespace Test\Unit\Invoice\Application\UseCase;
 
+use App\Application\UseCase\EmitInvoice\EmitInvoiceCommand;
+use App\Application\UseCase\EmitInvoice\EmitInvoiceUseCase;
+use App\Application\UseCase\EmitInvoice\InvoiceNumberGenerator;
 use App\Domain\Address;
 use App\Domain\Business;
-use App\Domain\BusinessNotFoundException;
 use App\Domain\BusinessRepositoryInterface;
+use App\Domain\Exception\BusinessNotFoundException;
 use App\Domain\Id;
 use App\Domain\Income;
 use App\Domain\IncomeRepositoryInterface;
@@ -17,9 +20,6 @@ use App\Domain\InvoiceRepositoryInterface;
 use App\Domain\TaxDataAggregateRepositoryInterface;
 use App\Domain\User;
 use App\Domain\ValueObject\Email;
-use App\UseCase\EmitInvoice\EmitInvoiceCommand;
-use App\UseCase\EmitInvoice\EmitInvoiceUseCase;
-use App\UseCase\EmitInvoice\InvoiceNumberGenerator;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;

@@ -2,12 +2,12 @@
 
 namespace Test\Unit\User\Infrastructure\Controller;
 
-use App\Domain\MissingMandatoryParameterException;
+use App\Application\UseCase\Login\LoginResult;
+use App\Application\UseCase\RefreshToken\RefreshTokensCommand;
+use App\Application\UseCase\RefreshToken\RefreshTokensUseCase;
+use App\Domain\Exception\MissingMandatoryParameterException;
 use App\Domain\ValueObject\AuthToken;
 use App\Infrastructure\Controller\RefreshTokenController;
-use App\UseCase\Login\LoginResult;
-use App\UseCase\RefreshToken\RefreshTokensCommand;
-use App\UseCase\RefreshToken\RefreshTokensUseCase;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\Request;

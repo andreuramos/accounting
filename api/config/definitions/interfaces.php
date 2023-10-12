@@ -2,6 +2,9 @@
 
 use App\Application\Auth\AuthTokenDecoderInterface;
 use App\Application\Auth\AuthTokenGeneratorInterface;
+use App\Application\Service\HasherInterface;
+use App\Application\Service\Md5Hasher;
+use App\Application\UseCase\RefreshToken\RefreshTokenGeneratorInterface;
 use App\Domain\AccountRepositoryInterface;
 use App\Domain\BusinessRepositoryInterface;
 use App\Domain\ExpenseRepositoryInterface;
@@ -21,9 +24,6 @@ use App\Infrastructure\Repository\MysqlInvoiceLineRepository;
 use App\Infrastructure\Repository\MysqlInvoiceRepository;
 use App\Infrastructure\Repository\MysqlTaxDataAggregateRepository;
 use App\Infrastructure\Repository\MysqlUserRepository;
-use App\Service\HasherInterface;
-use App\Service\Md5Hasher;
-use App\UseCase\RefreshToken\RefreshTokenGeneratorInterface;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\MessageBusInterface;
 

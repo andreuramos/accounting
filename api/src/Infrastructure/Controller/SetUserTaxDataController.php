@@ -2,12 +2,12 @@
 
 namespace App\Infrastructure\Controller;
 
-use App\Domain\MissingMandatoryParameterException;
+use App\Application\UseCase\SetUserTaxData\SetUserTaxDataCommand;
+use App\Application\UseCase\SetUserTaxData\SetUserTaxDataUseCase;
+use App\Domain\Exception\MissingMandatoryParameterException;
 use App\Domain\UserRepositoryInterface;
 use App\Infrastructure\ApiResponse;
 use App\Infrastructure\Auth\JWTDecoder;
-use App\UseCase\SetUserTaxData\SetUserTaxDataCommand;
-use App\UseCase\SetUserTaxData\SetUserTaxDataUseCase;
 use Symfony\Component\HttpFoundation\Request;
 
 class SetUserTaxDataController extends AuthorizedController

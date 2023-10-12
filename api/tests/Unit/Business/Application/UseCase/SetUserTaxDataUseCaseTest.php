@@ -2,14 +2,14 @@
 
 namespace Test\Unit\Business\Application\UseCase;
 
+use App\Application\UseCase\SetUserTaxData\SetUserTaxDataCommand;
+use App\Application\UseCase\SetUserTaxData\SetUserTaxDataUseCase;
 use App\Domain\Business;
 use App\Domain\BusinessRepositoryInterface;
 use App\Domain\Id;
 use App\Domain\User;
 use App\Domain\UserRepositoryInterface;
 use App\Domain\ValueObject\Email;
-use App\UseCase\SetUserTaxData\SetUserTaxDataCommand;
-use App\UseCase\SetUserTaxData\SetUserTaxDataUseCase;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
