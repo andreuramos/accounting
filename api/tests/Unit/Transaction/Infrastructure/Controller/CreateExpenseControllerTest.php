@@ -2,12 +2,12 @@
 
 namespace Test\Unit\Transaction\Infrastructure\Controller;
 
-use App\Shared\Domain\Exception\MissingMandatoryParameterException;
-use App\Shared\Infrastructure\ApiResponse;
-use App\Transaction\Application\Command\CreateExpenseCommand;
-use App\Transaction\Application\UseCase\CreateExpenseUseCase;
-use App\Transaction\Infrastructure\Controller\CreateExpenseController;
-use App\User\Domain\Exception\InvalidCredentialsException;
+use App\Domain\Exception\InvalidCredentialsException;
+use App\Domain\MissingMandatoryParameterException;
+use App\Infrastructure\ApiResponse;
+use App\Infrastructure\Controller\CreateExpenseController;
+use App\UseCase\CreateExpense\CreateExpenseCommand;
+use App\UseCase\CreateExpense\CreateExpenseUseCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\Request;

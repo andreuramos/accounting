@@ -2,12 +2,12 @@
 
 namespace Test\Unit\Business\Infrastructure\Controller;
 
-use App\Business\Application\Command\SetUserTaxDataCommand;
-use App\Business\Application\UseCase\SetUserTaxDataUseCase;
-use App\Business\Infrastructure\Controller\SetUserTaxDataController;
-use App\Shared\Domain\Exception\MissingMandatoryParameterException;
-use App\Shared\Infrastructure\ApiResponse;
-use App\User\Domain\Exception\InvalidCredentialsException;
+use App\Domain\Exception\InvalidCredentialsException;
+use App\Domain\MissingMandatoryParameterException;
+use App\Infrastructure\ApiResponse;
+use App\Infrastructure\Controller\SetUserTaxDataController;
+use App\UseCase\SetUserTaxData\SetUserTaxDataCommand;
+use App\UseCase\SetUserTaxData\SetUserTaxDataUseCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\Request;

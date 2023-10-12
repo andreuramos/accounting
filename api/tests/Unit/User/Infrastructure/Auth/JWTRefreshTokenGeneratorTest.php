@@ -2,10 +2,10 @@
 
 namespace Test\Unit\User\Infrastructure\Auth;
 
-use App\Shared\Domain\ValueObject\Id;
-use App\User\Domain\Entity\User;
-use App\User\Domain\ValueObject\Email;
-use App\User\Infrastructure\Auth\JWTRefreshTokenGenerator;
+use App\Domain\Id;
+use App\Domain\User;
+use App\Domain\ValueObject\Email;
+use App\Infrastructure\Auth\JWTRefreshTokenGenerator;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use PHPUnit\Framework\TestCase;

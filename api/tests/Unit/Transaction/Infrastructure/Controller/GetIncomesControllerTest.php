@@ -2,15 +2,15 @@
 
 namespace Test\Unit\Transaction\Infrastructure\Controller;
 
-use App\Shared\Domain\ValueObject\Id;
-use App\Shared\Infrastructure\ApiResponse;
-use App\Transaction\Application\Command\GetAccountIncomesCommand;
-use App\Transaction\Application\Result\AccountIncomes;
-use App\Transaction\Application\UseCase\GetAccountIncomesUseCase;
-use App\Transaction\Domain\Entity\Income;
-use App\Transaction\Domain\ValueObject\Money;
-use App\Transaction\Infrastructure\Controller\GetIncomesController;
-use App\User\Domain\Exception\InvalidCredentialsException;
+use App\Domain\Exception\InvalidCredentialsException;
+use App\Domain\Id;
+use App\Domain\Income;
+use App\Domain\Money;
+use App\Infrastructure\ApiResponse;
+use App\Infrastructure\Controller\GetIncomesController;
+use App\UseCase\GetAccountIncomes\AccountIncomes;
+use App\UseCase\GetAccountIncomes\GetAccountIncomesCommand;
+use App\UseCase\GetAccountIncomes\GetAccountIncomesUseCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\Request;

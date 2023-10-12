@@ -2,8 +2,8 @@
 
 namespace Test\Unit\User\Infrastructure\Auth;
 
-use App\User\Domain\Exception\InvalidAuthToken;
-use App\User\Infrastructure\Auth\JWTDecoder;
+use App\Domain\Exception\InvalidAuthToken;
+use App\Infrastructure\Auth\JWTDecoder;
 use Firebase\JWT\JWT;
 use PHPUnit\Framework\TestCase;
 

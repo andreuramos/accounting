@@ -2,12 +2,12 @@
 
 namespace Test\Unit\Transaction\Infrastructure\Controller;
 
-use App\Shared\Domain\Exception\MissingMandatoryParameterException;
-use App\Shared\Domain\ValueObject\Id;
-use App\Transaction\Application\Command\CreateIncomeCommand;
-use App\Transaction\Application\UseCase\CreateIncomeUseCase;
-use App\Transaction\Infrastructure\Controller\CreateIncomeController;
-use App\User\Domain\Exception\InvalidCredentialsException;
+use App\Domain\Exception\InvalidCredentialsException;
+use App\Domain\Id;
+use App\Domain\MissingMandatoryParameterException;
+use App\Infrastructure\Controller\CreateIncomeController;
+use App\UseCase\CreateIncome\CreateIncomeCommand;
+use App\UseCase\CreateIncome\CreateIncomeUseCase;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;
 use Test\Unit\Shared\Infrastructure\Controller\AuthorizedControllerTest;

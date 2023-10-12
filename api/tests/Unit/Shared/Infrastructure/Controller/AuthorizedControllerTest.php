@@ -2,11 +2,11 @@
 
 namespace Test\Unit\Shared\Infrastructure\Controller;
 
-use App\Shared\Domain\ValueObject\Id;
-use App\User\Domain\Entity\User;
-use App\User\Domain\Model\UserRepositoryInterface;
-use App\User\Domain\ValueObject\Email;
-use App\User\Infrastructure\Auth\JWTDecoder;
+use App\Domain\Id;
+use App\Domain\User;
+use App\Domain\UserRepositoryInterface;
+use App\Domain\ValueObject\Email;
+use App\Infrastructure\Auth\JWTDecoder;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\Request;

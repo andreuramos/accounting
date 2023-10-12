@@ -2,18 +2,18 @@
 
 require_once './vendor/autoload.php';
 
-use App\Business\Infrastructure\Controller\SetUserTaxDataController;
-use App\Invoice\Infrastructure\Controller\EmitInvoiceController;
-use App\Shared\Infrastructure\Controller\SharedDomainController;
-use App\Shared\Infrastructure\Controller\StatusCheckController;
-use App\Transaction\Infrastructure\Controller\CreateExpenseController;
-use App\Transaction\Infrastructure\Controller\CreateIncomeController;
-use App\Transaction\Infrastructure\Controller\GetExpensesController;
-use App\Transaction\Infrastructure\Controller\GetIncomesController;
-use App\User\Infrastructure\Controller\GetUserController;
-use App\User\Infrastructure\Controller\LoginController;
-use App\User\Infrastructure\Controller\RefreshTokenController;
-use App\User\Infrastructure\Controller\RegisterUserController;
+use App\Infrastructure\Controller\CreateExpenseController;
+use App\Infrastructure\Controller\CreateIncomeController;
+use App\Infrastructure\Controller\EmitInvoiceController;
+use App\Infrastructure\Controller\GetExpensesController;
+use App\Infrastructure\Controller\GetIncomesController;
+use App\Infrastructure\Controller\GetUserController;
+use App\Infrastructure\Controller\LoginController;
+use App\Infrastructure\Controller\RefreshTokenController;
+use App\Infrastructure\Controller\RegisterUserController;
+use App\Infrastructure\Controller\SetUserTaxDataController;
+use App\Infrastructure\Controller\SharedDomainController;
+use App\Infrastructure\Controller\StatusCheckController;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 

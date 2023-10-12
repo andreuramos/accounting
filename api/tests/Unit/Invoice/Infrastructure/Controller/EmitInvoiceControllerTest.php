@@ -2,12 +2,12 @@
 
 namespace Test\Unit\Invoice\Infrastructure\Controller;
 
-use App\Invoice\Application\Command\EmitInvoiceCommand;
-use App\Invoice\Application\UseCase\EmitInvoiceUseCase;
-use App\Invoice\Domain\ValueObject\InvoiceNumber;
-use App\Invoice\Infrastructure\Controller\EmitInvoiceController;
-use App\Shared\Domain\Exception\MissingMandatoryParameterException;
-use App\User\Domain\Exception\InvalidCredentialsException;
+use App\Domain\Exception\InvalidCredentialsException;
+use App\Domain\InvoiceNumber;
+use App\Domain\MissingMandatoryParameterException;
+use App\Infrastructure\Controller\EmitInvoiceController;
+use App\UseCase\EmitInvoice\EmitInvoiceCommand;
+use App\UseCase\EmitInvoice\EmitInvoiceUseCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\Request;

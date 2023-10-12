@@ -2,8 +2,8 @@
 
 namespace Test\Unit\User\Domain\ValueObject;
 
-use App\User\Domain\Exception\InvalidEmailException;
-use App\User\Domain\ValueObject\Email;
+use App\Domain\Exception\InvalidEmailException;
+use App\Domain\ValueObject\Email;
 use PHPUnit\Framework\TestCase;
 
 class EmailTest extends TestCase

@@ -2,7 +2,7 @@
 
 namespace Test\Integration;
 
-use App\Shared\Infrastructure\ContainerFactory;
+use App\Infrastructure\ContainerFactory;
 use DI\Container;
 use GuzzleHttp\Client;
 use PHPUnit\Framework\TestCase;

@@ -2,8 +2,8 @@
 
 namespace Test\Integration\Invoice;
 
-use App\Invoice\Infrastructure\Command\RenderInvoiceCommand;
-use App\Shared\Infrastructure\ContainerFactory;
+use App\Infrastructure\Command\RenderInvoiceCommand;
+use App\Infrastructure\ContainerFactory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;

@@ -2,10 +2,10 @@
 
 namespace Test\Unit\User\Infrastructure\Controller;
 
-use App\Shared\Domain\Exception\MissingMandatoryParameterException;
-use App\User\Application\Command\RegisterUserCommand;
-use App\User\Application\UseCase\RegisterUserUseCase;
-use App\User\Infrastructure\Controller\RegisterUserController;
+use App\Domain\MissingMandatoryParameterException;
+use App\Infrastructure\Controller\RegisterUserController;
+use App\UseCase\RegisterUser\RegisterUserCommand;
+use App\UseCase\RegisterUser\RegisterUserUseCase;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\Request;

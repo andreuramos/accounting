@@ -2,11 +2,11 @@
 
 namespace Test\Unit\User\Application\UseCase;
 
-use App\Shared\Domain\ValueObject\Id;
-use App\User\Application\UseCase\GetUserUseCase;
-use App\User\Domain\Entity\User;
-use App\User\Domain\Model\UserRepositoryInterface;
-use App\User\Domain\ValueObject\Email;
+use App\Domain\Id;
+use App\Domain\User;
+use App\Domain\UserRepositoryInterface;
+use App\Domain\ValueObject\Email;
+use App\UseCase\GetUser\GetUserUseCase;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
