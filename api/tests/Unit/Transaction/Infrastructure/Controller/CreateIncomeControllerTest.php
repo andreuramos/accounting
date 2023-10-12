@@ -6,7 +6,7 @@ use App\Application\UseCase\CreateIncome\CreateIncomeCommand;
 use App\Application\UseCase\CreateIncome\CreateIncomeUseCase;
 use App\Domain\Exception\InvalidCredentialsException;
 use App\Domain\Exception\MissingMandatoryParameterException;
-use App\Domain\Id;
+use App\Domain\ValueObject\Id;
 use App\Infrastructure\Controller\CreateIncomeController;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;

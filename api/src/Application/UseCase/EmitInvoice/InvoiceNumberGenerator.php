@@ -3,9 +3,9 @@
 namespace App\Application\UseCase\EmitInvoice;
 
 use App\Application\Service\Timestamper;
-use App\Domain\Business;
-use App\Domain\InvoiceNumber;
-use App\Domain\InvoiceRepositoryInterface;
+use App\Domain\Entities\Business;
+use App\Domain\Repository\InvoiceRepositoryInterface;
+use App\Domain\ValueObject\InvoiceNumber;
 
 class InvoiceNumberGenerator
 {

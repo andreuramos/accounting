@@ -2,7 +2,7 @@
 
 namespace App\Application\UseCase\SetUserTaxData;
 
-use App\Domain\User;
+use App\Domain\Entities\User;
 
 class SetUserTaxDataCommand
 {

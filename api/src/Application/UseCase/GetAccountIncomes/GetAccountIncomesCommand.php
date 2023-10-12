@@ -2,7 +2,7 @@
 
 namespace App\Application\UseCase\GetAccountIncomes;
 
-use App\Domain\Id;
+use App\Domain\ValueObject\Id;
 
 class GetAccountIncomesCommand
 {

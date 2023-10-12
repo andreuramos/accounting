@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Domain;
+namespace App\Domain\Entities;
 
+use App\Domain\ValueObject\Id;
+use App\Domain\ValueObject\InvoiceNumber;
 use DateTime;
 
 class Invoice

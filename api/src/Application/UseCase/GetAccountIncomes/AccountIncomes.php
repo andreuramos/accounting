@@ -2,7 +2,7 @@
 
 namespace App\Application\UseCase\GetAccountIncomes;
 
-use App\Domain\Income;
+use App\Domain\Entities\Income;
 
 class AccountIncomes
 {

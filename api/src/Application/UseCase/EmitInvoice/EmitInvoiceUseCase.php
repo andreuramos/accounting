@@ -2,18 +2,18 @@
 
 namespace App\Application\UseCase\EmitInvoice;
 
-use App\Domain\Address;
-use App\Domain\Business;
-use App\Domain\BusinessRepositoryInterface;
-use App\Domain\Id;
-use App\Domain\Income;
-use App\Domain\IncomeRepositoryInterface;
-use App\Domain\Invoice;
-use App\Domain\InvoiceLine;
-use App\Domain\InvoiceLineRepositoryInterface;
-use App\Domain\InvoiceNumber;
-use App\Domain\InvoiceRepositoryInterface;
-use App\Domain\Money;
+use App\Domain\Entities\Business;
+use App\Domain\Entities\Income;
+use App\Domain\Entities\Invoice;
+use App\Domain\Entities\InvoiceLine;
+use App\Domain\Repository\BusinessRepositoryInterface;
+use App\Domain\Repository\IncomeRepositoryInterface;
+use App\Domain\Repository\InvoiceLineRepositoryInterface;
+use App\Domain\Repository\InvoiceRepositoryInterface;
+use App\Domain\ValueObject\Address;
+use App\Domain\ValueObject\Id;
+use App\Domain\ValueObject\InvoiceNumber;
+use App\Domain\ValueObject\Money;
 
 class EmitInvoiceUseCase
 {

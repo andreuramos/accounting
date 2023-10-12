@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Domain;
+namespace App\Domain\Repository;
 
+use App\Domain\Entities\Account;
 use App\Domain\ValueObject\Email;
 
 interface AccountRepositoryInterface

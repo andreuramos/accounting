@@ -2,9 +2,9 @@
 
 namespace App\Infrastructure\Controller;
 
+use App\Domain\Entities\User;
 use App\Domain\Exception\InvalidCredentialsException;
-use App\Domain\User;
-use App\Domain\UserRepositoryInterface;
+use App\Domain\Repository\UserRepositoryInterface;
 use App\Domain\ValueObject\Email;
 use App\Infrastructure\Auth\JWTDecoder;
 use Symfony\Component\HttpFoundation\Request;

@@ -2,7 +2,7 @@
 
 namespace App\Application\UseCase\RefreshToken;
 
-use App\Domain\User;
+use App\Domain\Entities\User;
 use App\Domain\ValueObject\AuthToken;
 
 interface RefreshTokenGeneratorInterface

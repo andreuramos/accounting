@@ -2,11 +2,11 @@
 
 namespace App\Infrastructure\Repository;
 
-use App\Domain\Address;
-use App\Domain\Business;
-use App\Domain\BusinessRepositoryInterface;
+use App\Domain\Entities\Business;
 use App\Domain\Exception\BusinessNotFoundException;
-use App\Domain\Id;
+use App\Domain\Repository\BusinessRepositoryInterface;
+use App\Domain\ValueObject\Address;
+use App\Domain\ValueObject\Id;
 use PDO;
 
 class MysqlBusinessRepository implements BusinessRepositoryInterface

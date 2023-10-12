@@ -1,6 +1,9 @@
 <?php
 
-namespace App\Domain;
+namespace App\Domain\Repository;
+
+use App\Domain\Entities\Expense;
+use App\Domain\ValueObject\Id;
 
 interface ExpenseRepositoryInterface
 {

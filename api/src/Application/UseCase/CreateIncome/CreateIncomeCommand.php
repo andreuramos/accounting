@@ -2,8 +2,8 @@
 
 namespace App\Application\UseCase\CreateIncome;
 
-use App\Domain\Id;
-use App\Domain\User;
+use App\Domain\Entities\User;
+use App\Domain\ValueObject\Id;
 
 class CreateIncomeCommand
 {

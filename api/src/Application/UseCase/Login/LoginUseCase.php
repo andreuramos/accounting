@@ -5,10 +5,10 @@ namespace App\Application\UseCase\Login;
 use App\Application\Auth\AuthTokenGeneratorInterface;
 use App\Application\Service\HasherInterface;
 use App\Application\UseCase\RefreshToken\RefreshTokenGeneratorInterface;
+use App\Domain\Entities\User;
 use App\Domain\Exception\InvalidCredentialsException;
 use App\Domain\Exception\UserNotFoundException;
-use App\Domain\User;
-use App\Domain\UserRepositoryInterface;
+use App\Domain\Repository\UserRepositoryInterface;
 
 class LoginUseCase
 {

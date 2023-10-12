@@ -2,10 +2,10 @@
 
 namespace App\Infrastructure\Repository;
 
-use App\Domain\Id;
-use App\Domain\Income;
-use App\Domain\IncomeRepositoryInterface;
-use App\Domain\Money;
+use App\Domain\Entities\Income;
+use App\Domain\Repository\IncomeRepositoryInterface;
+use App\Domain\ValueObject\Id;
+use App\Domain\ValueObject\Money;
 use PDO;
 
 class MysqlIncomeRepository implements IncomeRepositoryInterface

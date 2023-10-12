@@ -4,8 +4,8 @@ namespace App\Application\UseCase\RegisterUser;
 
 use App\Application\Service\AccountCreator;
 use App\Application\Service\UserCreator;
-use App\Domain\AccountRepositoryInterface;
-use App\Domain\UserRepositoryInterface;
+use App\Domain\Repository\AccountRepositoryInterface;
+use App\Domain\Repository\UserRepositoryInterface;
 use App\Domain\ValueObject\Email;
 
 class RegisterUserUseCase

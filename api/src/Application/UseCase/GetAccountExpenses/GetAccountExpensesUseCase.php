@@ -2,7 +2,7 @@
 
 namespace App\Application\UseCase\GetAccountExpenses;
 
-use App\Domain\ExpenseRepositoryInterface;
+use App\Domain\Repository\ExpenseRepositoryInterface;
 
 class GetAccountExpensesUseCase
 {

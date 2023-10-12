@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Domain;
+namespace App\Domain\Repository;
 
+use App\Domain\Entities\User;
 use App\Domain\ValueObject\Email;
+use App\Domain\ValueObject\Id;
 
 interface UserRepositoryInterface
 {

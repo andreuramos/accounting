@@ -2,7 +2,7 @@
 
 namespace App\Application\UseCase\EmitInvoice;
 
-use App\Domain\User;
+use App\Domain\Entities\User;
 
 class EmitInvoiceCommand
 {

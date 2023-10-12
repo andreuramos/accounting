@@ -2,7 +2,7 @@
 
 namespace App\Application\UseCase\GetAccountIncomes;
 
-use App\Domain\IncomeRepositoryInterface;
+use App\Domain\Repository\IncomeRepositoryInterface;
 
 class GetAccountIncomesUseCase
 {

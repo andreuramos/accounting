@@ -2,8 +2,8 @@
 
 namespace App\Infrastructure\Repository;
 
-use App\Domain\InvoiceLine;
-use App\Domain\InvoiceLineRepositoryInterface;
+use App\Domain\Entities\InvoiceLine;
+use App\Domain\Repository\InvoiceLineRepositoryInterface;
 
 class MysqlInvoiceLineRepository implements InvoiceLineRepositoryInterface
 {

@@ -2,11 +2,11 @@
 
 namespace App\Application\Service;
 
-use App\Domain\Account;
-use App\Domain\AccountRepositoryInterface;
-use App\Domain\Id;
-use App\Domain\UserRepositoryInterface;
+use App\Domain\Entities\Account;
+use App\Domain\Repository\AccountRepositoryInterface;
+use App\Domain\Repository\UserRepositoryInterface;
 use App\Domain\ValueObject\Email;
+use App\Domain\ValueObject\Id;
 
 class AccountCreator
 {

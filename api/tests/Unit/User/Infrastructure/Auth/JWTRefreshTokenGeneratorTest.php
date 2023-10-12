@@ -2,9 +2,9 @@
 
 namespace Test\Unit\User\Infrastructure\Auth;
 
-use App\Domain\Id;
-use App\Domain\User;
+use App\Domain\Entities\User;
 use App\Domain\ValueObject\Email;
+use App\Domain\ValueObject\Id;
 use App\Infrastructure\Auth\JWTRefreshTokenGenerator;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;

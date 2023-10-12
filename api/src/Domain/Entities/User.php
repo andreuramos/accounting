@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Domain;
+namespace App\Domain\Entities;
 
 use App\Domain\ValueObject\AuthToken;
 use App\Domain\ValueObject\Email;
+use App\Domain\ValueObject\Id;
 
 class User
 {

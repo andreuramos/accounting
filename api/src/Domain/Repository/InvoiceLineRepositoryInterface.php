@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Domain;
+namespace App\Domain\Repository;
+
+use App\Domain\Entities\InvoiceLine;
 
 interface InvoiceLineRepositoryInterface
 {

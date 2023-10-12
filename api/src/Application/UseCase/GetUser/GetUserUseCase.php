@@ -2,7 +2,7 @@
 
 namespace App\Application\UseCase\GetUser;
 
-use App\Domain\UserRepositoryInterface;
+use App\Domain\Repository\UserRepositoryInterface;
 use App\Domain\ValueObject\Email;
 
 class GetUserUseCase

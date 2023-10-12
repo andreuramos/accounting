@@ -3,7 +3,7 @@
 namespace App\Infrastructure\Controller;
 
 use App\Application\UseCase\GetUser\GetUserUseCase;
-use App\Domain\UserRepositoryInterface;
+use App\Domain\Repository\UserRepositoryInterface;
 use App\Infrastructure\ApiResponse;
 use App\Infrastructure\Auth\JWTDecoder;
 use Symfony\Component\HttpFoundation\Request;

@@ -5,10 +5,10 @@ namespace App\Application\UseCase\RefreshToken;
 use App\Application\Auth\AuthTokenDecoderInterface;
 use App\Application\Auth\AuthTokenGeneratorInterface;
 use App\Application\UseCase\Login\LoginResult;
+use App\Domain\Entities\User;
 use App\Domain\Exception\InvalidAuthToken;
 use App\Domain\Exception\InvalidCredentialsException;
-use App\Domain\User;
-use App\Domain\UserRepositoryInterface;
+use App\Domain\Repository\UserRepositoryInterface;
 use App\Domain\ValueObject\Email;
 
 class RefreshTokensUseCase

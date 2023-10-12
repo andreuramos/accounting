@@ -2,9 +2,9 @@
 
 namespace App\Infrastructure\Repository;
 
-use App\Domain\Id;
-use App\Domain\TaxData;
-use App\Domain\TaxDataAggregateRepositoryInterface;
+use App\Domain\Repository\TaxDataAggregateRepositoryInterface;
+use App\Domain\ValueObject\Id;
+use App\Domain\ValueObject\TaxData;
 
 class MysqlTaxDataAggregateRepository implements TaxDataAggregateRepositoryInterface
 {

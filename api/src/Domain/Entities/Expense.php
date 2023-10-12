@@ -1,15 +1,18 @@
 <?php
 
-namespace App\Domain;
+namespace App\Domain\Entities;
 
-class Income
+use App\Domain\ValueObject\Id;
+use App\Domain\ValueObject\Money;
+
+class Expense
 {
     public function __construct(
         public readonly Id $id,
         public readonly Id $accountId,
         public readonly Money $amount,
         public readonly string $description,
-        public readonly \DateTime $date,
+        public readonly \DateTime $date
     ) {
     }
 }

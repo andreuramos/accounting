@@ -2,7 +2,7 @@
 
 namespace App\Application\UseCase\GetAccountExpenses;
 
-use App\Domain\Expense;
+use App\Domain\Entities\Expense;
 
 class AccountExpenses
 {

@@ -2,10 +2,10 @@
 
 namespace Test\Unit\Shared\Infrastructure\Controller;
 
-use App\Domain\Id;
-use App\Domain\User;
-use App\Domain\UserRepositoryInterface;
+use App\Domain\Entities\User;
+use App\Domain\Repository\UserRepositoryInterface;
 use App\Domain\ValueObject\Email;
+use App\Domain\ValueObject\Id;
 use App\Infrastructure\Auth\JWTDecoder;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;

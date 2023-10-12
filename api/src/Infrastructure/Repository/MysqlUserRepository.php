@@ -2,12 +2,12 @@
 
 namespace App\Infrastructure\Repository;
 
+use App\Domain\Entities\User;
 use App\Domain\Exception\UserNotFoundException;
-use App\Domain\Id;
-use App\Domain\User;
-use App\Domain\UserRepositoryInterface;
+use App\Domain\Repository\UserRepositoryInterface;
 use App\Domain\ValueObject\AuthToken;
 use App\Domain\ValueObject\Email;
+use App\Domain\ValueObject\Id;
 use PDO;
 
 class MysqlUserRepository implements UserRepositoryInterface

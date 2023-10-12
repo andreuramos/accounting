@@ -2,11 +2,11 @@
 
 namespace App\Application\UseCase\SetUserTaxData;
 
-use App\Domain\Address;
-use App\Domain\Business;
-use App\Domain\BusinessRepositoryInterface;
-use App\Domain\Id;
-use App\Domain\UserRepositoryInterface;
+use App\Domain\Entities\Business;
+use App\Domain\Repository\BusinessRepositoryInterface;
+use App\Domain\Repository\UserRepositoryInterface;
+use App\Domain\ValueObject\Address;
+use App\Domain\ValueObject\Id;
 
 class SetUserTaxDataUseCase
 {

@@ -2,10 +2,10 @@
 
 namespace App\Application\UseCase\CreateExpense;
 
-use App\Domain\Expense;
-use App\Domain\ExpenseRepositoryInterface;
-use App\Domain\Id;
-use App\Domain\Money;
+use App\Domain\Entities\Expense;
+use App\Domain\Repository\ExpenseRepositoryInterface;
+use App\Domain\ValueObject\Id;
+use App\Domain\ValueObject\Money;
 
 class CreateExpenseUseCase
 {

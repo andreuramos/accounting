@@ -6,7 +6,7 @@ use App\Application\Auth\AuthTokenDecoderInterface;
 use App\Application\UseCase\CreateExpense\CreateExpenseCommand;
 use App\Application\UseCase\CreateExpense\CreateExpenseUseCase;
 use App\Domain\Exception\MissingMandatoryParameterException;
-use App\Domain\UserRepositoryInterface;
+use App\Domain\Repository\UserRepositoryInterface;
 use App\Infrastructure\ApiResponse;
 use Symfony\Component\HttpFoundation\Request;
 

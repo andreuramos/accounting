@@ -3,7 +3,7 @@
 namespace App\Infrastructure\Auth;
 
 use App\Application\Auth\AuthTokenGeneratorInterface;
-use App\Domain\User;
+use App\Domain\Entities\User;
 use App\Domain\ValueObject\AuthToken;
 use Firebase\JWT\JWT;
 

@@ -1,6 +1,9 @@
 <?php
 
-namespace App\Domain;
+namespace App\Domain\Entities;
+
+use App\Domain\ValueObject\Address;
+use App\Domain\ValueObject\Id;
 
 class Business
 {
