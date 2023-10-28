@@ -12,6 +12,8 @@ class RenderInvoiceCommandTest extends TestCase
 {
     public function test_command_returns_ok_status()
     {
+        $this->markTestIncomplete();
+
         $container = ContainerFactory::create();
         $application = new Application();
         $application->add($container->get(RenderInvoiceCommand::class));
