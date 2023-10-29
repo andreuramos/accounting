@@ -2,7 +2,7 @@
 
 namespace App\Application\Service;
 
-class Md5Hasher implements HasherInterface
+class Hasher implements HasherInterface
 {
     public function hash(string $str): string
     {

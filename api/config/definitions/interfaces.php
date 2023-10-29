@@ -2,8 +2,6 @@
 
 use App\Application\Auth\AuthTokenDecoderInterface;
 use App\Application\Auth\AuthTokenGeneratorInterface;
-use App\Application\Service\HasherInterface;
-use App\Application\Service\Md5Hasher;
 use App\Application\UseCase\RefreshToken\RefreshTokenGeneratorInterface;
 use App\Domain\Repository\AccountRepositoryInterface;
 use App\Domain\Repository\BusinessRepositoryInterface;
@@ -33,7 +31,6 @@ return [
     AuthTokenGeneratorInterface::class => DI\get(JWTGenerator::class),
     BusinessRepositoryInterface::class => DI\get(MysqlBusinessRepository::class),
     ExpenseRepositoryInterface::class => DI\get(MysqlExpenseRepository::class),
-    HasherInterface::class => DI\get(Md5Hasher::class),
     IncomeRepositoryInterface::class => DI\get(MysqlIncomeRepository::class),
     InvoiceRepositoryInterface::class => DI\get(MysqlInvoiceRepository::class),
     InvoiceLineRepositoryInterface::class => DI\get(MysqlInvoiceLineRepository::class),

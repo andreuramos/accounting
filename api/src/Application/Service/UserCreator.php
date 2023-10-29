@@ -13,7 +13,7 @@ class UserCreator
 {
     public function __construct(
         private readonly UserRepositoryInterface $userRepository,
-        private readonly HasherInterface $hasher
+        private readonly Hasher $hasher
     ) {
     }
 

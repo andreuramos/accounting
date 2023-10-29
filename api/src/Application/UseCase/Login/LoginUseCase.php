@@ -3,7 +3,7 @@
 namespace App\Application\UseCase\Login;
 
 use App\Application\Auth\AuthTokenGeneratorInterface;
-use App\Application\Service\HasherInterface;
+use App\Application\Service\Hasher;
 use App\Application\UseCase\RefreshToken\RefreshTokenGeneratorInterface;
 use App\Domain\Entities\User;
 use App\Domain\Exception\InvalidCredentialsException;
@@ -14,7 +14,7 @@ class LoginUseCase
 {
     public function __construct(
         private readonly UserRepositoryInterface $userRepository,
-        private readonly HasherInterface $hasher,
+        private readonly Hasher $hasher,
         private readonly AuthTokenGeneratorInterface $authTokenGenerator,
         private readonly RefreshTokenGeneratorInterface $refreshTokenGenerator
     ) {

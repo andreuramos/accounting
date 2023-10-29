@@ -3,7 +3,7 @@
 namespace Test\Unit\Application\UseCase;
 
 use App\Application\Auth\AuthTokenGeneratorInterface;
-use App\Application\Service\HasherInterface;
+use App\Application\Service\Hasher;
 use App\Application\UseCase\Login\LoginCommand;
 use App\Application\UseCase\Login\LoginResult;
 use App\Application\UseCase\Login\LoginUseCase;
@@ -31,7 +31,7 @@ class LoginUseCaseTest extends TestCase
     {
         parent::setUp();
         $this->userRepository = $this->prophesize(UserRepositoryInterface::class);
-        $this->hasher = $this->prophesize(HasherInterface::class);
+        $this->hasher = $this->prophesize(Hasher::class);
         $this->authTokenGenerator = $this->prophesize(AuthTokenGeneratorInterface::class);
         $this->refreshTokenGenerator = $this->prophesize(RefreshTokenGeneratorInterface::class);
     }

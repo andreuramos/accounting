@@ -2,7 +2,7 @@
 
 namespace Test\Unit\Domain\ValueObject;
 
-use App\Application\Service\HasherInterface;
+use App\Application\Service\Hasher;
 use App\Application\Service\UserCreator;
 use App\Application\UseCase\RegisterUser\RegisterUserCommand;
 use App\Domain\Entities\User;
@@ -25,7 +25,7 @@ class UserCreatorTest extends TestCase
     {
         parent::setUp();
         $this->userRepository = $this->prophesize(UserRepositoryInterface::class);
-        $this->passwordHasher = $this->prophesize(HasherInterface::class);
+        $this->passwordHasher = $this->prophesize(Hasher::class);
     }
 
     public function test_saves_built_user()
