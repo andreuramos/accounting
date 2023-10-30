@@ -1,7 +1,7 @@
 <?php
 
-use App\Invoice\Infrastructure\Command\RenderInvoiceCommand;
-use App\Shared\Infrastructure\ContainerFactory;
+use App\Infrastructure\Command\RenderInvoiceCommand;
+use App\Infrastructure\ContainerFactory;
 use Symfony\Component\Console\Application;
 
 require_once __DIR__ . '/../vendor/autoload.php';

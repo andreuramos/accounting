@@ -1,29 +1,27 @@
 <?php
 
-use App\Business\Domain\Model\BusinessRepositoryInterface;
-use App\Business\Domain\Model\TaxDataAggregateRepositoryInterface;
-use App\Business\Infrastructure\Repository\MysqlBusinessRepository;
-use App\Business\Infrastructure\Repository\MysqlTaxDataAggregateRepository;
-use App\Invoice\Domain\Model\InvoiceLineRepositoryInterface;
-use App\Invoice\Domain\Model\InvoiceRepositoryInterface;
-use App\Invoice\Infrastructure\Repository\MysqlInvoiceLineRepository;
-use App\Invoice\Infrastructure\Repository\MysqlInvoiceRepository;
-use App\Shared\Application\Service\HasherInterface;
-use App\Shared\Infrastructure\Service\Md5Hasher;
-use App\Transaction\Domain\Model\ExpenseRepositoryInterface;
-use App\Transaction\Domain\Model\IncomeRepositoryInterface;
-use App\Transaction\Infrastructure\Repository\MysqlExpenseRepository;
-use App\Transaction\Infrastructure\Repository\MysqlIncomeRepository;
-use App\User\Application\Auth\AuthTokenDecoderInterface;
-use App\User\Application\Auth\AuthTokenGeneratorInterface;
-use App\User\Application\Auth\RefreshTokenGeneratorInterface;
-use App\User\Domain\Model\AccountRepositoryInterface;
-use App\User\Domain\Model\UserRepositoryInterface;
-use App\User\Infrastructure\Auth\JWTDecoder;
-use App\User\Infrastructure\Auth\JWTGenerator;
-use App\User\Infrastructure\Auth\JWTRefreshTokenGenerator;
-use App\User\Infrastructure\Repository\MysqlAccountRepository;
-use App\User\Infrastructure\Repository\MysqlUserRepository;
+use App\Application\Auth\AuthTokenDecoderInterface;
+use App\Application\Auth\AuthTokenGeneratorInterface;
+use App\Application\UseCase\RefreshToken\RefreshTokenGeneratorInterface;
+use App\Domain\Repository\AccountRepositoryInterface;
+use App\Domain\Repository\BusinessRepositoryInterface;
+use App\Domain\Repository\ExpenseRepositoryInterface;
+use App\Domain\Repository\IncomeRepositoryInterface;
+use App\Domain\Repository\InvoiceLineRepositoryInterface;
+use App\Domain\Repository\InvoiceRepositoryInterface;
+use App\Domain\Repository\TaxDataAggregateRepositoryInterface;
+use App\Domain\Repository\UserRepositoryInterface;
+use App\Infrastructure\Auth\JWTDecoder;
+use App\Infrastructure\Auth\JWTGenerator;
+use App\Infrastructure\Auth\JWTRefreshTokenGenerator;
+use App\Infrastructure\Repository\MysqlAccountRepository;
+use App\Infrastructure\Repository\MysqlBusinessRepository;
+use App\Infrastructure\Repository\MysqlExpenseRepository;
+use App\Infrastructure\Repository\MysqlIncomeRepository;
+use App\Infrastructure\Repository\MysqlInvoiceLineRepository;
+use App\Infrastructure\Repository\MysqlInvoiceRepository;
+use App\Infrastructure\Repository\MysqlTaxDataAggregateRepository;
+use App\Infrastructure\Repository\MysqlUserRepository;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -33,7 +31,6 @@ return [
     AuthTokenGeneratorInterface::class => DI\get(JWTGenerator::class),
     BusinessRepositoryInterface::class => DI\get(MysqlBusinessRepository::class),
     ExpenseRepositoryInterface::class => DI\get(MysqlExpenseRepository::class),
-    HasherInterface::class => DI\get(Md5Hasher::class),
     IncomeRepositoryInterface::class => DI\get(MysqlIncomeRepository::class),
     InvoiceRepositoryInterface::class => DI\get(MysqlInvoiceRepository::class),
     InvoiceLineRepositoryInterface::class => DI\get(MysqlInvoiceLineRepository::class),

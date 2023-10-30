@@ -2,8 +2,8 @@
 
 require_once './vendor/autoload.php';
 
-use App\Shared\Infrastructure\ContainerFactory;
-use App\User\Domain\Exception\InvalidCredentialsException;
+use App\Domain\Exception\InvalidCredentialsException;
+use App\Infrastructure\ContainerFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
