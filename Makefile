@@ -25,6 +25,7 @@ test: test-static test-unit test-integration
 
 test-integration: # runs all tests
 	mkdir -p api/tmp
+	docker-compose up -d
 	sleep 5
 	docker-compose run api vendor/bin/phinx migrate --configuration=config/phinx.php -e testing
 	docker-compose run api vendor/bin/phpunit --colors=always --testsuite integration
