@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class VatDeclarationTest extends TestCase
 {
-    public function test_instance_attributes(): void
+    public function test_empty_declaration(): void
     {
         $taxNumber = 'B07507518';
         $taxName = 'Cervesa Moixa SL';
