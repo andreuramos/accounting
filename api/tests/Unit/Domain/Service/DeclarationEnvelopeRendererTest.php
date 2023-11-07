@@ -3,6 +3,7 @@
 namespace Test\Unit\Domain\Service;
 
 use App\Domain\Service\DeclarationEnvelopeRenderer;
+use App\Domain\ValueObject\DeclarationPeriod;
 use PHPUnit\Framework\TestCase;
 
 class DeclarationEnvelopeRendererTest extends TestCase
@@ -11,7 +12,7 @@ class DeclarationEnvelopeRendererTest extends TestCase
     {
         $renderer = new DeclarationEnvelopeRenderer(303);
 
-        $output = $renderer(2023, '1T',"DUMMYCONTENT");
+        $output = $renderer(2023, DeclarationPeriod::QUARTER(1),"DUMMYCONTENT");
 
         $expected = '<T303020231T0000><AUX>                                                                      '.
             'v1.0                                                                                                 '.

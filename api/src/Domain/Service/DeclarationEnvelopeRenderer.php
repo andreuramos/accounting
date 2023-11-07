@@ -2,6 +2,8 @@
 
 namespace App\Domain\Service;
 
+use App\Domain\ValueObject\DeclarationPeriod;
+
 class DeclarationEnvelopeRenderer
 {
     const VERSION = 'v1.0';
@@ -11,7 +13,7 @@ class DeclarationEnvelopeRenderer
     {
     }
 
-    public function __invoke(int $year, string $period, string $content): string
+    public function __invoke(int $year, DeclarationPeriod $period, string $content): string
     {
         $output = '<T' . $this->form_number . '0' . $year . $period . '0000>';
         $output .= '<AUX>';
