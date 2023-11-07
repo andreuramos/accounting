@@ -3,6 +3,7 @@
 namespace Test\Unit\Domain\Entity;
 
 use App\Domain\Entities\VatDeclaration;
+use App\Domain\ValueObject\DeclarationPeriod;
 use PHPUnit\Framework\TestCase;
 
 class VatDeclarationTest extends TestCase
@@ -18,12 +19,12 @@ class VatDeclarationTest extends TestCase
             $taxNumber,
             $taxName,
             $year,
-            $period,
+            DeclarationPeriod::QUARTER($period),
         );
 
         $this->assertEquals($entity->taxNumber, $taxNumber);
         $this->assertEquals($entity->taxName, $taxName);
         $this->assertEquals($entity->year, $year);
-        $this->assertEquals($entity->period, $period);
+        $this->assertEquals((string) $entity->period, '1T');
     }
 }
