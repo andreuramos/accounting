@@ -10,9 +10,9 @@ class DeclarationEnvelopeRendererTest extends TestCase
 {
     public function test_303_envelope(): void
     {
-        $renderer = new DeclarationEnvelopeRenderer(303);
+        $renderer = new DeclarationEnvelopeRenderer();
 
-        $output = $renderer(2023, DeclarationPeriod::QUARTER(1),"DUMMYCONTENT");
+        $output = $renderer(303, 2023, DeclarationPeriod::QUARTER(1),"DUMMYCONTENT");
 
         $expected = '<T303020231T0000><AUX>                                                                      '.
             'v1.0                                                                                                 '.

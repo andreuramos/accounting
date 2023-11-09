@@ -9,13 +9,9 @@ class DeclarationEnvelopeRenderer
     const VERSION = 'v1.0';
     const DEVELOPER_TAX_ID = '12345678Z';
 
-    public function __construct(private int $form_number)
+    public function __invoke(int $form_id, int $year, DeclarationPeriod $period, string $content): string
     {
-    }
-
-    public function __invoke(int $year, DeclarationPeriod $period, string $content): string
-    {
-        $output = '<T' . $this->form_number . '0' . $year . $period . '0000>';
+        $output = '<T' . $form_id . '0' . $year . $period . '0000>';
         $output .= '<AUX>';
         $output .= str_repeat(' ', 70);
         $output .= self::VERSION;
@@ -24,7 +20,7 @@ class DeclarationEnvelopeRenderer
         $output .= str_repeat(' ', 213);
         $output .= '</AUX>';
         $output .= $content;
-        $output .= '</T' . $this->form_number . '0' . $year . $period . '0000>';
+        $output .= '</T' . $form_id . '0' . $year . $period . '0000>';
 
         return $output;
     }

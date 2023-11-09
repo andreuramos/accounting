@@ -7,7 +7,6 @@ use App\Domain\Service\DeclarationEnvelopeRenderer;
 use App\Domain\Service\VatDeclarationRenderer;
 use App\Domain\ValueObject\DeclarationPeriod;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 
 class VatDeclarationRendererTest extends TestCase
 {
@@ -28,7 +27,7 @@ class VatDeclarationRendererTest extends TestCase
         );
         $this->envelopeRenderer->expects($this->once())
             ->method('__invoke')
-            ->with(2023, DeclarationPeriod::QUARTER(4), '')
+            ->with(303, 2023, DeclarationPeriod::QUARTER(4), '')
             ->willReturn('<envelope></envelope>');
         $service = $this->buildService();
 
