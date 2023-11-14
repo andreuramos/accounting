@@ -4,7 +4,7 @@ namespace App\Domain\Entities;
 
 use App\Domain\ValueObject\DeclarationPeriod;
 
-class VatDeclaration
+class TaxAgency303Form
 {
     public function __construct(
         public readonly string $taxNumber,

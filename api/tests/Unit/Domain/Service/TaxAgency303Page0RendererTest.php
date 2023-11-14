@@ -2,15 +2,15 @@
 
 namespace Test\Unit\Domain\Service;
 
-use App\Domain\Service\DeclarationEnvelopeRenderer;
+use App\Domain\Service\TaxAgency303Page0Renderer;
 use App\Domain\ValueObject\DeclarationPeriod;
 use PHPUnit\Framework\TestCase;
 
-class DeclarationEnvelopeRendererTest extends TestCase
+class TaxAgency303Page0RendererTest extends TestCase
 {
     public function test_303_envelope(): void
     {
-        $renderer = new DeclarationEnvelopeRenderer();
+        $renderer = new TaxAgency303Page0Renderer();
 
         $output = $renderer(303, 2023, DeclarationPeriod::QUARTER(1),"DUMMYCONTENT");
 

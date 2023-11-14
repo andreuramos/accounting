@@ -4,7 +4,7 @@ namespace App\Domain\Service;
 
 use App\Domain\ValueObject\DeclarationPeriod;
 
-class DeclarationEnvelopeRenderer
+class TaxAgency303Page0Renderer
 {
     private const VERSION = 'v1.0';
     private const DEVELOPER_TAX_ID = '12345678Z';
