@@ -1,19 +1,25 @@
 import React from 'react'
+import { create } from 'zustand'
 import ReactDOM from 'react-dom/client'
 import {
-  createBrowserRouter,
   RouterProvider,
+  createBrowserRouter,
 } from "react-router-dom"
-import { DashboardView } from './views/Dashboard.view'
-import { LoginView } from './views/Login.view'
+import { routes } from './routes'
 
-const router = createBrowserRouter([
-  { path: "/", element: <DashboardView /> },
-  { path: "/login", element: <LoginView /> },
-])
+type AuthState = {
+  jwtToken: string
+  setJwtToken: (jwtToken: string) => void
+}
+
+export const authStore = create<AuthState>()((set) => ({
+  jwtToken: null,
+  setJwtToken: jwtToken => set(() => ({ jwtToken }))
+}))
+
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <RouterProvider router={createBrowserRouter(routes)} />
   </React.StrictMode>,
 )
