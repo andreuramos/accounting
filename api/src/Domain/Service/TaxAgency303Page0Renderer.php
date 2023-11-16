@@ -4,10 +4,10 @@ namespace App\Domain\Service;
 
 use App\Domain\ValueObject\DeclarationPeriod;
 
-class DeclarationEnvelopeRenderer
+class TaxAgency303Page0Renderer
 {
-    const VERSION = 'v1.0';
-    const DEVELOPER_TAX_ID = '12345678Z';
+    private const VERSION = 'v1.0';
+    private const DEVELOPER_TAX_ID = '12345678Z';
 
     public function __invoke(int $form_id, int $year, DeclarationPeriod $period, string $content): string
     {
