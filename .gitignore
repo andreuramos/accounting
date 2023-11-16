@@ -1,4 +1,5 @@
 .idea
+.DS_Store
 api/config/definitions/shared-values.json
 api/tmp/
 api/vendor/
