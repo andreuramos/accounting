@@ -58,6 +58,22 @@ class TA303FormRenderer
     ): string {
         return implode('', [
             "<T30301000>",
+            $this->generateIdentificationData(
+                $tax_id,
+                $tax_name,
+                $year,
+                $period,
+            ),
+        ]);
+    }
+
+    private function generateIdentificationData(
+        string $tax_id,
+        string $tax_name,
+        int $year,
+        DeclarationPeriod $period,
+    ): string {
+        return implode('', [
             $this->padding(1),
             "C",
             $tax_id,
