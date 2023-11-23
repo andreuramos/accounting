@@ -28,6 +28,7 @@ class TA303FormRenderer
                 $tax_name,
                 $year,
                 $period,
+                $top_line,
             ),
         ]);
     }
@@ -55,6 +56,7 @@ class TA303FormRenderer
         string $tax_name,
         int $year,
         DeclarationPeriod $period,
+        TopLine $top_line,
     ): string {
         return implode('', [
             "<T30301000>",
@@ -64,6 +66,7 @@ class TA303FormRenderer
                 $year,
                 $period,
             ),
+            $this->generateAccruedTaxData($top_line),
         ]);
     }
 
@@ -96,5 +99,39 @@ class TA303FormRenderer
             "0",
             "0",
         ]);
+    }
+
+    private function generateAccruedTaxData(
+        TopLine $top_line,
+    ): string {
+        return implode('', [
+            $this->fillNumber(0, 17),
+            $this->fillNumber(400, 5),
+            $this->fillNumber(0, 17),
+            $this->fillNumber(0, 17),
+            $this->fillNumber(1000, 5),
+            $this->fillNumber(0, 17),
+            $this->fillNumber($top_line->base, 17),
+            $this->fillNumber($top_line->rate, 5),
+            $this->fillNumber($top_line->tax, 17),
+            $this->fillNumber(0, 102),
+            $this->fillNumber(0,17),
+            $this->fillNumber(520, 5),
+            $this->fillNumber(0, 17),
+            $this->fillNumber(0,17),
+            $this->fillNumber(140, 5),
+            $this->fillNumber(0, 17),
+            $this->fillNumber(0,17),
+            $this->fillNumber(50, 5),
+            $this->fillNumber(0, 17),
+            $this->fillNumber(0,17),
+            $this->fillNumber(0,17),
+            $this->fillNumber($top_line->tax, 17),
+        ]);
+    }
+
+    private function fillNumber(int $number, int $size): string
+    {
+        return str_repeat('0', $size - strlen($number)) . $number;
     }
 }
