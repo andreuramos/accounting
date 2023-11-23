@@ -23,6 +23,12 @@ class TA303FormRenderer
         return implode('', [
             "<T3030{$year}{$period}0000>",
             $this->generateAuxTag(),
+            $this->generatePage1(
+                $tax_id,
+                $tax_name,
+                $year,
+                $period,
+            ),
         ]);
     }
 
@@ -41,6 +47,38 @@ class TA303FormRenderer
             '12345678Z',
             $this->padding(213),
             '</AUX>',
+        ]);
+    }
+
+    private function generatePage1(
+        string $tax_id,
+        string $tax_name,
+        int $year,
+        DeclarationPeriod $period,
+    ): string {
+        return implode('', [
+            "<T30301000>",
+            $this->padding(1),
+            "C",
+            $tax_id,
+            $tax_name,
+            $this->padding(80 - strlen($tax_name)),
+            $year,
+            $period,
+            "2",
+            "2",
+            "3",
+            "2",
+            "2",
+            "2",
+            "2",
+            "2",
+            "2",
+            $this->padding(8),
+            " ",
+            "2",
+            "0",
+            "0",
         ]);
     }
 }
