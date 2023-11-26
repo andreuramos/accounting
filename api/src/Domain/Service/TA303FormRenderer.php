@@ -29,6 +29,7 @@ class TA303FormRenderer
                 $year,
                 $period,
                 $top_line,
+                $bottom_line,
             ),
         ]);
     }
@@ -57,6 +58,7 @@ class TA303FormRenderer
         int $year,
         DeclarationPeriod $period,
         TopLine $top_line,
+        BottomLine $bottom_line,
     ): string {
         return implode('', [
             "<T30301000>",
@@ -67,6 +69,7 @@ class TA303FormRenderer
                 $period,
             ),
             $this->generateAccruedTaxData($top_line),
+            $this->generateDeductibleTaxData($bottom_line, $top_line),
         ]);
     }
 
@@ -130,8 +133,29 @@ class TA303FormRenderer
         ]);
     }
 
+    private function generateDeductibleTaxData(
+        BottomLine $bottom_line,
+        TopLine $top_line,
+    ): string {
+        $tax_result = $top_line->tax - $bottom_line->tax;
+
+        return implode('', [
+            $this->fillNumber($bottom_line->base, 17),
+            $this->fillNumber($bottom_line->tax, 17),
+            $this->fillNumber(0, 255),
+            $this->fillNumber($bottom_line->tax, 17),
+            $this->fillNumber($tax_result, 17),
+        ]);
+    }
+
     private function fillNumber(int $number, int $size): string
     {
-        return str_repeat('0', $size - strlen($number)) . $number;
+        $formattedNumber = str_repeat('0', $size - strlen(abs($number))) . abs($number);
+
+        if ($number < 0) {
+            $formattedNumber[0] = "N";
+        }
+
+        return $formattedNumber;
     }
 }
