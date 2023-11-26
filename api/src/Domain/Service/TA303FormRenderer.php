@@ -70,6 +70,8 @@ class TA303FormRenderer
             ),
             $this->generateAccruedTaxData($top_line),
             $this->generateDeductibleTaxData($bottom_line, $top_line),
+            $this->padding(613),
+            "</T30301000>",
         ]);
     }
 
