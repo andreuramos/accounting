@@ -31,6 +31,10 @@ class TA303FormRenderer
                 $top_line,
                 $bottom_line,
             ),
+            $this->generatePage3(
+                $top_line,
+                $bottom_line,
+            ),
         ]);
     }
 
@@ -147,6 +151,28 @@ class TA303FormRenderer
             $this->fillNumber(0, 255),
             $this->fillNumber($bottom_line->tax, 17),
             $this->fillNumber($tax_result, 17),
+        ]);
+    }
+
+    private function generatePage3(
+        TopLine $top_line,
+        BottomLine $bottom_line,
+    ): string {
+        return implode('', [
+            "<T30303000>",
+            $this->fillNumber(0, 170),
+            $this->generateResult($top_line, $bottom_line),
+        ]);
+    }
+
+    private function generateResult(
+        TopLine $top_line,
+        BottomLine $bottom_line,
+    ): string {
+        $result = $top_line->tax - $bottom_line->tax;
+        return implode('', [
+            $this->fillNumber(0, 17),
+            $this->fillNumber($result, 17),
         ]);
     }
 
