@@ -19,6 +19,7 @@ class TA303FormRenderer
         string $tax_name,
         TopLine $top_line,
         BottomLine $bottom_line,
+        string $IBAN,
     ): string {
         return implode('', [
             "<T3030{$year}{$period}0000>",
@@ -34,7 +35,9 @@ class TA303FormRenderer
             $this->generatePage3(
                 $top_line,
                 $bottom_line,
+                $IBAN,
             ),
+            "</T3030{$year}{$period}0000>"
         ]);
     }
 
@@ -157,11 +160,14 @@ class TA303FormRenderer
     private function generatePage3(
         TopLine $top_line,
         BottomLine $bottom_line,
+        string $IBAN,
     ): string {
         return implode('', [
             "<T30303000>",
             $this->fillNumber(0, 170),
             $this->generateResult($top_line, $bottom_line),
+            $this->generateOtherData($IBAN),
+            "</T30303000>",
         ]);
     }
 
@@ -195,5 +201,17 @@ class TA303FormRenderer
         }
 
         return $formattedNumber;
+    }
+
+    private function generateOtherData(string $IBAN): string
+    {
+        return implode('', [
+            ' ',
+            $this->padding(13),
+            ' ',
+            $this->padding(11),
+            $IBAN,
+            $this->padding(765),
+        ]);
     }
 }

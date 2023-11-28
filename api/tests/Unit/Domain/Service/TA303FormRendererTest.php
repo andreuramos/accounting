@@ -14,12 +14,13 @@ class TA303FormRendererTest extends TestCase
         $service = new TA303FormRenderer();
         
         $output = $service(
-            2022, 
+            2022,
             DeclarationPeriod::QUARTER(1),
             "59519037M",
             "ROSSO ACEITUNO JULIAN",
-            new TopLine(741_45,21,155_71),
-            new BottomLine(4527_29, 950_73),
+            new TopLine(741_45, 21, 155_71),
+            new BottomLine(4527_29, 950_73), 
+            'ES9701280581210100059701',
         );
         
         $this->assertEquals(
@@ -38,8 +39,9 @@ class TA303FormRendererTest extends TestCase
             DeclarationPeriod::QUARTER(1),
             "59519037M",
             "ROSSO ACEITUNO JULIAN",
-            new TopLine(741_45,21,155_71),
+            new TopLine(741_45, 21, 155_71),
             new BottomLine(4527_29, 950_73),
+            'ES9701280581210100059701',
         );
 
         $this->assertEquals(
@@ -58,8 +60,9 @@ class TA303FormRendererTest extends TestCase
             DeclarationPeriod::QUARTER(1),
             "59519037M",
             "ROSSO ACEITUNO JULIAN",
-            new TopLine(741_45,21,155_71),
+            new TopLine(741_45, 21, 155_71),
             new BottomLine(4527_29, 950_73),
+            'ES9701280581210100059701',
         );
 
         $this->assertEquals(
@@ -78,8 +81,9 @@ class TA303FormRendererTest extends TestCase
             DeclarationPeriod::QUARTER(1),
             "59519037M",
             "ROSSO ACEITUNO JULIAN",
-            new TopLine(741_45,21_00,155_71),
+            new TopLine(741_45, 21_00, 155_71),
             new BottomLine(4527_29, 950_73),
+            'ES9701280581210100059701',
         );
 
         $this->assertEquals(
@@ -98,8 +102,9 @@ class TA303FormRendererTest extends TestCase
             DeclarationPeriod::QUARTER(1),
             "59519037M",
             "ROSSO ACEITUNO JULIAN",
-            new TopLine(741_45,21_00,155_71),
+            new TopLine(741_45, 21_00, 155_71),
             new BottomLine(4527_29, 950_73),
+            'ES9701280581210100059701',
         );
 
         $this->assertEquals(
@@ -118,8 +123,9 @@ class TA303FormRendererTest extends TestCase
             DeclarationPeriod::QUARTER(1),
             "59519037M",
             "ROSSO ACEITUNO JULIAN",
-            new TopLine(741_45,21_00,155_71),
+            new TopLine(741_45, 21_00, 155_71),
             new BottomLine(4527_29, 950_73),
+            'ES9701280581210100059701',
         );
 
         $this->assertEquals(
@@ -138,8 +144,9 @@ class TA303FormRendererTest extends TestCase
             DeclarationPeriod::QUARTER(1),
             "59519037M",
             "ROSSO ACEITUNO JULIAN",
-            new TopLine(741_45,21_00,155_71),
+            new TopLine(741_45, 21_00, 155_71),
             new BottomLine(4527_29, 950_73),
+            'ES9701280581210100059701',
         );
 
         $this->assertEquals(
@@ -158,13 +165,35 @@ class TA303FormRendererTest extends TestCase
             DeclarationPeriod::QUARTER(1),
             "59519037M",
             "ROSSO ACEITUNO JULIAN",
-            new TopLine(741_45,21_00,155_71),
+            new TopLine(741_45, 21_00, 155_71),
             new BottomLine(4527_29, 950_73),
+            'ES9701280581210100059701',
         );
 
         $this->assertEquals(
             substr($expected_output, 1990 ,175),
             substr($output, 1990, 175),
+        );
+    }
+    
+    public function test_other_data_and_end_tag(): void
+    {
+        $expected_output = file_get_contents(__DIR__ . '/3032022T1');
+        $service = new TA303FormRenderer();
+
+        $output = $service(
+            2022,
+            DeclarationPeriod::QUARTER(1),
+            "59519037M",
+            "ROSSO ACEITUNO JULIAN",
+            new TopLine(741_45, 21_00, 155_71),
+            new BottomLine(4527_29, 950_73),
+            'ES9701280581210100059701',
+        );
+
+        $this->assertEquals(
+            substr($expected_output, 2165 ,845),
+            substr($output, 2165, 845),
         );
     }
     
@@ -175,12 +204,13 @@ class TA303FormRendererTest extends TestCase
         $service = new TA303FormRenderer();
         
         $output = $service(
-            2022, 
+            2022,
             DeclarationPeriod::QUARTER(1),
             "59519037M",
             "ROSSO ACEITUNO JULIAN",
-            new TopLine(741_45,21,155_71),
+            new TopLine(741_45, 21, 155_71),
             new BottomLine(4527_29, 950_73),
+            'ES9701280581210100059701',
         );
 
         $this->assertEquals($expected_output, $output);
