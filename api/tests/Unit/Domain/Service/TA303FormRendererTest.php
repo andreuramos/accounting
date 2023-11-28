@@ -148,6 +148,26 @@ class TA303FormRendererTest extends TestCase
         );
     }
     
+    public function test_result(): void
+    {
+        $expected_output = file_get_contents(__DIR__ . '/3032022T1');
+        $service = new TA303FormRenderer();
+
+        $output = $service(
+            2022,
+            DeclarationPeriod::QUARTER(1),
+            "59519037M",
+            "ROSSO ACEITUNO JULIAN",
+            new TopLine(741_45,21_00,155_71),
+            new BottomLine(4527_29, 950_73),
+        );
+
+        $this->assertEquals(
+            substr($expected_output, 1990 ,175),
+            substr($output, 1990, 175),
+        );
+    }
+    
     public function test_first_declaration(): void
     {
         $this->markTestIncomplete("wip");

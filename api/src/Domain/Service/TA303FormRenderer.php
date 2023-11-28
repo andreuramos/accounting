@@ -173,6 +173,16 @@ class TA303FormRenderer
         return implode('', [
             $this->fillNumber(0, 17),
             $this->fillNumber($result, 17),
+            $this->fillNumber(100_00, 5),
+            $this->fillNumber($result, 17),
+            $this->fillNumber(0, 17),
+            $this->fillNumber(0, 17),
+            $this->fillNumber(0, 17),
+            $this->fillNumber(0, 17),
+            $this->fillNumber(0, 17),
+            $this->fillNumber($result, 17),
+            $this->fillNumber(0, 17),
+            $this->fillNumber($result, 17),
         ]);
     }
 
