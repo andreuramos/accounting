@@ -3,8 +3,9 @@
 namespace Test\Unit\Domain\Service;
 
 use App\Domain\Service\TA303FormRenderer;
-use App\Domain\ValueObject\DeclarationPeriod;
 use App\Domain\ValueObject\AccruedTax;
+use App\Domain\ValueObject\DeductibleTax;
+use App\Domain\ValueObject\DeclarationPeriod;
 use PHPUnit\Framework\TestCase;
 
 class TA303FormRendererTest extends TestCase
@@ -20,7 +21,7 @@ class TA303FormRendererTest extends TestCase
             "59519037M",
             "ROSSO ACEITUNO JULIAN",
             new AccruedTax(741_45, 21, 155_71),
-            new BottomLine(4527_29, 950_73), 
+            new DeductibleTax(4527_29, 950_73), 
             'ES9701280581210100059701',
         );
         
@@ -41,7 +42,7 @@ class TA303FormRendererTest extends TestCase
             "59519037M",
             "ROSSO ACEITUNO JULIAN",
             new AccruedTax(741_45, 21, 155_71),
-            new BottomLine(4527_29, 950_73),
+            new DeductibleTax(4527_29, 950_73),
             'ES9701280581210100059701',
         );
 
@@ -62,7 +63,7 @@ class TA303FormRendererTest extends TestCase
             "59519037M",
             "ROSSO ACEITUNO JULIAN",
             new AccruedTax(741_45, 21, 155_71),
-            new BottomLine(4527_29, 950_73),
+            new DeductibleTax(4527_29, 950_73),
             'ES9701280581210100059701',
         );
 
@@ -83,7 +84,7 @@ class TA303FormRendererTest extends TestCase
             "59519037M",
             "ROSSO ACEITUNO JULIAN",
             new AccruedTax(741_45, 21_00, 155_71),
-            new BottomLine(4527_29, 950_73),
+            new DeductibleTax(4527_29, 950_73),
             'ES9701280581210100059701',
         );
 
@@ -104,7 +105,7 @@ class TA303FormRendererTest extends TestCase
             "59519037M",
             "ROSSO ACEITUNO JULIAN",
             new AccruedTax(741_45, 21_00, 155_71),
-            new BottomLine(4527_29, 950_73),
+            new DeductibleTax(4527_29, 950_73),
             'ES9701280581210100059701',
         );
 
@@ -125,7 +126,7 @@ class TA303FormRendererTest extends TestCase
             "59519037M",
             "ROSSO ACEITUNO JULIAN",
             new AccruedTax(741_45, 21_00, 155_71),
-            new BottomLine(4527_29, 950_73),
+            new DeductibleTax(4527_29, 950_73),
             'ES9701280581210100059701',
         );
 
@@ -146,7 +147,7 @@ class TA303FormRendererTest extends TestCase
             "59519037M",
             "ROSSO ACEITUNO JULIAN",
             new AccruedTax(741_45, 21_00, 155_71),
-            new BottomLine(4527_29, 950_73),
+            new DeductibleTax(4527_29, 950_73),
             'ES9701280581210100059701',
         );
 
@@ -167,7 +168,7 @@ class TA303FormRendererTest extends TestCase
             "59519037M",
             "ROSSO ACEITUNO JULIAN",
             new AccruedTax(741_45, 21_00, 155_71),
-            new BottomLine(4527_29, 950_73),
+            new DeductibleTax(4527_29, 950_73),
             'ES9701280581210100059701',
         );
 
@@ -188,7 +189,7 @@ class TA303FormRendererTest extends TestCase
             "59519037M",
             "ROSSO ACEITUNO JULIAN",
             new AccruedTax(741_45, 21_00, 155_71),
-            new BottomLine(4527_29, 950_73),
+            new DeductibleTax(4527_29, 950_73),
             'ES9701280581210100059701',
         );
 
@@ -210,7 +211,7 @@ class TA303FormRendererTest extends TestCase
             "59519037M",
             "ROSSO ACEITUNO JULIAN",
             new AccruedTax(741_45, 21, 155_71),
-            new BottomLine(4527_29, 950_73),
+            new DeductibleTax(4527_29, 950_73),
             'ES9701280581210100059701',
         );
 

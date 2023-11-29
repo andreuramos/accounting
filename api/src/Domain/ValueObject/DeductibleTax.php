@@ -1,8 +1,8 @@
 <?php
 
-namespace Test\Unit\Domain\Service;
+namespace App\Domain\ValueObject;
 
-class BottomLine
+class DeductibleTax
 {
     public function __construct(
         public readonly int $base,
