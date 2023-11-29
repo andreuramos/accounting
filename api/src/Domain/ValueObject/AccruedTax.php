@@ -1,8 +1,8 @@
 <?php
 
-namespace Test\Unit\Domain\Service;
+namespace App\Domain\ValueObject;
 
-class TopLine
+class AccruedTax
 {
     public function __construct(
         public readonly int $base,

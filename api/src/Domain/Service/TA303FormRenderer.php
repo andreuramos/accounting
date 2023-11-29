@@ -3,8 +3,8 @@
 namespace App\Domain\Service;
 
 use App\Domain\ValueObject\DeclarationPeriod;
+use App\Domain\ValueObject\AccruedTax;
 use Test\Unit\Domain\Service\BottomLine;
-use Test\Unit\Domain\Service\TopLine;
 
 class TA303FormRenderer
 {
@@ -13,13 +13,13 @@ class TA303FormRenderer
     }
 
     public function __invoke(
-        int $year,
+        int               $year,
         DeclarationPeriod $period,
-        string $tax_id,
-        string $tax_name,
-        TopLine $top_line,
-        BottomLine $bottom_line,
-        string $IBAN,
+        string            $tax_id,
+        string            $tax_name,
+        AccruedTax        $top_line,
+        BottomLine        $bottom_line,
+        string            $IBAN,
     ): string {
         return implode('', [
             "<T3030{$year}{$period}0000>",
@@ -60,12 +60,12 @@ class TA303FormRenderer
     }
 
     private function generatePage1(
-        string $tax_id,
-        string $tax_name,
-        int $year,
+        string            $tax_id,
+        string            $tax_name,
+        int               $year,
         DeclarationPeriod $period,
-        TopLine $top_line,
-        BottomLine $bottom_line,
+        AccruedTax        $top_line,
+        BottomLine        $bottom_line,
     ): string {
         return implode('', [
             "<T30301000>",
@@ -114,7 +114,7 @@ class TA303FormRenderer
     }
 
     private function generateAccruedTaxData(
-        TopLine $top_line,
+        AccruedTax $top_line,
     ): string {
         return implode('', [
             $this->fillNumber(0, 17),
@@ -144,7 +144,7 @@ class TA303FormRenderer
 
     private function generateDeductibleTaxData(
         BottomLine $bottom_line,
-        TopLine $top_line,
+        AccruedTax $top_line,
     ): string {
         $tax_result = $top_line->tax - $bottom_line->tax;
 
@@ -158,9 +158,9 @@ class TA303FormRenderer
     }
 
     private function generatePage3(
-        TopLine $top_line,
+        AccruedTax $top_line,
         BottomLine $bottom_line,
-        string $IBAN,
+        string     $IBAN,
     ): string {
         return implode('', [
             "<T30303000>",
@@ -172,7 +172,7 @@ class TA303FormRenderer
     }
 
     private function generateResult(
-        TopLine $top_line,
+        AccruedTax $top_line,
         BottomLine $bottom_line,
     ): string {
         $result = $top_line->tax - $bottom_line->tax;

@@ -4,6 +4,7 @@ namespace Test\Unit\Domain\Service;
 
 use App\Domain\Service\TA303FormRenderer;
 use App\Domain\ValueObject\DeclarationPeriod;
+use App\Domain\ValueObject\AccruedTax;
 use PHPUnit\Framework\TestCase;
 
 class TA303FormRendererTest extends TestCase
@@ -18,7 +19,7 @@ class TA303FormRendererTest extends TestCase
             DeclarationPeriod::QUARTER(1),
             "59519037M",
             "ROSSO ACEITUNO JULIAN",
-            new TopLine(741_45, 21, 155_71),
+            new AccruedTax(741_45, 21, 155_71),
             new BottomLine(4527_29, 950_73), 
             'ES9701280581210100059701',
         );
@@ -39,7 +40,7 @@ class TA303FormRendererTest extends TestCase
             DeclarationPeriod::QUARTER(1),
             "59519037M",
             "ROSSO ACEITUNO JULIAN",
-            new TopLine(741_45, 21, 155_71),
+            new AccruedTax(741_45, 21, 155_71),
             new BottomLine(4527_29, 950_73),
             'ES9701280581210100059701',
         );
@@ -60,7 +61,7 @@ class TA303FormRendererTest extends TestCase
             DeclarationPeriod::QUARTER(1),
             "59519037M",
             "ROSSO ACEITUNO JULIAN",
-            new TopLine(741_45, 21, 155_71),
+            new AccruedTax(741_45, 21, 155_71),
             new BottomLine(4527_29, 950_73),
             'ES9701280581210100059701',
         );
@@ -81,7 +82,7 @@ class TA303FormRendererTest extends TestCase
             DeclarationPeriod::QUARTER(1),
             "59519037M",
             "ROSSO ACEITUNO JULIAN",
-            new TopLine(741_45, 21_00, 155_71),
+            new AccruedTax(741_45, 21_00, 155_71),
             new BottomLine(4527_29, 950_73),
             'ES9701280581210100059701',
         );
@@ -102,7 +103,7 @@ class TA303FormRendererTest extends TestCase
             DeclarationPeriod::QUARTER(1),
             "59519037M",
             "ROSSO ACEITUNO JULIAN",
-            new TopLine(741_45, 21_00, 155_71),
+            new AccruedTax(741_45, 21_00, 155_71),
             new BottomLine(4527_29, 950_73),
             'ES9701280581210100059701',
         );
@@ -123,7 +124,7 @@ class TA303FormRendererTest extends TestCase
             DeclarationPeriod::QUARTER(1),
             "59519037M",
             "ROSSO ACEITUNO JULIAN",
-            new TopLine(741_45, 21_00, 155_71),
+            new AccruedTax(741_45, 21_00, 155_71),
             new BottomLine(4527_29, 950_73),
             'ES9701280581210100059701',
         );
@@ -144,7 +145,7 @@ class TA303FormRendererTest extends TestCase
             DeclarationPeriod::QUARTER(1),
             "59519037M",
             "ROSSO ACEITUNO JULIAN",
-            new TopLine(741_45, 21_00, 155_71),
+            new AccruedTax(741_45, 21_00, 155_71),
             new BottomLine(4527_29, 950_73),
             'ES9701280581210100059701',
         );
@@ -165,7 +166,7 @@ class TA303FormRendererTest extends TestCase
             DeclarationPeriod::QUARTER(1),
             "59519037M",
             "ROSSO ACEITUNO JULIAN",
-            new TopLine(741_45, 21_00, 155_71),
+            new AccruedTax(741_45, 21_00, 155_71),
             new BottomLine(4527_29, 950_73),
             'ES9701280581210100059701',
         );
@@ -186,7 +187,7 @@ class TA303FormRendererTest extends TestCase
             DeclarationPeriod::QUARTER(1),
             "59519037M",
             "ROSSO ACEITUNO JULIAN",
-            new TopLine(741_45, 21_00, 155_71),
+            new AccruedTax(741_45, 21_00, 155_71),
             new BottomLine(4527_29, 950_73),
             'ES9701280581210100059701',
         );
@@ -208,7 +209,7 @@ class TA303FormRendererTest extends TestCase
             DeclarationPeriod::QUARTER(1),
             "59519037M",
             "ROSSO ACEITUNO JULIAN",
-            new TopLine(741_45, 21, 155_71),
+            new AccruedTax(741_45, 21, 155_71),
             new BottomLine(4527_29, 950_73),
             'ES9701280581210100059701',
         );
