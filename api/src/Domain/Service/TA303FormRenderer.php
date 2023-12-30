@@ -5,9 +5,15 @@ namespace App\Domain\Service;
 use App\Domain\ValueObject\DeductibleTax;
 use App\Domain\ValueObject\DeclarationPeriod;
 use App\Domain\ValueObject\AccruedTax;
+use App\Domain\ValueObject\Money;
 
 class TA303FormRenderer
 {
+    private const COMPENSATION_REQUEST = "C";
+    private const NO_ACTIVITY_OR_ZERO_RESULT = "N";
+    private const INCOME = "I";
+    private const STATE_ADMIN_ATTRIBUTABLE_PERCENT = 100_00;
+
     public function __invoke(
         int $year,
         DeclarationPeriod $period,
@@ -16,6 +22,7 @@ class TA303FormRenderer
         AccruedTax $accruedTax,
         DeductibleTax $deductibleTax,
         string $IBAN,
+        Money $pendingFromPreviousPeriods = new Money(0),
     ): string {
         return implode('', [
             "<T3030{$year}{$period}0000>",
@@ -27,10 +34,12 @@ class TA303FormRenderer
                 $period,
                 $accruedTax,
                 $deductibleTax,
+                $pendingFromPreviousPeriods,
             ),
             $this->generatePage3(
                 $accruedTax,
                 $deductibleTax,
+                $pendingFromPreviousPeriods,
                 $IBAN,
             ),
             "</T3030{$year}{$period}0000>"
@@ -62,6 +71,7 @@ class TA303FormRenderer
         DeclarationPeriod $period,
         AccruedTax $accruedTax,
         DeductibleTax $deductibleTax,
+        Money $pendingFromPreviousPeriods,
     ): string {
         return implode('', [
             "<T30301000>",
@@ -70,6 +80,9 @@ class TA303FormRenderer
                 $tax_name,
                 $year,
                 $period,
+                $accruedTax,
+                $deductibleTax,
+                $pendingFromPreviousPeriods,
             ),
             $this->generateAccruedTaxData($accruedTax),
             $this->generateDeductibleTaxData($deductibleTax, $accruedTax),
@@ -83,10 +96,13 @@ class TA303FormRenderer
         string $tax_name,
         int $year,
         DeclarationPeriod $period,
+        AccruedTax $accruedTax,
+        DeductibleTax $deductibleTax,
+        Money $pendingFromOtherPeriods,
     ): string {
         return implode('', [
             $this->padding(1),
-            "C",
+            $this->calculateDeclarationType($accruedTax, $deductibleTax, $pendingFromOtherPeriods),
             $tax_id,
             $tax_name,
             $this->padding(80 - strlen($tax_name)),
@@ -114,23 +130,23 @@ class TA303FormRenderer
     ): string {
         return implode('', [
             $this->fillNumber(0, 17),
-            $this->fillNumber(400, 5),
+            $this->fillNumber(4_00, 5),
             $this->fillNumber(0, 17),
             $this->fillNumber(0, 17),
-            $this->fillNumber(1000, 5),
+            $this->fillNumber(10_00, 5),
             $this->fillNumber(0, 17),
             $this->fillNumber($accruedTax->base, 17),
             $this->fillNumber($accruedTax->rate, 5),
             $this->fillNumber($accruedTax->tax, 17),
             $this->fillNumber(0, 102),
             $this->fillNumber(0, 17),
-            $this->fillNumber(520, 5),
-            $this->fillNumber(0, 17),
-            $this->fillNumber(0, 17),
-            $this->fillNumber(140, 5),
-            $this->fillNumber(0, 17),
-            $this->fillNumber(0, 17),
             $this->fillNumber(50, 5),
+            $this->fillNumber(0, 17),
+            $this->fillNumber(0, 17),
+            $this->fillNumber(1_40, 5),
+            $this->fillNumber(0, 17),
+            $this->fillNumber(0, 17),
+            $this->fillNumber(5_20, 5),
             $this->fillNumber(0, 17),
             $this->fillNumber(0, 17),
             $this->fillNumber(0, 17),
@@ -139,29 +155,30 @@ class TA303FormRenderer
     }
 
     private function generateDeductibleTaxData(
-        DeductibleTax $bottom_line,
-        AccruedTax $top_line,
+        DeductibleTax $deductibleTax,
+        AccruedTax $accruedTax,
     ): string {
-        $tax_result = $top_line->tax - $bottom_line->tax;
+        $taxResult = $accruedTax->tax - $deductibleTax->tax;
 
         return implode('', [
-            $this->fillNumber($bottom_line->base, 17),
-            $this->fillNumber($bottom_line->tax, 17),
+            $this->fillNumber($deductibleTax->base, 17),
+            $this->fillNumber($deductibleTax->tax, 17),
             $this->fillNumber(0, 255),
-            $this->fillNumber($bottom_line->tax, 17),
-            $this->fillNumber($tax_result, 17),
+            $this->fillNumber($deductibleTax->tax, 17),
+            $this->fillNumber($taxResult, 17),
         ]);
     }
 
     private function generatePage3(
         AccruedTax $accruedTax,
         DeductibleTax $deductibleTax,
+        Money $pendingFromPreviousPeriods,
         string $IBAN,
     ): string {
         return implode('', [
             "<T30303000>",
             $this->fillNumber(0, 170),
-            $this->generateResult($accruedTax, $deductibleTax),
+            $this->generateResult($accruedTax, $deductibleTax, $pendingFromPreviousPeriods),
             $this->generateOtherData($IBAN),
             "</T30303000>",
         ]);
@@ -170,21 +187,28 @@ class TA303FormRenderer
     private function generateResult(
         AccruedTax $accruedTax,
         DeductibleTax $deductibleTax,
+        Money $pendingFromPreviousPeriods,
     ): string {
-        $result = $accruedTax->tax - $deductibleTax->tax;
+        $currentPeriodTaxDue = $accruedTax->tax - $deductibleTax->tax;
+        $toBeCompensatedInThisPeriod = $this->calculateMaxAmountToCompensateFromPreviousPeriods(
+            $pendingFromPreviousPeriods->amountCents,
+            $currentPeriodTaxDue,
+        );
+        $remainingForNextPeriods = $pendingFromPreviousPeriods->amountCents - $toBeCompensatedInThisPeriod;
+
         return implode('', [
+            $this->fillNumber(0, 17), // Regularización cuotas art80.cinco.5 LIVA
+            $this->fillNumber($currentPeriodTaxDue, 17), // suma de resultados
+            $this->fillNumber(self::STATE_ADMIN_ATTRIBUTABLE_PERCENT, 5),
+            $this->fillNumber($currentPeriodTaxDue, 17),
+            $this->fillNumber(0, 17), //Iva a la importación liquidado por Aduanas
+            $this->fillNumber($pendingFromPreviousPeriods->amountCents, 17),
+            $this->fillNumber($toBeCompensatedInThisPeriod, 17),
+            $this->fillNumber($remainingForNextPeriods, 17),
             $this->fillNumber(0, 17),
-            $this->fillNumber($result, 17),
-            $this->fillNumber(100_00, 5),
-            $this->fillNumber($result, 17),
+            $this->fillNumber($currentPeriodTaxDue - $toBeCompensatedInThisPeriod, 17),
             $this->fillNumber(0, 17),
-            $this->fillNumber(0, 17),
-            $this->fillNumber(0, 17),
-            $this->fillNumber(0, 17),
-            $this->fillNumber(0, 17),
-            $this->fillNumber($result, 17),
-            $this->fillNumber(0, 17),
-            $this->fillNumber($result, 17),
+            $this->fillNumber($currentPeriodTaxDue - $toBeCompensatedInThisPeriod, 17),
         ]);
     }
 
@@ -209,5 +233,37 @@ class TA303FormRenderer
             $IBAN,
             $this->padding(765),
         ]);
+    }
+
+    private function calculateDeclarationType(
+        AccruedTax $accruedTax,
+        DeductibleTax $deductibleTax,
+        Money $pendingFromPreviousPeriods,
+    ): string {
+        $liquidationResult = $accruedTax->tax - $deductibleTax->tax;
+        if ($liquidationResult < 0) {
+            return self::COMPENSATION_REQUEST;
+        }
+
+        if ($liquidationResult === 0 || $pendingFromPreviousPeriods->amountCents > $liquidationResult) {
+            return self::NO_ACTIVITY_OR_ZERO_RESULT;
+        }
+
+        return self::INCOME;
+    }
+
+    private function calculateMaxAmountToCompensateFromPreviousPeriods(
+        int $pendingFromPreviousPeriods,
+        int $currentPeriodResult,
+    ): int {
+        if ($pendingFromPreviousPeriods == 0 || $currentPeriodResult <= 0) {
+            return 0;
+        }
+
+        if ($pendingFromPreviousPeriods >= $currentPeriodResult) {
+            return $currentPeriodResult;
+        }
+
+        return $pendingFromPreviousPeriods;
     }
 }
