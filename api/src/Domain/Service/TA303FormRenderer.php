@@ -2,6 +2,7 @@
 
 namespace App\Domain\Service;
 
+use App\Domain\Entities\TaxAgency303Form;
 use App\Domain\ValueObject\DeductibleTax;
 use App\Domain\ValueObject\DeclarationPeriod;
 use App\Domain\ValueObject\AccruedTax;
@@ -9,10 +10,14 @@ use App\Domain\ValueObject\Money;
 
 class TA303FormRenderer
 {
-    private const COMPENSATION_REQUEST = "C";
-    private const NO_ACTIVITY_OR_ZERO_RESULT = "N";
-    private const INCOME = "I";
     private const STATE_ADMIN_ATTRIBUTABLE_PERCENT = 100_00;
+    private const DECLARATION_TYPE_MAP = [
+        TaxAgency303Form::TYPE_COMPENSATION_REQUEST => "C",
+        TaxAgency303Form::TYPE_INCOME => "I",
+        TaxAgency303Form::TYPE_NO_ACTIVITY_OR_ZERO_RESULT => "N",
+    ];
+
+    private TaxAgency303Form $form;
 
     public function __invoke(
         int $year,
@@ -24,6 +29,18 @@ class TA303FormRenderer
         string $IBAN,
         Money $pendingFromPreviousPeriods = new Money(0),
     ): string {
+        
+        $this->form = new TaxAgency303Form(
+            $tax_id,
+            $tax_name,
+            $year,
+            $period,
+            $accruedTax,
+            $deductibleTax,
+            $IBAN,
+            $pendingFromPreviousPeriods,
+        );
+        
         return implode('', [
             "<T3030{$year}{$period}0000>",
             $this->generateAuxTag(),
@@ -75,15 +92,7 @@ class TA303FormRenderer
     ): string {
         return implode('', [
             "<T30301000>",
-            $this->generateIdentificationData(
-                $tax_id,
-                $tax_name,
-                $year,
-                $period,
-                $accruedTax,
-                $deductibleTax,
-                $pendingFromPreviousPeriods,
-            ),
+            $this->generateIdentificationData(),
             $this->generateAccruedTaxData($accruedTax),
             $this->generateDeductibleTaxData($deductibleTax, $accruedTax),
             $this->padding(613),
@@ -91,23 +100,16 @@ class TA303FormRenderer
         ]);
     }
 
-    private function generateIdentificationData(
-        string $tax_id,
-        string $tax_name,
-        int $year,
-        DeclarationPeriod $period,
-        AccruedTax $accruedTax,
-        DeductibleTax $deductibleTax,
-        Money $pendingFromOtherPeriods,
-    ): string {
+    private function generateIdentificationData(): string 
+    {
         return implode('', [
             $this->padding(1),
-            $this->calculateDeclarationType($accruedTax, $deductibleTax, $pendingFromOtherPeriods),
-            $tax_id,
-            $tax_name,
-            $this->padding(80 - strlen($tax_name)),
-            $year,
-            $period,
+            self::DECLARATION_TYPE_MAP[$this->form->declarationType()],
+            $this->form->taxId,
+            $this->form->taxName,
+            $this->padding(80 - strlen($this->form->taxName)),
+            $this->form->year,
+            $this->form->period,
             "2",
             "2",
             "3",
@@ -233,23 +235,6 @@ class TA303FormRenderer
             $IBAN,
             $this->padding(765),
         ]);
-    }
-
-    private function calculateDeclarationType(
-        AccruedTax $accruedTax,
-        DeductibleTax $deductibleTax,
-        Money $pendingFromPreviousPeriods,
-    ): string {
-        $liquidationResult = $accruedTax->tax - $deductibleTax->tax;
-        if ($liquidationResult < 0) {
-            return self::COMPENSATION_REQUEST;
-        }
-
-        if ($liquidationResult === 0 || $pendingFromPreviousPeriods->amountCents > $liquidationResult) {
-            return self::NO_ACTIVITY_OR_ZERO_RESULT;
-        }
-
-        return self::INCOME;
     }
 
     private function calculateMaxAmountToCompensateFromPreviousPeriods(
