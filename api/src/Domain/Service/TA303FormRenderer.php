@@ -16,6 +16,9 @@ class TA303FormRenderer
         TaxAgency303Form::TYPE_INCOME => "I",
         TaxAgency303Form::TYPE_NO_ACTIVITY_OR_ZERO_RESULT => "N",
     ];
+    private const REGULAR_VAT_RATE = 21_00;
+    private const REDUCED_VAT_RATE = 10_00;
+    private const SUPER_REDUCED_VAT_RATE = 4_00;
 
     private TaxAgency303Form $form;
 
@@ -44,15 +47,7 @@ class TA303FormRenderer
         return implode('', [
             "<T3030{$year}{$period}0000>",
             $this->generateAuxTag(),
-            $this->generatePage1(
-                $tax_id,
-                $tax_name,
-                $year,
-                $period,
-                $accruedTax,
-                $deductibleTax,
-                $pendingFromPreviousPeriods,
-            ),
+            $this->generatePage1(),
             $this->generatePage3(
                 $accruedTax,
                 $deductibleTax,
@@ -81,20 +76,13 @@ class TA303FormRenderer
         ]);
     }
 
-    private function generatePage1(
-        string $tax_id,
-        string $tax_name,
-        int $year,
-        DeclarationPeriod $period,
-        AccruedTax $accruedTax,
-        DeductibleTax $deductibleTax,
-        Money $pendingFromPreviousPeriods,
-    ): string {
+    private function generatePage1(): string
+    {
         return implode('', [
             "<T30301000>",
             $this->generateIdentificationData(),
-            $this->generateAccruedTaxData($accruedTax),
-            $this->generateDeductibleTaxData($deductibleTax, $accruedTax),
+            $this->generateAccruedTaxData(),
+            $this->generateDeductibleTaxData(),
             $this->padding(613),
             "</T30301000>",
         ]);
@@ -127,19 +115,21 @@ class TA303FormRenderer
         ]);
     }
 
-    private function generateAccruedTaxData(
-        AccruedTax $accruedTax,
-    ): string {
+    private function generateAccruedTaxData(): string 
+    {
+        $regularVatAccruedBase = $this->form->accruedTax->base;
+        $regularVatAccruedTax = $this->form->accruedTax->tax;
+        
         return implode('', [
             $this->fillNumber(0, 17),
-            $this->fillNumber(4_00, 5),
+            $this->fillNumber(self::SUPER_REDUCED_VAT_RATE, 5),
             $this->fillNumber(0, 17),
             $this->fillNumber(0, 17),
-            $this->fillNumber(10_00, 5),
+            $this->fillNumber(self::REDUCED_VAT_RATE, 5),
             $this->fillNumber(0, 17),
-            $this->fillNumber($accruedTax->base, 17),
-            $this->fillNumber($accruedTax->rate, 5),
-            $this->fillNumber($accruedTax->tax, 17),
+            $this->fillNumber($regularVatAccruedBase, 17),
+            $this->fillNumber(self::REGULAR_VAT_RATE, 5),
+            $this->fillNumber($regularVatAccruedTax, 17),
             $this->fillNumber(0, 102),
             $this->fillNumber(0, 17),
             $this->fillNumber(50, 5),
@@ -152,21 +142,19 @@ class TA303FormRenderer
             $this->fillNumber(0, 17),
             $this->fillNumber(0, 17),
             $this->fillNumber(0, 17),
-            $this->fillNumber($accruedTax->tax, 17),
+            $this->fillNumber($this->form->accruedTax->tax, 17),
         ]);
     }
 
-    private function generateDeductibleTaxData(
-        DeductibleTax $deductibleTax,
-        AccruedTax $accruedTax,
-    ): string {
-        $taxResult = $accruedTax->tax - $deductibleTax->tax;
+    private function generateDeductibleTaxData(): string
+    {
+        $taxResult = $this->form->accruedTax->tax - $this->form->deductibleTax->tax;
 
         return implode('', [
-            $this->fillNumber($deductibleTax->base, 17),
-            $this->fillNumber($deductibleTax->tax, 17),
+            $this->fillNumber($this->form->deductibleTax->base, 17),
+            $this->fillNumber($this->form->deductibleTax->tax, 17),
             $this->fillNumber(0, 255),
-            $this->fillNumber($deductibleTax->tax, 17),
+            $this->fillNumber($this->form->deductibleTax->tax, 17),
             $this->fillNumber($taxResult, 17),
         ]);
     }
