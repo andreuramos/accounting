@@ -55,6 +55,42 @@ class TaxAgency303FromTest extends TestCase
         
         self::assertEquals(21, $tax_due);
     }
+    
+    public function test_when_previous_amount_is_zero_then_max_amount_to_compensate_is_zero(): void
+    {
+        $form = $this->buildFormWith(200, 100);
+        
+        $max_amount_to_compensate = $form->maxAmountToCompensate();
+        
+        self::assertEquals(0, $max_amount_to_compensate);
+    }
+    
+    public function test_when_tax_due_is_negative_then_max_amount_to_compensate_is_zero(): void
+    {
+        $form = $this->buildFormWith(100, 200, 300);
+
+        $max_amount_to_compensate = $form->maxAmountToCompensate();
+
+        self::assertEquals(0, $max_amount_to_compensate);
+    }
+    
+    public function test_when_pending_is_greater_than_tax_due_then_max_amount_to_compensate_is_tax_due(): void
+    {
+        $form = $this->buildFormWith(200, 100, 100);
+
+        $max_amount_to_compensate = $form->maxAmountToCompensate();
+
+        self::assertEquals(21, $max_amount_to_compensate);
+    }
+    
+    public function test_when_pending_is_less_than_tax_due_then_max_amount_to_compensate_is_pending(): void
+    {
+        $form = $this->buildFormWith(2000, 1000, 100);
+
+        $max_amount_to_compensate = $form->maxAmountToCompensate();
+
+        self::assertEquals(100, $max_amount_to_compensate);
+    }
 
     private function buildFormWith(int $incomes, int $expenses, int $pending = 0): TaxAgency303Form
     {

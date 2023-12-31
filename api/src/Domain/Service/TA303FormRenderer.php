@@ -168,23 +168,18 @@ class TA303FormRenderer
         return implode('', [
             "<T30303000>",
             $this->fillNumber(0, 170),
-            $this->generateResult($accruedTax, $deductibleTax, $pendingFromPreviousPeriods),
+            $this->generateResult(),
             $this->generateOtherData($IBAN),
             "</T30303000>",
         ]);
     }
 
-    private function generateResult(
-        AccruedTax $accruedTax,
-        DeductibleTax $deductibleTax,
-        Money $pendingFromPreviousPeriods,
-    ): string {
+    private function generateResult(): string 
+    {
         $currentPeriodTaxDue = $this->form->taxDue();
-        $toBeCompensatedInThisPeriod = $this->calculateMaxAmountToCompensateFromPreviousPeriods(
-            $pendingFromPreviousPeriods->amountCents,
-            $currentPeriodTaxDue,
-        );
-        $remainingForNextPeriods = $pendingFromPreviousPeriods->amountCents - $toBeCompensatedInThisPeriod;
+        $toBeCompensatedInThisPeriod = $this->form->maxAmountToCompensate();
+        $pendingFromPreviousPeriods = $this->form->pendingAmountFromPreviousPeriod->amountCents;
+        $remainingForNextPeriods = $pendingFromPreviousPeriods - $toBeCompensatedInThisPeriod;
 
         return implode('', [
             $this->fillNumber(0, 17), // Regularización cuotas art80.cinco.5 LIVA
@@ -192,7 +187,7 @@ class TA303FormRenderer
             $this->fillNumber(self::STATE_ADMIN_ATTRIBUTABLE_PERCENT, 5),
             $this->fillNumber($currentPeriodTaxDue, 17),
             $this->fillNumber(0, 17), //Iva a la importación liquidado por Aduanas
-            $this->fillNumber($pendingFromPreviousPeriods->amountCents, 17),
+            $this->fillNumber($pendingFromPreviousPeriods, 17),
             $this->fillNumber($toBeCompensatedInThisPeriod, 17),
             $this->fillNumber($remainingForNextPeriods, 17),
             $this->fillNumber(0, 17),

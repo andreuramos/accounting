@@ -44,4 +44,17 @@ class TaxAgency303Form
     {
         return $this->accruedTax->tax - $this->deductibleTax->tax;
     }
+
+    public function maxAmountToCompensate(): int
+    {
+        if ($this->pendingAmountFromPreviousPeriod->amountCents === 0 || $this->taxDue() < 0) {
+            return 0;
+        }
+        
+        if ($this->pendingAmountFromPreviousPeriod->amountCents >= $this->taxDue()) {
+            return $this->taxDue();
+        }
+        
+        return $this->pendingAmountFromPreviousPeriod->amountCents;
+    }
 }
