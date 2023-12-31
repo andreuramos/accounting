@@ -48,12 +48,7 @@ class TA303FormRenderer
             "<T3030{$year}{$period}0000>",
             $this->generateAuxTag(),
             $this->generatePage1(),
-            $this->generatePage3(
-                $accruedTax,
-                $deductibleTax,
-                $pendingFromPreviousPeriods,
-                $IBAN,
-            ),
+            $this->generatePage3(),
             "</T3030{$year}{$period}0000>"
         ]);
     }
@@ -159,17 +154,13 @@ class TA303FormRenderer
         ]);
     }
 
-    private function generatePage3(
-        AccruedTax $accruedTax,
-        DeductibleTax $deductibleTax,
-        Money $pendingFromPreviousPeriods,
-        string $IBAN,
-    ): string {
+    private function generatePage3(): string 
+    {
         return implode('', [
             "<T30303000>",
             $this->fillNumber(0, 170),
             $this->generateResult(),
-            $this->generateOtherData($IBAN),
+            $this->generateOtherData(),
             "</T30303000>",
         ]);
     }
@@ -208,14 +199,14 @@ class TA303FormRenderer
         return $formattedNumber;
     }
 
-    private function generateOtherData(string $IBAN): string
+    private function generateOtherData(): string
     {
         return implode('', [
             ' ',
             $this->padding(13),
             ' ',
             $this->padding(11),
-            $IBAN,
+            $this->form->IBAN,
             $this->padding(765),
         ]);
     }
