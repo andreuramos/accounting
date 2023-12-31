@@ -179,7 +179,7 @@ class TA303FormRenderer
         DeductibleTax $deductibleTax,
         Money $pendingFromPreviousPeriods,
     ): string {
-        $currentPeriodTaxDue = $accruedTax->tax - $deductibleTax->tax;
+        $currentPeriodTaxDue = $this->form->taxDue();
         $toBeCompensatedInThisPeriod = $this->calculateMaxAmountToCompensateFromPreviousPeriods(
             $pendingFromPreviousPeriods->amountCents,
             $currentPeriodTaxDue,

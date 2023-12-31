@@ -39,4 +39,9 @@ class TaxAgency303Form
         
         return self::TYPE_INCOME;
     }
+
+    public function taxDue(): int
+    {
+        return $this->accruedTax->tax - $this->deductibleTax->tax;
+    }
 }

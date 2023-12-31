@@ -46,6 +46,15 @@ class TaxAgency303FromTest extends TestCase
         
         self::assertEquals(TaxAgency303Form::TYPE_INCOME, $actual_type);
     }
+    
+    public function test_tax_due_is_difference_between_accrued_and_deductible(): void
+    {
+        $form = $this->buildFormWith(200, 100);
+        
+        $tax_due = $form->taxDue();
+        
+        self::assertEquals(21, $tax_due);
+    }
 
     private function buildFormWith(int $incomes, int $expenses, int $pending = 0): TaxAgency303Form
     {
