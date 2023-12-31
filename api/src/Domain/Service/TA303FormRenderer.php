@@ -22,34 +22,15 @@ class TA303FormRenderer
 
     private TaxAgency303Form $form;
 
-    public function __invoke(
-        int $year,
-        DeclarationPeriod $period,
-        string $tax_id,
-        string $tax_name,
-        AccruedTax $accruedTax,
-        DeductibleTax $deductibleTax,
-        string $IBAN,
-        Money $pendingFromPreviousPeriods = new Money(0),
-    ): string {
-        
-        $this->form = new TaxAgency303Form(
-            $tax_id,
-            $tax_name,
-            $year,
-            $period,
-            $accruedTax,
-            $deductibleTax,
-            $IBAN,
-            $pendingFromPreviousPeriods,
-        );
+    public function __invoke(TaxAgency303Form $form): string {
+        $this->form = $form;
         
         return implode('', [
-            "<T3030{$year}{$period}0000>",
+            "<T3030{$form->year}{$form->period}0000>",
             $this->generateAuxTag(),
             $this->generatePage1(),
             $this->generatePage3(),
-            "</T3030{$year}{$period}0000>"
+            "</T3030{$form->year}{$form->period}0000>"
         ]);
     }
 

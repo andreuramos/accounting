@@ -2,6 +2,7 @@
 
 namespace Test\Unit\Domain\Service;
 
+use App\Domain\Entities\TaxAgency303Form;
 use App\Domain\Service\TA303FormRenderer;
 use App\Domain\ValueObject\AccruedTax;
 use App\Domain\ValueObject\DeductibleTax;
@@ -15,16 +16,17 @@ class TA303FormRendererTest extends TestCase
     {
         $expected_output = file_get_contents(__DIR__ . '/3032022T1');
         $service = new TA303FormRenderer();
-        
-        $output = $service(
-            2022,
-            DeclarationPeriod::QUARTER(1),
+        $form = new TaxAgency303Form(
             "59519037M",
             "ROSSO ACEITUNO JULIAN",
+            2022,
+            DeclarationPeriod::QUARTER(1),
             new AccruedTax(741_45, 21_00, 155_71),
-            new DeductibleTax(4527_29, 950_73), 
+            new DeductibleTax(4527_29, 950_73),
             'ES9701280581210100059701',
         );
+        
+        $output = $service($form);
         
         $this->assertEquals(
             $expected_output, 
@@ -36,17 +38,18 @@ class TA303FormRendererTest extends TestCase
     {
         $expected_output = file_get_contents(__DIR__ . '/3032022T2');
         $service = new TA303FormRenderer();
-
-        $output = $service(
-            2022,
-            DeclarationPeriod::QUARTER(2),
+        $form = new TaxAgency303Form(
             "59519037M",
             "ROSSO ACEITUNO JULIAN",
+            2022,
+            DeclarationPeriod::QUARTER(2),
             new AccruedTax(634_61, 21_00, 133_27),
             new DeductibleTax(21_63, 4_54),
             'ES9701280581210100059701',
             new Money(795_02),
         );
+
+        $output = $service($form);
 
         $this->assertEquals(
             $expected_output,
