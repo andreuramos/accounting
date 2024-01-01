@@ -28,15 +28,15 @@ class TaxAgency303Form
     public function declarationType(): string
     {
         $liquidation_result = $this->accruedTax->tax - $this->deductibleTax->tax;
-        
+
         if ($liquidation_result < 0) {
             return self::TYPE_COMPENSATION_REQUEST;
         }
-        
+
         if ($liquidation_result === 0 || $this->pendingAmountFromPreviousPeriod->amountCents > $liquidation_result) {
             return self::TYPE_NO_ACTIVITY_OR_ZERO_RESULT;
         }
-        
+
         return self::TYPE_INCOME;
     }
 
@@ -50,11 +50,11 @@ class TaxAgency303Form
         if ($this->pendingAmountFromPreviousPeriod->amountCents === 0 || $this->taxDue() < 0) {
             return 0;
         }
-        
+
         if ($this->pendingAmountFromPreviousPeriod->amountCents >= $this->taxDue()) {
             return $this->taxDue();
         }
-        
+
         return $this->pendingAmountFromPreviousPeriod->amountCents;
     }
 }

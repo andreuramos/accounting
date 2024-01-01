@@ -18,9 +18,10 @@ class TA303FormRenderer
 
     private TaxAgency303Form $form;
 
-    public function __invoke(TaxAgency303Form $form): string {
+    public function __invoke(TaxAgency303Form $form): string
+    {
         $this->form = $form;
-        
+
         return implode('', [
             "<T3030{$form->year}{$form->period}0000>",
             $this->generateAuxTag(),
@@ -60,7 +61,7 @@ class TA303FormRenderer
         ]);
     }
 
-    private function generateIdentificationData(): string 
+    private function generateIdentificationData(): string
     {
         return implode('', [
             $this->padding(1),
@@ -87,11 +88,11 @@ class TA303FormRenderer
         ]);
     }
 
-    private function generateAccruedTaxData(): string 
+    private function generateAccruedTaxData(): string
     {
         $regularVatAccruedBase = $this->form->accruedTax->base;
         $regularVatAccruedTax = $this->form->accruedTax->tax;
-        
+
         return implode('', [
             $this->fillNumber(0, 17),
             $this->fillNumber(self::SUPER_REDUCED_VAT_RATE, 5),
@@ -131,7 +132,7 @@ class TA303FormRenderer
         ]);
     }
 
-    private function generatePage3(): string 
+    private function generatePage3(): string
     {
         return implode('', [
             "<T30303000>",
@@ -142,7 +143,7 @@ class TA303FormRenderer
         ]);
     }
 
-    private function generateResult(): string 
+    private function generateResult(): string
     {
         $currentPeriodTaxDue = $this->form->taxDue();
         $toBeCompensatedInThisPeriod = $this->form->maxAmountToCompensate();
