@@ -7,11 +7,10 @@ use App\Domain\Repository\UserRepositoryInterface;
 use App\Domain\ValueObject\Email;
 use App\Domain\ValueObject\Id;
 use App\Infrastructure\Auth\JWTDecoder;
-use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\Request;
 
-abstract class AuthorizedControllerTest extends TestCase
+abstract class AuthorizedControllerTest extends BaseControllerTest
 {
     use ProphecyTrait;
 
@@ -37,9 +36,7 @@ abstract class AuthorizedControllerTest extends TestCase
 
     public function buildAuthorizedRequest(array $body): Request
     {
-        $request = new Request(
-            [], [], [], [], [], [], json_encode($body, JSON_THROW_ON_ERROR)
-        );
+        $request = $this->buildRequest($body);
         $request->headers->set('Authorization', 'Bearer ' . self::TOKEN);
         return $request;
     }

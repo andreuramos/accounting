@@ -5,11 +5,11 @@ namespace Test\Unit\Infrastructure\Controller;
 use App\Domain\Exception\MissingMandatoryParameterException;
 use App\Infrastructure\Controller\Manual303FormController;
 
-class Manual303FormControllerTest extends AuthorizedControllerTest
+class Manual303FormControllerTest extends BaseControllerTest
 {
     public function test_fails_if_missing_parameters(): void
     {
-        $request = $this->buildAuthorizedRequest([
+        $request = $this->buildRequest([
             //"tax_name" => "ROSSO ACEITUNO JULIAN",
             "tax_id" => "59519037M",
             "year" => 2022,
@@ -29,9 +29,6 @@ class Manual303FormControllerTest extends AuthorizedControllerTest
 
     private function getController(): Manual303FormController
     {
-        return new Manual303FormController(
-            $this->tokenDecoder->reveal(),
-            $this->userRepository->reveal(),
-        );
+        return new Manual303FormController();
     }
 }
