@@ -66,7 +66,7 @@ class EmitInvoiceEndpointTest extends EndpointTest
         $this->assertEquals(400, $response->getStatusCode());
     }
 
-    public function test_authroized_returns_invoice_number()
+    public function test_authorized_returns_invoice_number()
     {
         $this->registerUser($this->email, "");
         $this->login($this->email, "");
