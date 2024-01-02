@@ -53,6 +53,7 @@ class Manual303FormControllerTest extends BaseControllerTest
             "deductible_base" => 4527_29,
             "deductible_tax" => 950_73,
             "iban" => "ES9701280581210100059701",
+            "pending_from_other_periods" => 0,
         ]);
         $controller = $this->getController();
         $useCaseResponse = new Importable303Form("<303>PAYTAXES</303>");

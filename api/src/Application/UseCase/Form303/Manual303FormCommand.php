@@ -14,6 +14,7 @@ class Manual303FormCommand
         public readonly int $deductible_base,
         public readonly int $deductible_tax,
         public readonly string $iban,
+        public readonly int $pending_from_previous_periods = 0,
     ) {
     }
 }

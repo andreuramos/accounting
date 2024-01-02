@@ -8,7 +8,7 @@ class Importable303Form
         private readonly string $content
     ) {
     }
-    
+
     public function __toString(): string
     {
         return $this->content;
