@@ -9,6 +9,7 @@ use App\Infrastructure\Controller\GetExpensesController;
 use App\Infrastructure\Controller\GetIncomesController;
 use App\Infrastructure\Controller\GetUserController;
 use App\Infrastructure\Controller\LoginController;
+use App\Infrastructure\Controller\Manual303FormController;
 use App\Infrastructure\Controller\RefreshTokenController;
 use App\Infrastructure\Controller\RegisterUserController;
 use App\Infrastructure\Controller\SetUserTaxDataController;
@@ -30,6 +31,10 @@ $routes = [
         'path' => '/expense',
         'controller' => CreateExpenseController::class,
         'method' => 'POST'
+    ], [
+        'path' => '/form/303',
+        'controller' => Manual303FormController::class,
+        'method' => 'POST',
     ], [
         'path' => '/income',
         'controller' => GetIncomesController::class,
