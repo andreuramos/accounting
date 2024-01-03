@@ -10,6 +10,7 @@ use App\Infrastructure\Controller\GetIncomesController;
 use App\Infrastructure\Controller\GetUserController;
 use App\Infrastructure\Controller\LoginController;
 use App\Infrastructure\Controller\Manual303FormController;
+use App\Infrastructure\Controller\ReceiveInvoiceController;
 use App\Infrastructure\Controller\RefreshTokenController;
 use App\Infrastructure\Controller\RegisterUserController;
 use App\Infrastructure\Controller\SetUserTaxDataController;
@@ -46,6 +47,10 @@ $routes = [
     ], [
         'path' => '/invoice',
         'controller' => EmitInvoiceController::class,
+        'method' => 'POST',
+    ],[
+        'path' => '/invoice/receive',
+        'controller' => ReceiveInvoiceController::class,
         'method' => 'POST',
     ], [
         'path' => '/login',
