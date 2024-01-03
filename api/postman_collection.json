@@ -30,11 +30,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/expense",
+							"raw": "{{base_url}}/api/expense",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
+								"api",
 								"expense"
 							]
 						}
@@ -53,11 +54,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/expense",
+							"raw": "{{base_url}}/api/expense",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
+								"api",
 								"expense"
 							]
 						}
@@ -96,11 +98,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/income",
+							"raw": "{{base_url}}/api/income",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
+								"api",
 								"income"
 							]
 						}
@@ -119,11 +122,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/income",
+							"raw": "{{base_url}}/api/income",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
+								"api",
 								"income"
 							]
 						}
@@ -150,11 +154,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/user",
+							"raw": "{{base_url}}/api/user",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
+								"api",
 								"user"
 							]
 						}
@@ -213,11 +218,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/user",
+							"raw": "{{base_url}}/api/user",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
+								"api",
 								"user"
 							]
 						}
@@ -256,6 +262,34 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Manual 303",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tax_name\": \"ROSSO ACEITUNO JULITO\",\n    \"tax_id\": \"59519037M\",\n    \"year\": 2022,\n    \"quarter\": 2,\n    \"accrued_base\": 74145,\n    \"accrued_tax\": 15571,\n    \"deductible_base\": 452729,\n    \"deductible_tax\": 95073,\n    \"iban\": \"ES9701280581210100059701\",\n    \"pending_from_other_periods\": 0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/form/303",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"form",
+								"303"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -283,11 +317,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/invoice",
+							"raw": "{{base_url}}/api/invoice",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
+								"api",
 								"invoice"
 							]
 						}
@@ -302,11 +337,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/status",
+					"raw": "{{base_url}}/api/status",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
+						"api",
 						"status"
 					]
 				}
@@ -319,11 +355,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/domain",
+					"raw": "{{base_url}}/api/domain",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
+						"api",
 						"domain"
 					]
 				}
@@ -395,11 +432,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{base_url}}/refresh",
+					"raw": "{{base_url}}/api/refresh",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
+						"api",
 						"refresh"
 					]
 				}
