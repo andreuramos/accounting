@@ -2,15 +2,33 @@
 
 namespace App\Infrastructure\Controller;
 
+use App\Domain\Exception\MissingMandatoryParameterException;
 use App\Infrastructure\ApiResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class ReceiveInvoiceController extends AuthorizedController
 {
+    const MANDATORY_PARAMETERS = [
+        "provider_name", "provider_tax_name", "provider_tax_number",
+        "provider_tax_address", "provider_tax_zip_code", "invoice_number",
+        "description", "date", "amount", "taxes"
+    ];
+
     public function __invoke(Request $request): ApiResponse
     {
         $this->auth($request);
+        $requestContent = json_decode($request->getContent(), true);
+        $this->guardMandatoryParameters($requestContent);
 
         return new ApiResponse([], 201);
+    }
+
+    private function guardMandatoryParameters(array $requestContent): void
+    {
+        foreach (self::MANDATORY_PARAMETERS as $parameter) {
+            if (empty($requestContent[$parameter])) {
+                throw new MissingMandatoryParameterException($parameter);
+            }
+        }
     }
 }
