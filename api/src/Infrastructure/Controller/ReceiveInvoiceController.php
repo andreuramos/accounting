@@ -2,8 +2,12 @@
 
 namespace App\Infrastructure\Controller;
 
+use App\Application\UseCase\ReceiveInvoice\ReceiveInvoiceCommand;
+use App\Application\UseCase\ReceiveInvoice\ReceiveInvoiceUseCase;
 use App\Domain\Exception\MissingMandatoryParameterException;
+use App\Domain\Repository\UserRepositoryInterface;
 use App\Infrastructure\ApiResponse;
+use App\Infrastructure\Auth\JWTDecoder;
 use Symfony\Component\HttpFoundation\Request;
 
 class ReceiveInvoiceController extends AuthorizedController
@@ -13,12 +17,23 @@ class ReceiveInvoiceController extends AuthorizedController
         "provider_tax_address", "provider_tax_zip_code", "invoice_number",
         "description", "date", "amount", "taxes"
     ];
+    
+    public function __construct(
+        JWTDecoder $tokenDecoder, 
+        UserRepositoryInterface $userRepository,
+        private readonly ReceiveInvoiceUseCase $useCase,
+    ) {
+        parent::__construct($tokenDecoder, $userRepository);
+    }
 
     public function __invoke(Request $request): ApiResponse
     {
         $this->auth($request);
         $requestContent = json_decode($request->getContent(), true);
         $this->guardMandatoryParameters($requestContent);
+        
+        $command = new ReceiveInvoiceCommand();
+        ($this->useCase)($command);
 
         return new ApiResponse([], 201);
     }
