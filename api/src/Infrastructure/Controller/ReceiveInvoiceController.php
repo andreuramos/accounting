@@ -32,7 +32,18 @@ class ReceiveInvoiceController extends AuthorizedController
         $requestContent = json_decode($request->getContent(), true);
         $this->guardMandatoryParameters($requestContent);
         
-        $command = new ReceiveInvoiceCommand();
+        $command = new ReceiveInvoiceCommand(
+            $requestContent['provider_name'],
+            $requestContent['provider_tax_name'],
+            $requestContent['provider_tax_number'],
+            $requestContent['provider_tax_address'],
+            $requestContent['provider_tax_zip_code'],
+            $requestContent['invoice_number'],
+            $requestContent['description'],
+            $requestContent['date'],
+            (int) $requestContent['amount'],
+            (int) $requestContent['taxes'],
+        );
         ($this->useCase)($command);
 
         return new ApiResponse([], 201);
