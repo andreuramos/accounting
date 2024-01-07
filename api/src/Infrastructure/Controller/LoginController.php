@@ -27,10 +27,12 @@ class LoginController
 
         $result = ($this->loginUseCase)($command);
 
-        return new ApiResponse([
+        return new ApiResponse(
+            [
             "token" => (string) $result->token,
             "refresh" => (string) $result->refresh,
-        ]);
+            ]
+        );
     }
 
     private function getRequestBody(Request $request): array

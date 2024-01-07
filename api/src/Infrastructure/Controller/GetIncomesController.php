@@ -33,15 +33,17 @@ class GetIncomesController extends AuthorizedController
 
     private function exposableArray(AccountIncomes $accountIncomes): array
     {
-        return array_map(function (Income $income) {
-            return [
+        return array_map(
+            function (Income $income) {
+                return [
                 'id' => $income->id->getInt(),
                 'account_id' => $income->accountId->getInt(),
                 'amount_cents' => $income->amount->amountCents,
                 'currency' => $income->amount->currency,
                 'description' => $income->description,
                 'date' => $income->date->format('Y-m-d'),
-            ];
-        }, $accountIncomes->incomes);
+                ];
+            }, $accountIncomes->incomes
+        );
     }
 }

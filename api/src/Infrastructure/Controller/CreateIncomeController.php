@@ -37,9 +37,11 @@ class CreateIncomeController extends AuthorizedController
         );
         $createdId = ($this->createIncomeUseCase)($command);
 
-        return new ApiResponse([
+        return new ApiResponse(
+            [
             'id' => $createdId->getInt()
-        ]);
+            ]
+        );
     }
 
     private function guardMandatoryParameters(array $request): void

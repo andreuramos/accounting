@@ -21,10 +21,12 @@ class RefreshTokenController
         $command = new RefreshTokensCommand($refreshToken);
         $response = ($this->refreshTokensUseCase)($command);
 
-        return new ApiResponse([
+        return new ApiResponse(
+            [
             "token" => (string) $response->token,
             "refresh" => (string) $response->refresh
-        ]);
+            ]
+        );
     }
 
     private function getRefreshToken(Request $request): string

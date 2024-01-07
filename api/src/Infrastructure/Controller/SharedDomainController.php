@@ -9,8 +9,10 @@ class SharedDomainController
 {
     public function __invoke(): ApiResponse
     {
-        return new ApiResponse([
+        return new ApiResponse(
+            [
             'email_regex' => Email::VALIDATION_REGEX,
-        ]);
+            ]
+        );
     }
 }

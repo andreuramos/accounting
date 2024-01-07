@@ -48,9 +48,11 @@ class EmitInvoiceController extends AuthorizedController
         );
         $invoiceNumber = ($this->emitInvoiceUseCase)($command);
 
-        return new ApiResponse([
+        return new ApiResponse(
+            [
             'invoice_number' => (string) $invoiceNumber,
-        ]);
+            ]
+        );
     }
 
     private function guardMandatoryParameters(array $requestContent): void

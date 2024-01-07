@@ -11,8 +11,8 @@ class ContainerFactory
 
     public static function create(): Container
     {
-        $interfaces = require(self::DEFINITIONS_FOLDER . 'interfaces.php');
-        $objects = require(self::DEFINITIONS_FOLDER . 'objects.php');
+        $interfaces = include self::DEFINITIONS_FOLDER . 'interfaces.php';
+        $objects = include self::DEFINITIONS_FOLDER . 'objects.php';
 
         $builder = new ContainerBuilder();
         $builder->addDefinitions($interfaces);

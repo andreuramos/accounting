@@ -33,15 +33,17 @@ class GetExpensesController extends AuthorizedController
 
     private function exposableArray(AccountExpenses $accountExpenses): array
     {
-        return array_map(function (Expense $expense) {
-            return [
+        return array_map(
+            function (Expense $expense) {
+                return [
                 'id' => $expense->id->getInt(),
                 'account_id' => $expense->accountId->getInt(),
                 'amount_cents' => $expense->amount->amountCents,
                 'currency' => $expense->amount->currency,
                 'description' => $expense->description,
                 'date' => $expense->date->format('Y-m-d')
-            ];
-        }, $accountExpenses->expenses);
+                ];
+            }, $accountExpenses->expenses
+        );
     }
 }

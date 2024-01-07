@@ -22,13 +22,15 @@ class TA303FormRenderer
     {
         $this->form = $form;
 
-        return implode('', [
+        return implode(
+            '', [
             "<T3030{$form->year}{$form->period}0000>",
             $this->generateAuxTag(),
             $this->generatePage1(),
             $this->generatePage3(),
             "</T3030{$form->year}{$form->period}0000>"
-        ]);
+            ]
+        );
     }
 
     private function padding($width): string
@@ -38,7 +40,8 @@ class TA303FormRenderer
 
     private function generateAuxTag(): string
     {
-        return implode('', [
+        return implode(
+            '', [
             "<AUX>",
             $this->padding(70),
             'v2.0',
@@ -46,24 +49,28 @@ class TA303FormRenderer
             '12345678Z',
             $this->padding(213),
             '</AUX>',
-        ]);
+            ]
+        );
     }
 
     private function generatePage1(): string
     {
-        return implode('', [
+        return implode(
+            '', [
             "<T30301000>",
             $this->generateIdentificationData(),
             $this->generateAccruedTaxData(),
             $this->generateDeductibleTaxData(),
             $this->padding(613),
             "</T30301000>",
-        ]);
+            ]
+        );
     }
 
     private function generateIdentificationData(): string
     {
-        return implode('', [
+        return implode(
+            '', [
             $this->padding(1),
             self::DECLARATION_TYPE_MAP[$this->form->declarationType()],
             $this->form->taxId,
@@ -85,7 +92,8 @@ class TA303FormRenderer
             "2",
             "0",
             "0",
-        ]);
+            ]
+        );
     }
 
     private function generateAccruedTaxData(): string
@@ -93,7 +101,8 @@ class TA303FormRenderer
         $regularVatAccruedBase = $this->form->accruedTax->base;
         $regularVatAccruedTax = $this->form->accruedTax->tax;
 
-        return implode('', [
+        return implode(
+            '', [
             $this->fillNumber(0, 17),
             $this->fillNumber(self::SUPER_REDUCED_VAT_RATE, 5),
             $this->fillNumber(0, 17),
@@ -116,31 +125,36 @@ class TA303FormRenderer
             $this->fillNumber(0, 17),
             $this->fillNumber(0, 17),
             $this->fillNumber($this->form->accruedTax->tax, 17),
-        ]);
+            ]
+        );
     }
 
     private function generateDeductibleTaxData(): string
     {
         $taxResult = $this->form->accruedTax->tax - $this->form->deductibleTax->tax;
 
-        return implode('', [
+        return implode(
+            '', [
             $this->fillNumber($this->form->deductibleTax->base, 17),
             $this->fillNumber($this->form->deductibleTax->tax, 17),
             $this->fillNumber(0, 255),
             $this->fillNumber($this->form->deductibleTax->tax, 17),
             $this->fillNumber($taxResult, 17),
-        ]);
+            ]
+        );
     }
 
     private function generatePage3(): string
     {
-        return implode('', [
+        return implode(
+            '', [
             "<T30303000>",
             $this->fillNumber(0, 170),
             $this->generateResult(),
             $this->generateOtherData(),
             "</T30303000>",
-        ]);
+            ]
+        );
     }
 
     private function generateResult(): string
@@ -150,7 +164,8 @@ class TA303FormRenderer
         $pendingFromPreviousPeriods = $this->form->pendingAmountFromPreviousPeriod->amountCents;
         $remainingForNextPeriods = $pendingFromPreviousPeriods - $toBeCompensatedInThisPeriod;
 
-        return implode('', [
+        return implode(
+            '', [
             $this->fillNumber(0, 17), // Regularización cuotas art80.cinco.5 LIVA
             $this->fillNumber($currentPeriodTaxDue, 17), // suma de resultados
             $this->fillNumber(self::STATE_ADMIN_ATTRIBUTABLE_PERCENT, 5),
@@ -163,7 +178,8 @@ class TA303FormRenderer
             $this->fillNumber($currentPeriodTaxDue - $toBeCompensatedInThisPeriod, 17),
             $this->fillNumber(0, 17),
             $this->fillNumber($currentPeriodTaxDue - $toBeCompensatedInThisPeriod, 17),
-        ]);
+            ]
+        );
     }
 
     private function fillNumber(int $number, int $size): string
@@ -179,14 +195,16 @@ class TA303FormRenderer
 
     private function generateOtherData(): string
     {
-        return implode('', [
+        return implode(
+            '', [
             ' ',
             $this->padding(13),
             ' ',
             $this->padding(11),
             $this->form->IBAN,
             $this->padding(765),
-        ]);
+            ]
+        );
     }
 
     private function calculateMaxAmountToCompensateFromPreviousPeriods(
