@@ -43,7 +43,8 @@ class GetIncomesController extends AuthorizedController
                 'description' => $income->description,
                 'date' => $income->date->format('Y-m-d'),
                 ];
-            }, $accountIncomes->incomes
+            },
+            $accountIncomes->incomes
         );
     }
 }

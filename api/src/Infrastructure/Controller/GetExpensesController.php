@@ -43,7 +43,8 @@ class GetExpensesController extends AuthorizedController
                 'description' => $expense->description,
                 'date' => $expense->date->format('Y-m-d')
                 ];
-            }, $accountExpenses->expenses
+            },
+            $accountExpenses->expenses
         );
     }
 }

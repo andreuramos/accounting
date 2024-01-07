@@ -13,7 +13,7 @@ class ReceiveInvoiceUseCase
         private readonly InvoiceRepositoryInterface $invoiceRepository
     ) {
     }
-    
+
     public function __invoke(ReceiveInvoiceCommand $command): void
     {
         $this->guardInvoiceDoesNotYetExist($command);
@@ -26,10 +26,10 @@ class ReceiveInvoiceUseCase
             $command->provider_tax_number,
             $invoiceNumber,
         );
-        
+
         if ($invoice instanceof Invoice) {
             throw new InvoiceAlreadyExistsException(
-                $command->provider_tax_number, 
+                $command->provider_tax_number,
                 $invoiceNumber,
             );
         }

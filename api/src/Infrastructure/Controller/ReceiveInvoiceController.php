@@ -12,14 +12,14 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ReceiveInvoiceController extends AuthorizedController
 {
-    const MANDATORY_PARAMETERS = [
+    private const MANDATORY_PARAMETERS = [
         "provider_name", "provider_tax_name", "provider_tax_number",
         "provider_tax_address", "provider_tax_zip_code", "invoice_number",
         "description", "date", "amount", "taxes"
     ];
-    
+
     public function __construct(
-        JWTDecoder $tokenDecoder, 
+        JWTDecoder $tokenDecoder,
         UserRepositoryInterface $userRepository,
         private readonly ReceiveInvoiceUseCase $useCase,
     ) {
@@ -31,7 +31,7 @@ class ReceiveInvoiceController extends AuthorizedController
         $this->auth($request);
         $requestContent = json_decode($request->getContent(), true);
         $this->guardMandatoryParameters($requestContent);
-        
+
         $command = new ReceiveInvoiceCommand(
             $requestContent['provider_name'],
             $requestContent['provider_tax_name'],
