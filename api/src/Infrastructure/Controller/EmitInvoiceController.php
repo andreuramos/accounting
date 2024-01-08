@@ -12,14 +12,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class EmitInvoiceController extends AuthorizedController
 {
-    public function __construct(
-        JWTDecoder $tokenDecoder,
-        UserRepositoryInterface $userRepository,
-        private readonly EmitInvoiceUseCase $emitInvoiceUseCase,
-    ) {
-        parent::__construct($tokenDecoder, $userRepository);
-    }
-
     private const MANDATORY_PARAMETERS = [
         'customer_name', 'customer_tax_name',
         'customer_tax_number', 'customer_tax_address',
@@ -28,6 +20,14 @@ class EmitInvoiceController extends AuthorizedController
     private const LINE_PARAMETERS = [
         'amount', 'concept', 'vat_percent',
     ];
+
+    public function __construct(
+        JWTDecoder $tokenDecoder,
+        UserRepositoryInterface $userRepository,
+        private readonly EmitInvoiceUseCase $emitInvoiceUseCase,
+    ) {
+        parent::__construct($tokenDecoder, $userRepository);
+    }
 
     public function __invoke(Request $request): ApiResponse
     {
