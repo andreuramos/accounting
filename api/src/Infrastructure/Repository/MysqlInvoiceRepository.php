@@ -70,4 +70,9 @@ class MysqlInvoiceRepository implements InvoiceRepositoryInterface
     {
         throw new InvoiceNotFoundException((string) $invoiceNumber);
     }
+
+    public function findByEmitterTaxNumberAndInvoiceNumber(string $emitterTaxId, InvoiceNumber $invoiceNumber): ?Invoice
+    {
+        return null;
+    }
 }
