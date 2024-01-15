@@ -98,5 +98,16 @@ describe(`303 Form view`, async () => {
 
             expect(input.value).toEqual(someBaseImponible)
         })
+
+        test(`can introduce a Cuota`, async () => {
+            renderRouter('/303-form')
+            const input: HTMLInputElement = screen.getByLabelText('Cuota (Deducible)')
+            const someBaseImponible = '210'
+
+            const user = userEvent.setup()
+            await user.type(input, someBaseImponible)
+
+            expect(input.value).toEqual(someBaseImponible)
+        })
     })
 })

@@ -25,6 +25,8 @@ export const Form303View = () => {
             <input id="cuota" value={cuota} readOnly />
             <label htmlFor="base-imponible-deducible">Base imponible (Deducible)</label>
             <input id="base-imponible-deducible" />
+            <label htmlFor="cuota-deducible">Cuota (Deducible)</label>
+            <input id="cuota-deducible" />
         </>
     )
 }
