@@ -50,6 +50,17 @@ describe(`303 Form view`, async () => {
         expect(input.value).toEqual(someEjercicio)
     })
 
+    test(`can introduce a Período`, async () => {
+        renderRouter('/303-form')
+        const input: HTMLInputElement = screen.getByLabelText('Período')
+        const somePeriodo = '1T'
+
+        const user = userEvent.setup()
+        await user.type(input, somePeriodo)
+
+        expect(input.value).toEqual(somePeriodo)
+    })
+
     describe(`calculate 21% IVA of base imponible`, () => {
         let input: HTMLInputElement
         let calculatedCuota: HTMLInputElement
@@ -73,6 +84,19 @@ describe(`303 Form view`, async () => {
 
         test(`Cuota field should be read-only`, () => {
             expect(calculatedCuota).toHaveAttribute('readOnly')
+        })
+    })
+
+    describe(`IVA deducible`, () => {
+        test(`can introduce Base imponible`, async () => {
+            renderRouter('/303-form')
+            const input: HTMLInputElement = screen.getByLabelText('Base imponible (Deducible)')
+            const someBaseImponible = '1000'
+
+            const user = userEvent.setup()
+            await user.type(input, someBaseImponible)
+
+            expect(input.value).toEqual(someBaseImponible)
         })
     })
 })

@@ -17,10 +17,14 @@ export const Form303View = () => {
             <input id="razon-social" />
             <label htmlFor="ejercicio">Ejercicio</label>
             <input id="ejercicio" />
+            <label htmlFor="periodo">Período</label>
+            <input id="periodo" />
             <label htmlFor="base-imponible">Base imponible</label>
             <input id="base-imponible" onChange={handleChangeBaseImponible} />
             <label htmlFor="cuota">Cuota</label>
             <input id="cuota" value={cuota} readOnly />
+            <label htmlFor="base-imponible-deducible">Base imponible (Deducible)</label>
+            <input id="base-imponible-deducible" />
         </>
     )
 }
