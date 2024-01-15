@@ -15,6 +15,8 @@ export const Form303View = () => {
             <input id="nif" />
             <label htmlFor="razon-social">Razon social</label>
             <input id="razon-social" />
+            <label htmlFor="ejercicio">Ejercicio</label>
+            <input id="ejercicio" />
             <label htmlFor="base-imponible">Base imponible</label>
             <input id="base-imponible" onChange={handleChangeBaseImponible} />
             <label htmlFor="cuota">Cuota</label>

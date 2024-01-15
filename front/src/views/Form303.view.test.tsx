@@ -39,6 +39,17 @@ describe(`303 Form view`, async () => {
         expect(input.value).toEqual(someRazonSocial)
     })
 
+    test(`can introduce a Ejercicio`, async () => {
+        renderRouter('/303-form')
+        const input: HTMLInputElement = screen.getByLabelText('Ejercicio')
+        const someEjercicio = '2024'
+
+        const user = userEvent.setup()
+        await user.type(input, someEjercicio)
+
+        expect(input.value).toEqual(someEjercicio)
+    })
+
     describe(`calculate 21% IVA of base imponible`, () => {
         let input: HTMLInputElement
         let calculatedCuota: HTMLInputElement
