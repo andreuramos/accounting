@@ -17,6 +17,18 @@ describe(`303 Form view`, async () => {
         expect(screen.getByText('Formulario 303')).toBeInTheDocument()
     })
 
+    test(`can introduce a NIF`, async () => {
+
+        renderRouter('/303-form')
+        const input: HTMLInputElement = screen.getByLabelText('nif')
+        const someNIF = '12345678Z'
+
+        const user = userEvent.setup()
+        await user.type(input, someNIF)
+
+        expect(input.value).toEqual(someNIF)
+    })
+
     describe(`calculate 21% IVA of base imponible`, () => {
         let input: HTMLInputElement
         let calculatedCuota: HTMLInputElement
