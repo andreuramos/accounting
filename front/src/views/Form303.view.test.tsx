@@ -18,7 +18,6 @@ describe(`303 Form view`, async () => {
     })
 
     test(`can introduce a NIF`, async () => {
-
         renderRouter('/303-form')
         const input: HTMLInputElement = screen.getByLabelText('nif')
         const someNIF = '12345678Z'
@@ -27,6 +26,17 @@ describe(`303 Form view`, async () => {
         await user.type(input, someNIF)
 
         expect(input.value).toEqual(someNIF)
+    })
+
+    test(`can introduce a Razón Social`, async () => {
+        renderRouter('/303-form')
+        const input: HTMLInputElement = screen.getByLabelText('Razon social')
+        const someRazonSocial = 'Juan Nadie'
+
+        const user = userEvent.setup()
+        await user.type(input, someRazonSocial)
+
+        expect(input.value).toEqual(someRazonSocial)
     })
 
     describe(`calculate 21% IVA of base imponible`, () => {
