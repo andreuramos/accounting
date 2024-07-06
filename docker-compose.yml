@@ -11,10 +11,10 @@ services:
       - api
     networks:
       - backend-network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/api/status"]
-      interval: 3s
-      timeout: 1s
+#    healthcheck:
+#      test: ["CMD", "curl", "-f", "http://localhost/api/status"]
+#      interval: 3s
+#      timeout: 1s
 
   mysql:
     image: mysql:8.1
