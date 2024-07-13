@@ -55,7 +55,7 @@ class EmitInvoiceController extends AuthorizedController
         );
     }
 
-    private function guardMandatoryParameters(array $requestContent): void
+    private function guardMandatoryParameters(?array $requestContent): void
     {
         foreach (self::MANDATORY_PARAMETERS as $parameter) {
             if (empty($requestContent[$parameter])) {
@@ -64,7 +64,7 @@ class EmitInvoiceController extends AuthorizedController
         }
     }
 
-    private function guardInvoiceLines(array $requestLines): void
+    private function guardInvoiceLines(?array $requestLines): void
     {
         foreach ($requestLines as $requestLine) {
             foreach (self::LINE_PARAMETERS as $parameter) {

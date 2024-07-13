@@ -3,6 +3,7 @@
 require_once './vendor/autoload.php';
 
 use App\Domain\Exception\InvalidCredentialsException;
+use App\Domain\Exception\MissingMandatoryParameterException;
 use App\Infrastructure\ContainerFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,6 +30,8 @@ try {
     $response = new Response("APP ERROR: Not found " . $exception->getMessage(), Response::HTTP_NOT_FOUND);
 } catch (InvalidCredentialsException $exception) {
     $response = new Response("APP ERROR: Unauthorized ", Response::HTTP_UNAUTHORIZED);
+} catch (MissingMandatoryParameterException $exception) {
+    $response = new Response($exception->getMessage(), Response::HTTP_BAD_REQUEST);
 } catch (Throwable $exception) {
     $className = get_class($exception);
     $errorText = <<<EOF
