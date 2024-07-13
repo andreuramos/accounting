@@ -20,7 +20,7 @@ class SetUserTaxDataController extends AuthorizedController
         parent::__construct($tokenDecoder, $userRepository);
     }
 
-    private const MANDATORY_PARAMETERS = [
+    protected const MANDATORY_PARAMETERS = [
         'tax_name',
         'tax_number',
         'tax_address_street',
@@ -45,12 +45,12 @@ class SetUserTaxDataController extends AuthorizedController
         return new ApiResponse([]);
     }
 
-    private function guardMandatoryParameters(array $content): void
-    {
-        foreach (self::MANDATORY_PARAMETERS as $parameter) {
-            if (!array_key_exists($parameter, $content)) {
-                throw new MissingMandatoryParameterException($parameter);
-            }
-        }
-    }
+//    private function guardMandatoryParameters(array $content): void
+//    {
+//        foreach (self::MANDATORY_PARAMETERS as $parameter) {
+//            if (!array_key_exists($parameter, $content)) {
+//                throw new MissingMandatoryParameterException($parameter);
+//            }
+//        }
+//    }
 }

@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class EmitInvoiceController extends AuthorizedController
 {
-    private const MANDATORY_PARAMETERS = [
+    protected const MANDATORY_PARAMETERS = [
         'customer_name', 'customer_tax_name',
         'customer_tax_number', 'customer_tax_address',
         'customer_tax_zip_code', 'date', 'lines',
@@ -53,15 +53,6 @@ class EmitInvoiceController extends AuthorizedController
             'invoice_number' => (string) $invoiceNumber,
             ]
         );
-    }
-
-    private function guardMandatoryParameters(?array $requestContent): void
-    {
-        foreach (self::MANDATORY_PARAMETERS as $parameter) {
-            if (empty($requestContent[$parameter])) {
-                throw new MissingMandatoryParameterException($parameter);
-            }
-        }
     }
 
     private function guardInvoiceLines(?array $requestLines): void

@@ -4,10 +4,12 @@ namespace App\Infrastructure\Controller;
 
 use App\Domain\Entities\User;
 use App\Domain\Exception\InvalidCredentialsException;
+use App\Domain\Exception\MissingMandatoryParameterException;
 use App\Domain\Repository\UserRepositoryInterface;
 use App\Domain\ValueObject\Email;
 use App\Infrastructure\Auth\JWTDecoder;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 
 abstract class AuthorizedController
 {
@@ -64,5 +66,18 @@ abstract class AuthorizedController
         }
 
         return $user;
+    }
+
+    protected function guardMandatoryParameters(?array $content): void
+    {
+        if (null === $content) {
+            throw new MissingMandatoryParametersException("all");
+        }
+
+        foreach (static::MANDATORY_PARAMETERS as $parameter) {
+            if (!array_key_exists($parameter, $content)) {
+                throw new MissingMandatoryParameterException($parameter);
+            }
+        }
     }
 }

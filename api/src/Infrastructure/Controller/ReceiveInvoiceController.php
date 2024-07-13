@@ -49,10 +49,10 @@ class ReceiveInvoiceController extends AuthorizedController
         return new ApiResponse([], 201);
     }
 
-    private function guardMandatoryParameters(array $requestContent): void
+    protected function guardMandatoryParameters(?array $content): void
     {
         foreach (self::MANDATORY_PARAMETERS as $parameter) {
-            if (empty($requestContent[$parameter])) {
+            if (empty($content[$parameter])) {
                 throw new MissingMandatoryParameterException($parameter);
             }
         }

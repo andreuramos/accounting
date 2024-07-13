@@ -20,7 +20,7 @@ class CreateExpenseController extends AuthorizedController
         parent::__construct($tokenDecoder, $userRepository);
     }
 
-    private const MANDATORY_PARAMETERS = [
+    protected const MANDATORY_PARAMETERS = [
         'amount', 'description', 'date'
     ];
 
@@ -40,14 +40,5 @@ class CreateExpenseController extends AuthorizedController
         ($this->createExpenseUseCase)($command);
 
         return new ApiResponse([]);
-    }
-
-    private function guardMandatoryParameters(array $request)
-    {
-        foreach (self::MANDATORY_PARAMETERS as $parameter) {
-            if (!isset($request[$parameter])) {
-                throw new MissingMandatoryParameterException($parameter);
-            }
-        }
     }
 }

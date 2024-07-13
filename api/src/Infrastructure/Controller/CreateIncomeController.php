@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CreateIncomeController extends AuthorizedController
 {
-    private const MANDATORY_PARAMETERS = ['amount', 'description', 'date'];
+    protected const MANDATORY_PARAMETERS = ['amount', 'description', 'date'];
 
     public function __construct(
         JWTDecoder $tokenDecoder,
@@ -42,14 +42,5 @@ class CreateIncomeController extends AuthorizedController
             'id' => $createdId->getInt()
             ]
         );
-    }
-
-    private function guardMandatoryParameters(array $request): void
-    {
-        foreach (self::MANDATORY_PARAMETERS as $parameter) {
-            if (!isset($request[$parameter])) {
-                throw new MissingMandatoryParameterException($parameter);
-            }
-        }
     }
 }
