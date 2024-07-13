@@ -66,10 +66,10 @@ class EmitInvoiceController extends AuthorizedController
 
     private function guardInvoiceLines(?array $requestLines): void
     {
-        foreach ($requestLines as $requestLine) {
+        foreach ($requestLines as $line_number => $requestLine) {
             foreach (self::LINE_PARAMETERS as $parameter) {
                 if (empty($requestLine[$parameter])) {
-                    throw new MissingMandatoryParameterException($parameter);
+                    throw new MissingMandatoryParameterException($parameter . " (in the line $line_number)");
                 }
             }
         }
