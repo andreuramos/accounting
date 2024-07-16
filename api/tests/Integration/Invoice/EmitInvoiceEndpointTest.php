@@ -2,6 +2,7 @@
 
 namespace Test\Integration\Invoice;
 
+use PDO;
 use Test\Integration\EndpointTest;
 
 class EmitInvoiceEndpointTest extends EndpointTest
@@ -95,8 +96,7 @@ class EmitInvoiceEndpointTest extends EndpointTest
         $decodedResponse = json_decode($response->getBody(), true);
         $this->invoiceNumber = $decodedResponse['invoice_number'];
         $this->assertArrayHasKey('invoice_number', $decodedResponse);
-        $invoice = $this->pdo->query('SELECT * FROM invoice WHERE number = "'.$decodedResponse['invoice_number'].'"');
-        $this->assertNotFalse($invoice);
+        $this->assertInvoiceExistsInDatabase($this->invoiceNumber);
     }
 
     public function tearDown(): void
@@ -123,5 +123,21 @@ class EmitInvoiceEndpointTest extends EndpointTest
             ], JSON_THROW_ON_ERROR),
             'headers' => ['Authorization' => 'Bearer ' . $this->authToken],
         ]);
+    }
+
+    private function assertInvoiceExistsInDatabase(string $invoiceNumber): void
+    {
+        $business_stmt = $this->pdo->prepare('SELECT business_id FROM user WHERE email = :email ORDER BY id DESC LIMIT 1;');
+        $business_stmt->bindParam(':email', $this->email);
+        $business_stmt->execute();
+        $user = $business_stmt->fetch();
+        
+        $invoice_stmt = $this->pdo->prepare('SELECT id FROM invoice WHERE number = :invoice_number AND emitter_id = :business_id;');
+        $invoice_stmt->bindParam(':invoice_number', $invoiceNumber);
+        $invoice_stmt->bindParam(':business_id', $user['business_id']);
+        $invoice_stmt->execute();
+        $invoice_id = $invoice_stmt->fetch();
+        $this->assertNotFalse($invoice_id);
+        $this->assertArrayHasKey('id', $invoice_id);
     }
 }
