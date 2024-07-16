@@ -139,5 +139,11 @@ class EmitInvoiceEndpointTest extends EndpointTest
         $invoice_id = $invoice_stmt->fetch();
         $this->assertNotFalse($invoice_id);
         $this->assertArrayHasKey('id', $invoice_id);
+        
+        $income_stmt = $this->pdo->prepare('SELECT * FROM income WHERE invoice_id = :invoice_id;');
+        $income_stmt->bindParam(':invoice_id', $invoice_id['id']);
+        $income_stmt->execute();
+        $income = $income_stmt->fetch();
+        $this->assertNotFalse($income);
     }
 }

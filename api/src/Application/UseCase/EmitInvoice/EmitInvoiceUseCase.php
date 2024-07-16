@@ -51,6 +51,9 @@ class EmitInvoiceUseCase
         );
         $invoiceId = $this->invoiceRepository->save($invoice);
 
+        $income->invoiceId = $invoiceId;
+        $this->incomeRepository->save($income);
+
         foreach ($command->invoiceLines as $invoiceLine) {
             $product = $invoiceLine['concept'];
             $quantity = 1;
