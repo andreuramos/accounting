@@ -19,8 +19,8 @@ class MysqlInvoiceRepository implements InvoiceRepositoryInterface
     public function save(Invoice $invoice): Id
     {
         $stmt = $this->PDO->prepare(
-            'INSERT INTO invoice (number, emitter_id, receiver_id, date, income_id) ' .
-            'VALUES (:number, :emitter_id, :receiver_id, :date, :income_id)'
+            'INSERT INTO invoice (number, emitter_id, receiver_id, date) ' .
+            'VALUES (:number, :emitter_id, :receiver_id, :date)'
         );
 
         $number = $invoice->invoiceNumber->number;
@@ -31,8 +31,6 @@ class MysqlInvoiceRepository implements InvoiceRepositoryInterface
         $stmt->bindParam(':receiver_id', $receiverId);
         $date = $invoice->dateTime->format('Y-m-d');
         $stmt->bindParam(':date', $date);
-        $incomeId = $invoice->incomeId->getInt();
-        $stmt->bindParam(':income_id', $incomeId);
 
         $stmt->execute();
 
@@ -59,7 +57,6 @@ class MysqlInvoiceRepository implements InvoiceRepositoryInterface
         return new Invoice(
             new Id($result['id']),
             new InvoiceNumber($result['number']),
-            new Id($result['income_id']),
             new Id($result['emitter_id']),
             new Id($result['receiver_id']),
             new \DateTime()

@@ -32,26 +32,23 @@ class EmitInvoiceUseCase
         $emitterBusiness = $this->businessRepository->getByUserIdOrFail($command->user->id());
         $invoiceNumber = ($this->invoiceNumberGenerator)($emitterBusiness);
 
-        $income = new Income(
-            new Id(null),
-            $command->user->accountId(),
-            new Money($command->invoiceAmount, 'EUR'),
-            "invoice " . $invoiceNumber,
-            $command->date,
-        );
-        $incomeId = $this->incomeRepository->save($income);
-
         $invoice = new Invoice(
             new Id(null),
             $invoiceNumber,
-            $incomeId,
             $emitterBusiness->id,
             $receiverBusiness->id,
             new \DateTime(),
         );
         $invoiceId = $this->invoiceRepository->save($invoice);
 
-        $income->invoiceId = $invoiceId;
+        $income = new Income(
+            new Id(null),
+            $command->user->accountId(),
+            new Money($command->invoiceAmount, 'EUR'),
+            "invoice " . $invoiceNumber,
+            $command->date,
+            $invoiceId,
+        );
         $this->incomeRepository->save($income);
 
         foreach ($command->invoiceLines as $invoiceLine) {
