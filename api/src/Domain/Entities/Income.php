@@ -13,7 +13,7 @@ class Income
         public readonly Money $amount,
         public readonly string $description,
         public readonly \DateTime $date,
-        public ?Id $invoiceId = null,
+        public readonly ?Id $invoiceId = null,
     ) {
     }
 }
