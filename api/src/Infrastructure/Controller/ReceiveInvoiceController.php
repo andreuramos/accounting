@@ -33,6 +33,7 @@ class ReceiveInvoiceController extends AuthorizedController
         $this->guardMandatoryParameters($requestContent);
 
         $command = new ReceiveInvoiceCommand(
+            $this->authUser,
             $requestContent['provider_name'],
             $requestContent['provider_tax_name'],
             $requestContent['provider_tax_number'],

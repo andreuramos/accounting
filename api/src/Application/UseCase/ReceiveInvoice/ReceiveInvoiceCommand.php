@@ -2,9 +2,12 @@
 
 namespace App\Application\UseCase\ReceiveInvoice;
 
+use App\Domain\Entities\User;
+
 class ReceiveInvoiceCommand
 {
     public function __construct(
+        public readonly User $user,
         public readonly string $provider_name,
         public readonly string $provider_tax_name,
         public readonly string $provider_tax_number,
