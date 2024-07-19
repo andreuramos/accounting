@@ -3,10 +3,12 @@
 namespace App\Application\UseCase\ReceiveInvoice;
 
 use App\Domain\Entities\Business;
+use App\Domain\Entities\Expense;
 use App\Domain\Entities\Invoice;
 use App\Domain\Entities\InvoiceLine;
 use App\Domain\Exception\InvoiceAlreadyExistsException;
 use App\Domain\Repository\BusinessRepositoryInterface;
+use App\Domain\Repository\ExpenseRepositoryInterface;
 use App\Domain\Repository\InvoiceLineRepositoryInterface;
 use App\Domain\Repository\InvoiceRepositoryInterface;
 use App\Domain\ValueObject\Id;
@@ -19,6 +21,7 @@ class ReceiveInvoiceUseCase
         private readonly InvoiceRepositoryInterface $invoiceRepository,
         private readonly BusinessRepositoryInterface $businessRepository,
         private readonly InvoiceLineRepositoryInterface $invoiceLineRepository,
+        private readonly ExpenseRepositoryInterface $expenseRepository,
     ) {
     }
 
@@ -27,7 +30,7 @@ class ReceiveInvoiceUseCase
         $this->guardInvoiceDoesNotYetExist($command);
         $receiver_business = $this->businessRepository->getByUserIdOrFail($command->user->id());
         $emitter_business = $this->getEmitterBusiness($command);
-        
+
         $invoice = new Invoice(
             new Id(null),
             new InvoiceNumber($command->invoice_number),
@@ -36,7 +39,7 @@ class ReceiveInvoiceUseCase
             new \DateTime($command->date),
         );
         $invoice_id = $this->invoiceRepository->save($invoice);
-        
+
         $invoice_line = new InvoiceLine(
             $invoice_id,
             $command->description,
@@ -44,6 +47,15 @@ class ReceiveInvoiceUseCase
             new Money($command->amount),
         );
         $this->invoiceLineRepository->save($invoice_line);
+        
+        $expense = new Expense(
+            new Id(null),
+            $command->user->accountId(),
+            new Money($command->amount),
+            $command->description,
+            new \DateTime($command->date),
+        );
+        $this->expenseRepository->save($expense);
     }
 
     private function guardInvoiceDoesNotYetExist(ReceiveInvoiceCommand $command): void

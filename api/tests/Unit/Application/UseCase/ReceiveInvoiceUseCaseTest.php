@@ -5,12 +5,14 @@ namespace Test\Unit\Application\UseCase;
 use App\Application\UseCase\ReceiveInvoice\ReceiveInvoiceCommand;
 use App\Application\UseCase\ReceiveInvoice\ReceiveInvoiceUseCase;
 use App\Domain\Entities\Business;
+use App\Domain\Entities\Expense;
 use App\Domain\Entities\Invoice;
 use App\Domain\Entities\InvoiceLine;
 use App\Domain\Entities\User;
 use App\Domain\Exception\BusinessNotFoundException;
 use App\Domain\Exception\InvoiceAlreadyExistsException;
 use App\Domain\Repository\BusinessRepositoryInterface;
+use App\Domain\Repository\ExpenseRepositoryInterface;
 use App\Domain\Repository\InvoiceLineRepositoryInterface;
 use App\Domain\Repository\InvoiceRepositoryInterface;
 use App\Domain\ValueObject\Address;
@@ -28,20 +30,19 @@ class ReceiveInvoiceUseCaseTest extends TestCase
     private $businessRepository;
     private $invoiceRepository;
     private $invoiceLineRepository;
+    private $expenseRepository;
     private User $user;
+    private ReceiveInvoiceCommand $command;
     
     public function setUp(): void
     {
         $this->businessRepository = $this->prophesize(BusinessRepositoryInterface::class);
         $this->invoiceRepository = $this->prophesize(InvoiceRepositoryInterface::class);
         $this->invoiceLineRepository = $this->prophesize(InvoiceLineRepositoryInterface::class);
+        $this->expenseRepository = $this->prophesize(ExpenseRepositoryInterface::class);
         $this->user = new User(new Id(1), new Email('a@b.com'), "");
         $this->user->setAccountId(new Id(2));
-    }
-
-    public function test_fails_if_invoice_already_exists(): void
-    {
-        $command = new ReceiveInvoiceCommand(
+        $this->command = new ReceiveInvoiceCommand(
             $this->user,
             "Brewery",
             "Brewery SK",
@@ -54,6 +55,10 @@ class ReceiveInvoiceUseCaseTest extends TestCase
             3000_00,
             600_00,
         );
+    }
+
+    public function test_fails_if_invoice_already_exists(): void
+    {
         $this->invoiceRepository
             ->findByEmitterTaxNumberAndInvoiceNumber("B076546546", new InvoiceNumber("20230000232"))
             ->shouldBeCalled()
@@ -62,24 +67,11 @@ class ReceiveInvoiceUseCaseTest extends TestCase
         
         $this->expectException(InvoiceAlreadyExistsException::class);
         
-        $useCase($command);
+        $useCase($this->command);
     }
     
     public function test_fails_if_user_has_no_tax_data(): void
     {
-        $command = new ReceiveInvoiceCommand(
-            $this->user,
-            "Brewery",
-            "Brewery SK",
-            "B076546546",
-            "Camp Llarg 20",
-            "07130",
-            "20230000232",
-            "",
-            "2024-01-06",
-            3000_00,
-            600_00,
-        );
         $useCase = $this->buildUseCase();
         $this->businessRepository
             ->getByUserIdOrFail($this->user->id())
@@ -88,24 +80,11 @@ class ReceiveInvoiceUseCaseTest extends TestCase
         
         $this->expectException(BusinessNotFoundException::class);
         
-        $useCase($command);
+        $useCase($this->command);
     }
     
-    public function test_creates_invoice_and_expense(): void
+    public function test_creates_invoice_and_lines(): void
     {
-        $command = new ReceiveInvoiceCommand(
-            $this->user,
-            "Brewery",
-            "Brewery SK",
-            "B076546546",
-            "Camp Llarg 20",
-            "07130",
-            "20230000232",
-            "",
-            "2024-01-06",
-            3000_00,
-            600_00,
-        );
         $this->invoiceRepository
             ->findByEmitterTaxNumberAndInvoiceNumber("B076546546", new InvoiceNumber("20230000232"))
             ->willReturn(null);
@@ -126,7 +105,31 @@ class ReceiveInvoiceUseCaseTest extends TestCase
             ->save(Argument::type(InvoiceLine::class))
             ->shouldBeCalled();
 
-        $useCase($command);
+        $useCase($this->command);
+    }
+    
+    public function test_creates_expense(): void
+    {
+        $receiver = $this->buildBusiness("43186322G");
+        $this->invoiceRepository
+            ->findByEmitterTaxNumberAndInvoiceNumber(Argument::cetera())
+            ->willReturn(null);
+        $this->businessRepository
+            ->getByUserIdOrFail($this->user->id())
+            ->willReturn($receiver);
+        $emitter = $this->buildBusiness("B076546546");
+        $this->businessRepository
+            ->getByTaxNumber("B076546546")
+            ->willReturn($emitter);
+        $this->invoiceRepository
+            ->save(Argument::any())
+            ->willReturn(new Id(23));
+        $this->expenseRepository
+            ->save(Argument::type(Expense::class))
+            ->shouldBeCalled();
+        $useCase = $this->buildUseCase();
+
+        $useCase($this->command);
     }
     
     public function test_creates_emiter_business_if_it_does_not_exists(): void
@@ -143,6 +146,7 @@ class ReceiveInvoiceUseCaseTest extends TestCase
             $this->invoiceRepository->reveal(),
             $this->businessRepository->reveal(),
             $this->invoiceLineRepository->reveal(),
+            $this->expenseRepository->reveal(),
         );
     }
 
