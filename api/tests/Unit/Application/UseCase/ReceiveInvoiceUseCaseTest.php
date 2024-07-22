@@ -83,6 +83,29 @@ class ReceiveInvoiceUseCaseTest extends TestCase
         $useCase($this->command);
     }
     
+    public function test_creates_business_if_not_exist(): void
+    {
+        $this->invoiceRepository
+            ->findByEmitterTaxNumberAndInvoiceNumber(Argument::cetera())
+            ->willReturn(null);
+        $receiver = $this->buildBusiness("43186322G");
+        $this->businessRepository
+            ->getByUserIdOrFail($this->user->id())
+            ->willReturn($receiver);
+        $emitter = $this->buildBusiness("B076546546");
+        $this->businessRepository
+            ->getByTaxNumber("B076546546")
+            ->willReturn(null, $emitter);
+        $this->businessRepository
+            ->save(Argument::type(Business::class))
+            ->shouldBeCalled();
+        $this->invoiceRepository->save(Argument::any())
+            ->willReturn(new Id(3232));
+        $useCase = $this->buildUseCase();
+        
+        $useCase($this->command);
+    }
+    
     public function test_creates_invoice_and_lines(): void
     {
         $this->invoiceRepository
