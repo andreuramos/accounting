@@ -36,6 +36,7 @@ try {
     $className = get_class($exception);
     $errorText = <<<EOF
     ${className}:
+    {$exception->getMessage()}
     
     {$exception->getTraceAsString()}
     EOF;
