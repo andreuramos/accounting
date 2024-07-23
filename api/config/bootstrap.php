@@ -40,7 +40,8 @@ try {
     
     {$exception->getTraceAsString()}
     EOF;
-    $response = new Response($errorText, Response::HTTP_INTERNAL_SERVER_ERROR, [
+    $status = $exception->getCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR;
+    $response = new Response($errorText, $status, [
         'Content-Type' => 'text/plain',
     ]);
 }
