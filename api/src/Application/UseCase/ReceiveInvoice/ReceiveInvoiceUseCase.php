@@ -55,6 +55,7 @@ class ReceiveInvoiceUseCase
             new Money($command->amount),
             $command->description,
             new \DateTime($command->date),
+            $invoice_id,
         );
         $this->expenseRepository->save($expense);
     }

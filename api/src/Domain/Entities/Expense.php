@@ -12,7 +12,8 @@ class Expense
         public readonly Id $accountId,
         public readonly Money $amount,
         public readonly string $description,
-        public readonly \DateTime $date
+        public readonly \DateTime $date,
+        public readonly ?Id $invoiceId = null,
     ) {
     }
 }
