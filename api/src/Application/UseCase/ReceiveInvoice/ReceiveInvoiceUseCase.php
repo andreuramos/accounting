@@ -82,7 +82,7 @@ class ReceiveInvoiceUseCase
         if ($business instanceof Business) {
             return $business;
         }
-        
+
         $business = new Business(
             new Id(null),
             $command->provider_name,
@@ -94,7 +94,7 @@ class ReceiveInvoiceUseCase
             ),
         );
         $this->businessRepository->save($business);
-        
+
         return $this->businessRepository->getByTaxNumber($command->provider_tax_number);
     }
 }
