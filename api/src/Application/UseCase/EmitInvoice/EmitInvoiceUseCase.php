@@ -28,7 +28,7 @@ class EmitInvoiceUseCase
 
     public function __invoke(EmitInvoiceCommand $command): InvoiceNumber
     {
-        $receiverBusiness = $this->getReceiverBusinessId($command);
+        $receiverBusiness = $this->getOrCreateReceiverBusinessId($command);
         $emitterBusiness = $this->businessRepository->getByUserIdOrFail($command->user->id());
         $invoiceNumber = ($this->invoiceNumberGenerator)($emitterBusiness);
 
@@ -67,7 +67,7 @@ class EmitInvoiceUseCase
         return $invoiceNumber;
     }
 
-    private function getReceiverBusinessId(EmitInvoiceCommand $command): Business
+    private function getOrCreateReceiverBusinessId(EmitInvoiceCommand $command): Business
     {
         $business = $this->businessRepository->getByTaxNumber($command->customerTaxNumber);
         if (null !== $business) {
