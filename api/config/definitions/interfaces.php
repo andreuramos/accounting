@@ -7,6 +7,7 @@ use App\Domain\Repository\AccountRepositoryInterface;
 use App\Domain\Repository\BusinessRepositoryInterface;
 use App\Domain\Repository\ExpenseRepositoryInterface;
 use App\Domain\Repository\IncomeRepositoryInterface;
+use App\Domain\Repository\InvoiceAggregateRepositoryInterface;
 use App\Domain\Repository\InvoiceLineRepositoryInterface;
 use App\Domain\Repository\InvoiceRepositoryInterface;
 use App\Domain\Repository\TaxDataAggregateRepositoryInterface;
@@ -18,6 +19,7 @@ use App\Infrastructure\Repository\MysqlAccountRepository;
 use App\Infrastructure\Repository\MysqlBusinessRepository;
 use App\Infrastructure\Repository\MysqlExpenseRepository;
 use App\Infrastructure\Repository\MysqlIncomeRepository;
+use App\Infrastructure\Repository\MysqlInvoiceAggregateRepository;
 use App\Infrastructure\Repository\MysqlInvoiceLineRepository;
 use App\Infrastructure\Repository\MysqlInvoiceRepository;
 use App\Infrastructure\Repository\MysqlTaxDataAggregateRepository;
@@ -32,6 +34,7 @@ return [
     BusinessRepositoryInterface::class => DI\get(MysqlBusinessRepository::class),
     ExpenseRepositoryInterface::class => DI\get(MysqlExpenseRepository::class),
     IncomeRepositoryInterface::class => DI\get(MysqlIncomeRepository::class),
+    InvoiceAggregateRepositoryInterface::class => DI\get(MysqlInvoiceAggregateRepository::class),
     InvoiceRepositoryInterface::class => DI\get(MysqlInvoiceRepository::class),
     InvoiceLineRepositoryInterface::class => DI\get(MysqlInvoiceLineRepository::class),
     MessageBusInterface::class => DI\get(MessageBus::class),
