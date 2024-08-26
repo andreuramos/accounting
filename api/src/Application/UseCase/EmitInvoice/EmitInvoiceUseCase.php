@@ -40,17 +40,6 @@ class EmitInvoiceUseCase
             new \DateTime(),
         );
         $invoiceId = $this->invoiceRepository->save($invoice);
-
-        $income = new Income(
-            new Id(null),
-            $command->user->accountId(),
-            new Money($command->invoiceAmount, 'EUR'),
-            "invoice " . $invoiceNumber,
-            $command->date,
-            $invoiceId,
-        );
-        $this->incomeRepository->save($income);
-
         foreach ($command->invoiceLines as $invoiceLine) {
             $product = $invoiceLine['concept'];
             $quantity = 1;
@@ -63,6 +52,16 @@ class EmitInvoiceUseCase
             );
             $this->invoiceLineRepository->save($line);
         }
+
+        $income = new Income(
+            new Id(null),
+            $command->user->accountId(),
+            new Money($command->invoiceAmount, 'EUR'),
+            "invoice " . $invoiceNumber,
+            $command->date,
+            $invoiceId,
+        );
+        $this->incomeRepository->save($income);
 
         return $invoiceNumber;
     }
