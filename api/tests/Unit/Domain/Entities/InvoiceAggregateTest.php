@@ -13,10 +13,12 @@ use PHPUnit\Framework\TestCase;
 
 class InvoiceAggregateTest extends TestCase
 {
+    const INVOICE_ID = 1256;
+
     public function setUp(): void
     {
         $this->invoice = new Invoice(
-            new Id(null),
+            new Id(self::INVOICE_ID),
             new InvoiceNumber("whatever01"),
             new Id(23),
             new Id(44),
@@ -34,6 +36,20 @@ class InvoiceAggregateTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         new InvoiceAggregate($this->invoice, [new \stdClass()]);
+    }
+    
+    public function test_proxies_invoice_entity_id(): void
+    {
+        
+        $invoiceLine = new InvoiceLine(
+            new Id(null),
+            "Capsa 6 Moixa Feresta",
+            1,
+            new Money(1600),
+        );
+        $aggregate = new InvoiceAggregate($this->invoice, [$invoiceLine]);
+        
+        self::assertEquals(self::INVOICE_ID, $aggregate->id()->getInt());
     }
     
     public function test_total_amount_from_lines(): void
