@@ -28,5 +28,13 @@ class InvoiceAggregate
         if (empty($invoiceLines)) {
             throw new InvalidArgumentException("invoice lines", 'cannot be empty');
         }
+        foreach ($invoiceLines as $invoiceLine) {
+            if (!($invoiceLine instanceof InvoiceLine)) {
+                throw new InvalidArgumentException(
+                    "invoice lines",
+                    "is not an InvoiceLine instance"
+                );
+            }
+        }
     }
 }

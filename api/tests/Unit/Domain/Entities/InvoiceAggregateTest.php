@@ -11,19 +11,26 @@ use PHPUnit\Framework\TestCase;
 
 class InvoiceAggregateTest extends TestCase
 {
-    public function test_no_lines_fails(): void
+    public function setUp(): void
     {
-        $invoice = new Invoice(
+        $this->invoice = new Invoice(
             new Id(null),
             new InvoiceNumber("whatever01"),
             new Id(23),
             new Id(44),
             new \DateTime()
         );
-        
-        $this->expectException(InvalidArgumentException::class);
-        new InvoiceAggregate($invoice, []);
     }
-    
-    
+
+    public function test_no_lines_fails(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new InvoiceAggregate($this->invoice, []);
+    }
+
+    public function test_wrong_class_lines_fails(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new InvoiceAggregate($this->invoice, [new \stdClass()]);
+    }
 }
