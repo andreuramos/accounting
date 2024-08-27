@@ -8,7 +8,6 @@ use App\Domain\Repository\BusinessRepositoryInterface;
 use App\Domain\Repository\ExpenseRepositoryInterface;
 use App\Domain\Repository\IncomeRepositoryInterface;
 use App\Domain\Repository\InvoiceAggregateRepositoryInterface;
-use App\Domain\Repository\InvoiceLineRepositoryInterface;
 use App\Domain\Repository\InvoiceRepositoryInterface;
 use App\Domain\Repository\TaxDataAggregateRepositoryInterface;
 use App\Domain\Repository\UserRepositoryInterface;
@@ -36,7 +35,6 @@ return [
     IncomeRepositoryInterface::class => DI\get(MysqlIncomeRepository::class),
     InvoiceAggregateRepositoryInterface::class => DI\get(MysqlInvoiceAggregateRepository::class),
     InvoiceRepositoryInterface::class => DI\get(MysqlInvoiceRepository::class),
-    InvoiceLineRepositoryInterface::class => DI\get(MysqlInvoiceLineRepository::class),
     MessageBusInterface::class => DI\get(MessageBus::class),
     RefreshTokenGeneratorInterface::class => DI\get(JWTRefreshTokenGenerator::class),
     TaxDataAggregateRepositoryInterface::class => DI\get(MysqlTaxDataAggregateRepository::class),
