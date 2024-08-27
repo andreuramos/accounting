@@ -5,11 +5,11 @@ namespace App\Application\UseCase\EmitInvoice;
 use App\Domain\Entities\Business;
 use App\Domain\Entities\Income;
 use App\Domain\Entities\Invoice;
+use App\Domain\Entities\InvoiceAggregate;
 use App\Domain\Entities\InvoiceLine;
 use App\Domain\Repository\BusinessRepositoryInterface;
 use App\Domain\Repository\IncomeRepositoryInterface;
-use App\Domain\Repository\InvoiceLineRepositoryInterface;
-use App\Domain\Repository\InvoiceRepositoryInterface;
+use App\Domain\Repository\InvoiceAggregateRepositoryInterface;
 use App\Domain\ValueObject\Address;
 use App\Domain\ValueObject\Id;
 use App\Domain\ValueObject\InvoiceNumber;
@@ -20,9 +20,8 @@ class EmitInvoiceUseCase
     public function __construct(
         private readonly IncomeRepositoryInterface $incomeRepository,
         private readonly BusinessRepositoryInterface $businessRepository,
-        private readonly InvoiceRepositoryInterface $invoiceRepository,
         private readonly InvoiceNumberGenerator $invoiceNumberGenerator,
-        private readonly InvoiceLineRepositoryInterface $invoiceLineRepository,
+        private readonly InvoiceAggregateRepositoryInterface $invoiceAggregateRepository,
     ) {
     }
 
@@ -39,19 +38,24 @@ class EmitInvoiceUseCase
             $receiverBusiness->id,
             new \DateTime(),
         );
-        $invoiceId = $this->invoiceRepository->save($invoice);
+
+        $invoiceLines = [];
         foreach ($command->invoiceLines as $invoiceLine) {
             $product = $invoiceLine['concept'];
             $quantity = 1;
             $amount = $invoiceLine['amount'];
-            $line = new InvoiceLine(
-                $invoiceId,
+            $invoiceLines[] = new InvoiceLine(
+                new Id(null),
                 $product,
                 $quantity,
                 new Money($amount),
             );
-            $this->invoiceLineRepository->save($line);
         }
+        $invoiceAggregate = new InvoiceAggregate(
+            $invoice,
+            $invoiceLines,
+        );
+        $invoiceId = $this->invoiceAggregateRepository->save($invoiceAggregate);
 
         $income = new Income(
             new Id(null),

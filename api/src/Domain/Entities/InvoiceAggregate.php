@@ -17,7 +17,7 @@ class InvoiceAggregate
         $this->guardInvoiceLines($this->invoiceLines);
         $this->totalAmount = $this->aggregateLinesAmount($this->invoiceLines);
     }
-    
+
     public function id(): Id
     {
         return $this->invoice->id;
