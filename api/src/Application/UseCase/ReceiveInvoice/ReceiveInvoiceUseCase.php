@@ -5,11 +5,12 @@ namespace App\Application\UseCase\ReceiveInvoice;
 use App\Domain\Entities\Business;
 use App\Domain\Entities\Expense;
 use App\Domain\Entities\Invoice;
+use App\Domain\Entities\InvoiceAggregate;
 use App\Domain\Entities\InvoiceLine;
 use App\Domain\Exception\InvoiceAlreadyExistsException;
 use App\Domain\Repository\BusinessRepositoryInterface;
 use App\Domain\Repository\ExpenseRepositoryInterface;
-use App\Domain\Repository\InvoiceLineRepositoryInterface;
+use App\Domain\Repository\InvoiceAggregateRepositoryInterface;
 use App\Domain\Repository\InvoiceRepositoryInterface;
 use App\Domain\ValueObject\Address;
 use App\Domain\ValueObject\Id;
@@ -21,7 +22,7 @@ class ReceiveInvoiceUseCase
     public function __construct(
         private readonly InvoiceRepositoryInterface $invoiceRepository,
         private readonly BusinessRepositoryInterface $businessRepository,
-        private readonly InvoiceLineRepositoryInterface $invoiceLineRepository,
+        private readonly InvoiceAggregateRepositoryInterface $invoiceAggregateRepository,
         private readonly ExpenseRepositoryInterface $expenseRepository,
     ) {
     }
@@ -39,15 +40,14 @@ class ReceiveInvoiceUseCase
             $receiver_business->id,
             new \DateTime($command->date),
         );
-        $invoice_id = $this->invoiceRepository->save($invoice);
-
         $invoice_line = new InvoiceLine(
-            $invoice_id,
+            new Id(null),
             $command->description,
             1,
             new Money($command->amount),
         );
-        $this->invoiceLineRepository->save($invoice_line);
+        $invoiceAggregate = new InvoiceAggregate($invoice, [$invoice_line]);
+        $invoice_id = $this->invoiceAggregateRepository->save($invoiceAggregate);
 
         $expense = new Expense(
             new Id(null),

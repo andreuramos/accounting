@@ -7,13 +7,14 @@ use App\Application\UseCase\ReceiveInvoice\ReceiveInvoiceUseCase;
 use App\Domain\Entities\Business;
 use App\Domain\Entities\Expense;
 use App\Domain\Entities\Invoice;
+use App\Domain\Entities\InvoiceAggregate;
 use App\Domain\Entities\InvoiceLine;
 use App\Domain\Entities\User;
 use App\Domain\Exception\BusinessNotFoundException;
 use App\Domain\Exception\InvoiceAlreadyExistsException;
 use App\Domain\Repository\BusinessRepositoryInterface;
 use App\Domain\Repository\ExpenseRepositoryInterface;
-use App\Domain\Repository\InvoiceLineRepositoryInterface;
+use App\Domain\Repository\InvoiceAggregateRepositoryInterface;
 use App\Domain\Repository\InvoiceRepositoryInterface;
 use App\Domain\ValueObject\Address;
 use App\Domain\ValueObject\Email;
@@ -29,7 +30,7 @@ class ReceiveInvoiceUseCaseTest extends TestCase
 
     private $businessRepository;
     private $invoiceRepository;
-    private $invoiceLineRepository;
+    private $invoiceAggregateRepository;
     private $expenseRepository;
     private User $user;
     private ReceiveInvoiceCommand $command;
@@ -38,7 +39,7 @@ class ReceiveInvoiceUseCaseTest extends TestCase
     {
         $this->businessRepository = $this->prophesize(BusinessRepositoryInterface::class);
         $this->invoiceRepository = $this->prophesize(InvoiceRepositoryInterface::class);
-        $this->invoiceLineRepository = $this->prophesize(InvoiceLineRepositoryInterface::class);
+        $this->invoiceAggregateRepository = $this->prophesize(InvoiceAggregateRepositoryInterface::class);
         $this->expenseRepository = $this->prophesize(ExpenseRepositoryInterface::class);
         $this->user = new User(new Id(1), new Email('a@b.com'), "");
         $this->user->setAccountId(new Id(2));
@@ -99,7 +100,7 @@ class ReceiveInvoiceUseCaseTest extends TestCase
         $this->businessRepository
             ->save(Argument::type(Business::class))
             ->shouldBeCalled();
-        $this->invoiceRepository->save(Argument::any())
+        $this->invoiceAggregateRepository->save(Argument::any())
             ->willReturn(new Id(3232));
         $useCase = $this->buildUseCase();
         
@@ -120,13 +121,10 @@ class ReceiveInvoiceUseCaseTest extends TestCase
             ->getByTaxNumber("B076546546")
             ->willReturn($emitter);
         $useCase = $this->buildUseCase();
-        $this->invoiceRepository
-            ->save(Argument::type(Invoice::class))
+        $this->invoiceAggregateRepository
+            ->save(Argument::type(InvoiceAggregate::class))
             ->shouldBeCalled()
             ->willReturn(new Id(23));
-        $this->invoiceLineRepository
-            ->save(Argument::type(InvoiceLine::class))
-            ->shouldBeCalled();
 
         $useCase($this->command);
     }
@@ -144,7 +142,7 @@ class ReceiveInvoiceUseCaseTest extends TestCase
         $this->businessRepository
             ->getByTaxNumber("B076546546")
             ->willReturn($emitter);
-        $this->invoiceRepository
+        $this->invoiceAggregateRepository
             ->save(Argument::any())
             ->willReturn(new Id(23));
         $this->expenseRepository
@@ -168,7 +166,7 @@ class ReceiveInvoiceUseCaseTest extends TestCase
         return new ReceiveInvoiceUseCase(
             $this->invoiceRepository->reveal(),
             $this->businessRepository->reveal(),
-            $this->invoiceLineRepository->reveal(),
+            $this->invoiceAggregateRepository->reveal(),
             $this->expenseRepository->reveal(),
         );
     }
