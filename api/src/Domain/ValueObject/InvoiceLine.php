@@ -8,6 +8,7 @@ class InvoiceLine
         public readonly string $product,
         public readonly int $quantity,
         public readonly Money $amount,
+        public readonly Percentage $vat_percentage,
     ) {
     }
 }

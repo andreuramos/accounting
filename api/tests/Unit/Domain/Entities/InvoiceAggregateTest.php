@@ -9,6 +9,7 @@ use App\Domain\ValueObject\Id;
 use App\Domain\ValueObject\InvoiceLine;
 use App\Domain\ValueObject\InvoiceNumber;
 use App\Domain\ValueObject\Money;
+use App\Domain\ValueObject\Percentage;
 use PHPUnit\Framework\TestCase;
 
 class InvoiceAggregateTest extends TestCase
@@ -45,6 +46,7 @@ class InvoiceAggregateTest extends TestCase
             "Capsa 6 Moixa Feresta",
             1,
             new Money(1600),
+            new Percentage(21),
         );
         $aggregate = new InvoiceAggregate($this->invoice, [$invoiceLine]);
         
@@ -56,7 +58,8 @@ class InvoiceAggregateTest extends TestCase
         $invoiceLine = new InvoiceLine(
             "Capsa 12 Moixa Amber Ale",
             1,
-            new Money(2664)
+            new Money(2664),
+            new Percentage(21),
         );
         
         $aggregate = new InvoiceAggregate(

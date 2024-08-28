@@ -14,6 +14,7 @@ use App\Domain\ValueObject\Id;
 use App\Domain\ValueObject\InvoiceLine;
 use App\Domain\ValueObject\InvoiceNumber;
 use App\Domain\ValueObject\Money;
+use App\Domain\ValueObject\Percentage;
 
 class EmitInvoiceUseCase
 {
@@ -48,6 +49,7 @@ class EmitInvoiceUseCase
                 $product,
                 $quantity,
                 new Money($amount),
+                new Percentage(21),
             );
         }
         $invoiceAggregate = new InvoiceAggregate(

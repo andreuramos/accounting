@@ -16,6 +16,7 @@ use App\Domain\ValueObject\Id;
 use App\Domain\ValueObject\InvoiceLine;
 use App\Domain\ValueObject\InvoiceNumber;
 use App\Domain\ValueObject\Money;
+use App\Domain\ValueObject\Percentage;
 
 class ReceiveInvoiceUseCase
 {
@@ -44,6 +45,7 @@ class ReceiveInvoiceUseCase
             $command->description,
             1,
             new Money($command->amount),
+            new Percentage(21),
         );
         $invoiceAggregate = new InvoiceAggregate($invoice, [$invoice_line]);
         $invoice_id = $this->invoiceAggregateRepository->save($invoiceAggregate);
