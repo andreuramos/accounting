@@ -6,7 +6,6 @@ use App\Domain\Entities\Business;
 use App\Domain\Entities\Expense;
 use App\Domain\Entities\Invoice;
 use App\Domain\Entities\InvoiceAggregate;
-use App\Domain\Entities\InvoiceLine;
 use App\Domain\Exception\InvoiceAlreadyExistsException;
 use App\Domain\Repository\BusinessRepositoryInterface;
 use App\Domain\Repository\ExpenseRepositoryInterface;
@@ -14,6 +13,7 @@ use App\Domain\Repository\InvoiceAggregateRepositoryInterface;
 use App\Domain\Repository\InvoiceRepositoryInterface;
 use App\Domain\ValueObject\Address;
 use App\Domain\ValueObject\Id;
+use App\Domain\ValueObject\InvoiceLine;
 use App\Domain\ValueObject\InvoiceNumber;
 use App\Domain\ValueObject\Money;
 
@@ -41,7 +41,6 @@ class ReceiveInvoiceUseCase
             new \DateTime($command->date),
         );
         $invoice_line = new InvoiceLine(
-            new Id(null),
             $command->description,
             1,
             new Money($command->amount),

@@ -4,9 +4,9 @@ namespace App\Infrastructure\Repository;
 
 use App\Domain\Entities\Invoice;
 use App\Domain\Entities\InvoiceAggregate;
-use App\Domain\Entities\InvoiceLine;
 use App\Domain\Repository\InvoiceAggregateRepositoryInterface;
 use App\Domain\ValueObject\Id;
+use App\Domain\ValueObject\InvoiceLine;
 
 class MysqlInvoiceAggregateRepository implements InvoiceAggregateRepositoryInterface
 {

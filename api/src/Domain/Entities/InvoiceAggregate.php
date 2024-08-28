@@ -4,6 +4,7 @@ namespace App\Domain\Entities;
 
 use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\ValueObject\Id;
+use App\Domain\ValueObject\InvoiceLine;
 use App\Domain\ValueObject\Money;
 
 class InvoiceAggregate
