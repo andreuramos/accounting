@@ -45,7 +45,7 @@ class ReceiveInvoiceUseCase
             $command->description,
             1,
             new Money($command->amount),
-            new Percentage(21),
+            $this->calculateTaxPercentage($command),
         );
         $invoiceAggregate = new InvoiceAggregate($invoice, [$invoice_line]);
         $invoice_id = $this->invoiceAggregateRepository->save($invoiceAggregate);
@@ -97,5 +97,11 @@ class ReceiveInvoiceUseCase
         $this->businessRepository->save($business);
 
         return $this->businessRepository->getByTaxNumber($command->provider_tax_number);
+    }
+
+    private function calculateTaxPercentage(ReceiveInvoiceCommand $command): Percentage
+    {
+        $rate = round($command->taxes / $command->amount, 2);
+        return new Percentage($rate * 100);
     }
 }

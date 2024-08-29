@@ -49,7 +49,7 @@ class EmitInvoiceUseCase
                 $product,
                 $quantity,
                 new Money($amount),
-                new Percentage(21),
+                new Percentage($invoiceLine['vat_percent']),
             );
         }
         $invoiceAggregate = new InvoiceAggregate(
