@@ -6,7 +6,8 @@ use App\Domain\Exception\InvalidArgumentException;
 
 class Percentage
 {
-    public function __construct(public readonly float $value) {
+    public function __construct(public readonly float $value)
+    {
         $this->guardBetween0And100($value);
     }
 

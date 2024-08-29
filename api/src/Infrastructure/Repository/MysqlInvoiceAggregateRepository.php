@@ -48,8 +48,9 @@ class MysqlInvoiceAggregateRepository implements InvoiceAggregateRepositoryInter
 
     private function saveInvoiceLines($invoiceLines, Id $invoiceId): void
     {
-        $query = 'INSERT INTO invoice_line (invoice_id, product, amount_cents, quantity, position) VALUES ';
-        $single_line_placeholder = '(' . implode(',', array_fill(0, 5, '?')) . ')';
+        $query = 'INSERT INTO invoice_line ' .
+            '(invoice_id, product, amount_cents, quantity, position, vat_percent) VALUES ';
+        $single_line_placeholder = '(' . implode(',', array_fill(0, 6, '?')) . ')';
         $lines_placeholder = implode(',', array_fill(0, count($invoiceLines), $single_line_placeholder));
         $query .= $lines_placeholder;
 
@@ -65,6 +66,7 @@ class MysqlInvoiceAggregateRepository implements InvoiceAggregateRepositoryInter
                 $line->amount->amountCents,
                 $line->quantity,
                 $position,
+                $line->vat_percentage->value
             );
         }
 
