@@ -20,13 +20,13 @@ class InvoiceNumberGenerator
         $timestamp = ($this->timestamper)();
         $yearSuffix = $timestamp->format('Y');
 
-        $correlativeNumber = $this->getLastInvoiceNumber($business);
+        $correlativeNumber = $this->getNextInvoiceNumber($business);
         $eightDigits = sprintf("%08d", $correlativeNumber);
 
         return new InvoiceNumber($yearSuffix . $eightDigits);
     }
 
-    private function getLastInvoiceNumber(Business $business): int
+    private function getNextInvoiceNumber(Business $business): int
     {
         $lastInvoice = $this->invoiceRepository->getLastEmittedByBusiness($business);
 
