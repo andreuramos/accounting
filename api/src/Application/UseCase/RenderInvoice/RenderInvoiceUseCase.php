@@ -2,13 +2,13 @@
 
 namespace App\Application\UseCase\RenderInvoice;
 
-use App\Domain\Repository\InvoiceRepositoryInterface;
+use App\Domain\Repository\InvoiceAggregateRepositoryInterface;
 use App\Domain\ValueObject\Id;
 use App\Domain\ValueObject\InvoiceNumber;
 
 class RenderInvoiceUseCase
 {
-    public function __construct(private readonly InvoiceRepositoryInterface $invoiceRepository)
+    public function __construct(private readonly InvoiceAggregateRepositoryInterface $invoiceRepository)
     {
     }
 

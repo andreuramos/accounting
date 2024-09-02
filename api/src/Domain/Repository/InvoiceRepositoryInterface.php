@@ -10,6 +10,5 @@ use App\Domain\ValueObject\InvoiceNumber;
 interface InvoiceRepositoryInterface
 {
     public function getLastEmittedByBusiness(Business $business): ?Invoice;
-    public function findByBusinessIdAndNumber(Id $businessId, InvoiceNumber $invoiceNumber): Invoice;
     public function findByEmitterTaxNumberAndInvoiceNumber(string $emitterTaxId, InvoiceNumber $invoiceNumber);
 }

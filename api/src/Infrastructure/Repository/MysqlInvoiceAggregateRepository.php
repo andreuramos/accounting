@@ -4,9 +4,11 @@ namespace App\Infrastructure\Repository;
 
 use App\Domain\Entities\Invoice;
 use App\Domain\Entities\InvoiceAggregate;
+use App\Domain\Exception\InvoiceNotFoundException;
 use App\Domain\Repository\InvoiceAggregateRepositoryInterface;
 use App\Domain\ValueObject\Id;
 use App\Domain\ValueObject\InvoiceLine;
+use App\Domain\ValueObject\InvoiceNumber;
 
 class MysqlInvoiceAggregateRepository implements InvoiceAggregateRepositoryInterface
 {
@@ -23,6 +25,11 @@ class MysqlInvoiceAggregateRepository implements InvoiceAggregateRepositoryInter
         $this->saveInvoiceLines($invoiceAggregate->invoiceLines(), $invoiceId);
 
         return $invoiceId;
+    }
+
+    public function findByBusinessIdAndNumber(Id $businessId, InvoiceNumber $invoiceNumber): InvoiceAggregate
+    {
+        throw new InvoiceNotFoundException((string)$invoiceNumber);
     }
 
     private function saveInvoice(Invoice $invoice): Id
