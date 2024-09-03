@@ -9,6 +9,8 @@ use App\Domain\Repository\InvoiceAggregateRepositoryInterface;
 use App\Domain\ValueObject\Id;
 use App\Domain\ValueObject\InvoiceLine;
 use App\Domain\ValueObject\InvoiceNumber;
+use App\Domain\ValueObject\Money;
+use App\Domain\ValueObject\Percentage;
 
 class MysqlInvoiceAggregateRepository implements InvoiceAggregateRepositoryInterface
 {
@@ -30,6 +32,32 @@ class MysqlInvoiceAggregateRepository implements InvoiceAggregateRepositoryInter
     public function findByBusinessIdAndNumber(Id $businessId, InvoiceNumber $invoiceNumber): InvoiceAggregate
     {
         throw new InvoiceNotFoundException((string)$invoiceNumber);
+    }
+
+    public function findByEmitterTaxNumberAndInvoiceNumber(
+        string $emitterTaxId,
+        InvoiceNumber $invoiceNumber
+    ): ?InvoiceAggregate {
+        $stmt = $this->pdo->prepare(
+            'SELECT invoice.* FROM invoice ' .
+            'LEFT JOIN business emitter ON emitter.id = invoice.emitter_id ' .
+            'WHERE invoice.number = :number AND emitter.tax_id = :emitter_tax_id;'
+        );
+        $number = $invoiceNumber->number;
+        $stmt->bindParam(':number', $number);
+        $stmt->bindParam(':emitter_tax_id', $emitterTaxId);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+        if (!count($result)) {
+            return null;
+        }
+
+        $invoice = $this->buildInvoice($result[0]);
+        $invoiceLines = $this->getInvoiceLines($invoice);
+
+        return new InvoiceAggregate($invoice, $invoiceLines);
     }
 
     private function saveInvoice(Invoice $invoice): Id
@@ -78,5 +106,37 @@ class MysqlInvoiceAggregateRepository implements InvoiceAggregateRepositoryInter
         }
 
         $stmt->execute($data);
+    }
+
+    private function buildInvoice(mixed $result): Invoice
+    {
+        return new Invoice(
+            new Id($result['id']),
+            new InvoiceNumber($result['number']),
+            new Id($result['emitter_id']),
+            new Id($result['receiver_id']),
+            new \DateTime($result['date']),
+        );
+    }
+
+    private function getInvoiceLines(Invoice $invoice): array
+    {
+        $lines = [];
+        $stmt = $this->pdo->prepare("SELECT * FROM invoice_line WHERE invoice_id = :invoice_id;");
+        $invoice_id = $invoice->id->getInt();
+        $stmt->bindParam(':invoice_id', $invoice_id);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+
+        foreach ($result as $line) {
+            $lines[] = new InvoiceLine(
+                $line['product'],
+                1,
+                new Money($line['amount_cents']),
+                new Percentage($line['vat_percent']),
+            );
+        }
+
+        return $lines;
     }
 }

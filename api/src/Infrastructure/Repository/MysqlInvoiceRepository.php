@@ -36,32 +36,6 @@ class MysqlInvoiceRepository implements InvoiceRepositoryInterface
         return $this->buildInvoice($result);
     }
 
-    public function findByBusinessIdAndNumber(Id $businessId, InvoiceNumber $invoiceNumber): Invoice
-    {
-        throw new InvoiceNotFoundException((string)$invoiceNumber);
-    }
-
-    public function findByEmitterTaxNumberAndInvoiceNumber(string $emitterTaxId, InvoiceNumber $invoiceNumber): ?Invoice
-    {
-        $stmt = $this->PDO->prepare(
-            'SELECT invoice.* FROM invoice ' .
-            'LEFT JOIN business emitter ON emitter.id = invoice.emitter_id ' .
-            'WHERE invoice.number = :number AND emitter.tax_id = :emitter_tax_id;'
-        );
-        $number = $invoiceNumber->number;
-        $stmt->bindParam(':number', $number);
-        $stmt->bindParam(':emitter_tax_id', $emitterTaxId);
-
-        $stmt->execute();
-
-        $result = $stmt->fetchAll();
-        if (!count($result)) {
-            return null;
-        }
-
-        return $this->buildInvoice($result[0]);
-    }
-
     private function buildInvoice(mixed $result): Invoice
     {
         return new Invoice(

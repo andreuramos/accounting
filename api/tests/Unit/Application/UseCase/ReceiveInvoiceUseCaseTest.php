@@ -28,7 +28,6 @@ class ReceiveInvoiceUseCaseTest extends TestCase
     use ProphecyTrait;
 
     private $businessRepository;
-    private $invoiceRepository;
     private $invoiceAggregateRepository;
     private $expenseRepository;
     private User $user;
@@ -37,7 +36,6 @@ class ReceiveInvoiceUseCaseTest extends TestCase
     public function setUp(): void
     {
         $this->businessRepository = $this->prophesize(BusinessRepositoryInterface::class);
-        $this->invoiceRepository = $this->prophesize(InvoiceRepositoryInterface::class);
         $this->invoiceAggregateRepository = $this->prophesize(InvoiceAggregateRepositoryInterface::class);
         $this->expenseRepository = $this->prophesize(ExpenseRepositoryInterface::class);
         $this->user = new User(new Id(1), new Email('a@b.com'), "");
@@ -59,10 +57,10 @@ class ReceiveInvoiceUseCaseTest extends TestCase
 
     public function test_fails_if_invoice_already_exists(): void
     {
-        $this->invoiceRepository
+        $this->invoiceAggregateRepository
             ->findByEmitterTaxNumberAndInvoiceNumber("B076546546", new InvoiceNumber("20230000232"))
             ->shouldBeCalled()
-            ->willReturn($this->createMock(Invoice::class));
+            ->willReturn($this->createMock(InvoiceAggregate::class));
         $useCase = $this->buildUseCase();
         
         $this->expectException(InvoiceAlreadyExistsException::class);
@@ -85,7 +83,7 @@ class ReceiveInvoiceUseCaseTest extends TestCase
     
     public function test_creates_business_if_not_exist(): void
     {
-        $this->invoiceRepository
+        $this->invoiceAggregateRepository
             ->findByEmitterTaxNumberAndInvoiceNumber(Argument::cetera())
             ->willReturn(null);
         $receiver = $this->buildBusiness("43186322G");
@@ -108,7 +106,7 @@ class ReceiveInvoiceUseCaseTest extends TestCase
     
     public function test_creates_invoice_and_lines(): void
     {
-        $this->invoiceRepository
+        $this->invoiceAggregateRepository
             ->findByEmitterTaxNumberAndInvoiceNumber("B076546546", new InvoiceNumber("20230000232"))
             ->willReturn(null);
         $receiver = $this->buildBusiness("43186322G");
@@ -131,7 +129,7 @@ class ReceiveInvoiceUseCaseTest extends TestCase
     public function test_creates_expense(): void
     {
         $receiver = $this->buildBusiness("43186322G");
-        $this->invoiceRepository
+        $this->invoiceAggregateRepository
             ->findByEmitterTaxNumberAndInvoiceNumber(Argument::cetera())
             ->willReturn(null);
         $this->businessRepository
@@ -163,7 +161,6 @@ class ReceiveInvoiceUseCaseTest extends TestCase
     private function buildUseCase(): ReceiveInvoiceUseCase
     {
         return new ReceiveInvoiceUseCase(
-            $this->invoiceRepository->reveal(),
             $this->businessRepository->reveal(),
             $this->invoiceAggregateRepository->reveal(),
             $this->expenseRepository->reveal(),

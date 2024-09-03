@@ -10,7 +10,6 @@ use App\Domain\Exception\InvoiceAlreadyExistsException;
 use App\Domain\Repository\BusinessRepositoryInterface;
 use App\Domain\Repository\ExpenseRepositoryInterface;
 use App\Domain\Repository\InvoiceAggregateRepositoryInterface;
-use App\Domain\Repository\InvoiceRepositoryInterface;
 use App\Domain\ValueObject\Address;
 use App\Domain\ValueObject\Id;
 use App\Domain\ValueObject\InvoiceLine;
@@ -21,7 +20,6 @@ use App\Domain\ValueObject\Percentage;
 class ReceiveInvoiceUseCase
 {
     public function __construct(
-        private readonly InvoiceRepositoryInterface $invoiceRepository,
         private readonly BusinessRepositoryInterface $businessRepository,
         private readonly InvoiceAggregateRepositoryInterface $invoiceAggregateRepository,
         private readonly ExpenseRepositoryInterface $expenseRepository,
@@ -64,12 +62,12 @@ class ReceiveInvoiceUseCase
     private function guardInvoiceDoesNotYetExist(ReceiveInvoiceCommand $command): void
     {
         $invoiceNumber = new InvoiceNumber($command->invoice_number);
-        $invoice = $this->invoiceRepository->findByEmitterTaxNumberAndInvoiceNumber(
+        $invoice = $this->invoiceAggregateRepository->findByEmitterTaxNumberAndInvoiceNumber(
             $command->provider_tax_number,
             $invoiceNumber,
         );
 
-        if ($invoice instanceof Invoice) {
+        if ($invoice instanceof InvoiceAggregate) {
             throw new InvoiceAlreadyExistsException(
                 $command->provider_tax_number,
                 $invoiceNumber,
