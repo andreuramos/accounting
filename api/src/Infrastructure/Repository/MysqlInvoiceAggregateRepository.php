@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Repository;
 
+use App\Domain\Entities\Business;
 use App\Domain\Entities\Invoice;
 use App\Domain\Entities\InvoiceAggregate;
 use App\Domain\Exception\InvoiceNotFoundException;
@@ -58,6 +59,26 @@ class MysqlInvoiceAggregateRepository implements InvoiceAggregateRepositoryInter
         $invoiceLines = $this->getInvoiceLines($invoice);
 
         return new InvoiceAggregate($invoice, $invoiceLines);
+    }
+
+    public function getLastEmittedByBusiness(Business $business): ?Invoice
+    {
+        $stmt = $this->pdo->prepare(
+            'SELECT * FROM invoice ' .
+            'WHERE emitter_id = :emitter_id ' .
+            'ORDER BY number DESC'
+        );
+        $emitterId = $business->id->getInt();
+        $stmt->bindParam(':emitter_id', $emitterId);
+
+        $stmt->execute();
+        $result = $stmt->fetch();
+
+        if (false === $result) {
+            return null;
+        }
+
+        return $this->buildInvoice($result);
     }
 
     private function saveInvoice(Invoice $invoice): Id

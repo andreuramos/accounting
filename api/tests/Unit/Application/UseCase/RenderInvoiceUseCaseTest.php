@@ -6,7 +6,6 @@ use App\Application\UseCase\RenderInvoice\RenderInvoiceCommand;
 use App\Application\UseCase\RenderInvoice\RenderInvoiceUseCase;
 use App\Domain\Exception\InvoiceNotFoundException;
 use App\Domain\Repository\InvoiceAggregateRepositoryInterface;
-use App\Domain\Repository\InvoiceRepositoryInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;

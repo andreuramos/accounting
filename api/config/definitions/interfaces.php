@@ -8,7 +8,6 @@ use App\Domain\Repository\BusinessRepositoryInterface;
 use App\Domain\Repository\ExpenseRepositoryInterface;
 use App\Domain\Repository\IncomeRepositoryInterface;
 use App\Domain\Repository\InvoiceAggregateRepositoryInterface;
-use App\Domain\Repository\InvoiceRepositoryInterface;
 use App\Domain\Repository\TaxDataAggregateRepositoryInterface;
 use App\Domain\Repository\UserRepositoryInterface;
 use App\Infrastructure\Auth\JWTDecoder;
@@ -19,8 +18,6 @@ use App\Infrastructure\Repository\MysqlBusinessRepository;
 use App\Infrastructure\Repository\MysqlExpenseRepository;
 use App\Infrastructure\Repository\MysqlIncomeRepository;
 use App\Infrastructure\Repository\MysqlInvoiceAggregateRepository;
-use App\Infrastructure\Repository\MysqlInvoiceLineRepository;
-use App\Infrastructure\Repository\MysqlInvoiceRepository;
 use App\Infrastructure\Repository\MysqlTaxDataAggregateRepository;
 use App\Infrastructure\Repository\MysqlUserRepository;
 use Symfony\Component\Messenger\MessageBus;
@@ -34,7 +31,6 @@ return [
     ExpenseRepositoryInterface::class => DI\get(MysqlExpenseRepository::class),
     IncomeRepositoryInterface::class => DI\get(MysqlIncomeRepository::class),
     InvoiceAggregateRepositoryInterface::class => DI\get(MysqlInvoiceAggregateRepository::class),
-    InvoiceRepositoryInterface::class => DI\get(MysqlInvoiceRepository::class),
     MessageBusInterface::class => DI\get(MessageBus::class),
     RefreshTokenGeneratorInterface::class => DI\get(JWTRefreshTokenGenerator::class),
     TaxDataAggregateRepositoryInterface::class => DI\get(MysqlTaxDataAggregateRepository::class),

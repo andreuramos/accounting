@@ -14,7 +14,6 @@ use App\Domain\Exception\InvoiceAlreadyExistsException;
 use App\Domain\Repository\BusinessRepositoryInterface;
 use App\Domain\Repository\ExpenseRepositoryInterface;
 use App\Domain\Repository\InvoiceAggregateRepositoryInterface;
-use App\Domain\Repository\InvoiceRepositoryInterface;
 use App\Domain\ValueObject\Address;
 use App\Domain\ValueObject\Email;
 use App\Domain\ValueObject\Id;

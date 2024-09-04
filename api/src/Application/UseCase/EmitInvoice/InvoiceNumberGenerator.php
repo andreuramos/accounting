@@ -4,13 +4,13 @@ namespace App\Application\UseCase\EmitInvoice;
 
 use App\Application\Service\Timestamper;
 use App\Domain\Entities\Business;
-use App\Domain\Repository\InvoiceRepositoryInterface;
+use App\Domain\Repository\InvoiceAggregateRepositoryInterface;
 use App\Domain\ValueObject\InvoiceNumber;
 
 class InvoiceNumberGenerator
 {
     public function __construct(
-        private readonly InvoiceRepositoryInterface $invoiceRepository,
+        private readonly InvoiceAggregateRepositoryInterface $invoiceAggregateRepository,
         private readonly Timestamper $timestamper,
     ) {
     }
@@ -28,7 +28,7 @@ class InvoiceNumberGenerator
 
     private function getNextInvoiceNumber(Business $business): int
     {
-        $lastInvoice = $this->invoiceRepository->getLastEmittedByBusiness($business);
+        $lastInvoice = $this->invoiceAggregateRepository->getLastEmittedByBusiness($business);
 
         if (null === $lastInvoice) {
             return 1;

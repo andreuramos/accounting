@@ -6,7 +6,7 @@ use App\Application\Service\Timestamper;
 use App\Application\UseCase\EmitInvoice\InvoiceNumberGenerator;
 use App\Domain\Entities\Business;
 use App\Domain\Entities\Invoice;
-use App\Domain\Repository\InvoiceRepositoryInterface;
+use App\Domain\Repository\InvoiceAggregateRepositoryInterface;
 use App\Domain\ValueObject\Address;
 use App\Domain\ValueObject\Id;
 use App\Domain\ValueObject\InvoiceNumber;
@@ -18,14 +18,14 @@ class InvoiceNumberGeneratorTest extends TestCase
 {
     use ProphecyTrait;
 
-    private $invoiceRepository;
+    private $invoiceAggregateRepository;
     private $timestamper;
     private Business $business;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->invoiceRepository = $this->prophesize(InvoiceRepositoryInterface::class);
+        $this->invoiceAggregateRepository = $this->prophesize(InvoiceAggregateRepositoryInterface::class);
         $this->timestamper = $this->prophesize(Timestamper::class);
         $this->business = new Business(
             new Id(1), "mybusiness", "-", "", new Address("", "")
@@ -34,7 +34,7 @@ class InvoiceNumberGeneratorTest extends TestCase
 
     public function test_starts_with_year_prefix()
     {
-        $this->invoiceRepository->getLastEmittedByBusiness(Argument::type(Business::class))
+        $this->invoiceAggregateRepository->getLastEmittedByBusiness(Argument::type(Business::class))
             ->willReturn(null);
         $this->timestamper->__invoke()->willReturn(date_create('2023-05-23'));
         $service = $this->buildService();
@@ -46,7 +46,7 @@ class InvoiceNumberGeneratorTest extends TestCase
 
     public function test_suffix_is_8_characters_long()
     {
-        $this->invoiceRepository->getLastEmittedByBusiness(Argument::type(Business::class))
+        $this->invoiceAggregateRepository->getLastEmittedByBusiness(Argument::type(Business::class))
             ->willReturn(null);
         $this->timestamper->__invoke()->willReturn(date_create('2023-05-23'));
         $service = $this->buildService();
@@ -67,7 +67,7 @@ class InvoiceNumberGeneratorTest extends TestCase
             new Id(23),
             new \DateTime(),
         );
-        $this->invoiceRepository->getLastEmittedByBusiness(Argument::type(Business::class))
+        $this->invoiceAggregateRepository->getLastEmittedByBusiness(Argument::type(Business::class))
             ->willReturn($lastInvoice);
         $this->timestamper->__invoke()->willReturn(date_create('2023-05-24'));
         $service = $this->buildService();
@@ -81,7 +81,7 @@ class InvoiceNumberGeneratorTest extends TestCase
     private function buildService(): InvoiceNumberGenerator
     {
         return new InvoiceNumberGenerator(
-            $this->invoiceRepository->reveal(),
+            $this->invoiceAggregateRepository->reveal(),
             $this->timestamper->reveal(),
         );
     }
