@@ -18,7 +18,7 @@ class GetInvoicesController extends AuthorizedController
 
     public function __invoke(Request $request): ApiResponse
     {
-        //$this->auth($request);
+        $this->auth($request);
 
         return new ApiResponse([]);
     }
