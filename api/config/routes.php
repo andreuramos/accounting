@@ -7,7 +7,7 @@ use App\Infrastructure\Controller\CreateIncomeController;
 use App\Infrastructure\Controller\EmitInvoiceController;
 use App\Infrastructure\Controller\GetExpensesController;
 use App\Infrastructure\Controller\GetIncomesController;
-use App\Infrastructure\Controller\GetInvoiceController;
+use App\Infrastructure\Controller\GetInvoicesController;
 use App\Infrastructure\Controller\GetUserController;
 use App\Infrastructure\Controller\LoginController;
 use App\Infrastructure\Controller\Manual303FormController;
@@ -45,14 +45,14 @@ $routes = [
         'path' => '/income',
         'controller' => CreateIncomeController::class,
         'method' => 'POST',
+    ],[
+        'path' => '/invoice',
+        'controller' => GetInvoicesController::class,
+        'method' => 'GET',
     ], [
         'path' => '/invoice',
         'controller' => EmitInvoiceController::class,
         'method' => 'POST',
-    ],[
-        'path' => '/invoice',
-        'controller' => GetInvoiceController::class,
-        'method' => 'GET',
     ],[
         'path' => '/invoice/receive',
         'controller' => ReceiveInvoiceController::class,

@@ -12,4 +12,14 @@ class GetInvoicesEndpointTest extends EndpointTest
         
         $this->assertEquals(401, $response->getStatusCode());
     }
+    
+    public function test_authorized_returns_200(): void
+    {
+        $this->registerUser($this->email, "");
+        $this->login($this->email, "");
+        
+        $response = $this->client->get('invoice');
+        
+        $this->assertEquals(200, $response->getStatusCode());
+    }
 }

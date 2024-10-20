@@ -7,7 +7,7 @@ use App\Infrastructure\ApiResponse;
 use App\Infrastructure\Auth\JWTDecoder;
 use Symfony\Component\HttpFoundation\Request;
 
-class GetInvoiceController extends AuthorizedController
+class GetInvoicesController extends AuthorizedController
 {
     public function __construct(
         JWTDecoder $tokenDecoder,
@@ -18,7 +18,7 @@ class GetInvoiceController extends AuthorizedController
 
     public function __invoke(Request $request): ApiResponse
     {
-        $this->auth($request);
+        //$this->auth($request);
 
         return new ApiResponse([]);
     }
