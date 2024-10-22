@@ -15,12 +15,13 @@ use PHPUnit\Framework\TestCase;
 class InvoiceAggregateTest extends TestCase
 {
     const INVOICE_ID = 1256;
+    const INVOICE_NUMBER = "whatever01";
 
     public function setUp(): void
     {
         $this->invoice = new Invoice(
             new Id(self::INVOICE_ID),
-            new InvoiceNumber("whatever01"),
+            new InvoiceNumber(self::INVOICE_NUMBER),
             new Id(23),
             new Id(44),
             new \DateTime()
@@ -38,10 +39,22 @@ class InvoiceAggregateTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         new InvoiceAggregate($this->invoice, [new \stdClass()]);
     }
-    
+
     public function test_proxies_invoice_entity_id(): void
     {
-        
+        $invoiceLine = new InvoiceLine(
+            "Capsa 6 Moixa Feresta",
+            1,
+            new Money(1600),
+            new Percentage(21),
+        );
+        $aggregate = new InvoiceAggregate($this->invoice, [$invoiceLine]);
+
+        self::assertEquals(self::INVOICE_ID, $aggregate->id()->getInt());
+    }
+
+    public function test_proxies_invoice_number(): void
+    {
         $invoiceLine = new InvoiceLine(
             "Capsa 6 Moixa Feresta",
             1,
@@ -50,9 +63,9 @@ class InvoiceAggregateTest extends TestCase
         );
         $aggregate = new InvoiceAggregate($this->invoice, [$invoiceLine]);
         
-        self::assertEquals(self::INVOICE_ID, $aggregate->id()->getInt());
+        self::assertEquals(self::INVOICE_NUMBER, $aggregate->invoiceNumber());
     }
-    
+
     public function test_total_amount_from_lines(): void
     {
         $invoiceLine = new InvoiceLine(
@@ -61,12 +74,12 @@ class InvoiceAggregateTest extends TestCase
             new Money(2664),
             new Percentage(21),
         );
-        
+
         $aggregate = new InvoiceAggregate(
             $this->invoice,
             [$invoiceLine],
         );
-        
+
         self::assertEquals(2664, $aggregate->totalAmount()->amountCents);
     }
 }

@@ -4,7 +4,14 @@ namespace Test\Unit\Infrastructure\Controller;
 
 use App\Application\UseCase\GetInvoices\GetInvoicesCommand;
 use App\Application\UseCase\GetInvoices\GetInvoicesUseCase;
+use App\Domain\Entities\Invoice;
+use App\Domain\Entities\InvoiceAggregate;
 use App\Domain\Exception\InvalidCredentialsException;
+use App\Domain\ValueObject\Id;
+use App\Domain\ValueObject\InvoiceLine;
+use App\Domain\ValueObject\InvoiceNumber;
+use App\Domain\ValueObject\Money;
+use App\Domain\ValueObject\Percentage;
 use App\Infrastructure\Controller\GetInvoicesController;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -14,6 +21,11 @@ class GetInvoicesControllerTest extends AuthorizedControllerTest
 {
     use ProphecyTrait;
 
+    private const PRODUCT = "Capsa 12 Moixa Feresta";
+    private const QUANTITY = 2;
+    private const PRICE = 25;
+    private const VAT = 21;
+    const INVOICE_NUMBER = "2024/001";
     private $usecase;
 
     public function setUp(): void
@@ -43,7 +55,7 @@ class GetInvoicesControllerTest extends AuthorizedControllerTest
             ->shouldBeCalled()
             ->willReturn([]);
         
-        $response = $controller($request);
+        $controller($request);
     }
 
     public function test_succeeds_with_no_results(): void
@@ -60,6 +72,23 @@ class GetInvoicesControllerTest extends AuthorizedControllerTest
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEmpty(json_decode($response->getContent(), true));
     }
+    
+    public function test_returns_expected_format(): void
+    {
+        $request = new Request();
+        $request->headers->set('Authorization', 'Bearer ' . self::TOKEN);
+        $controller = $this->getController();
+        $invoice = $this->buildInvoice();
+        $this->usecase->__invoke(Argument::type(GetInvoicesCommand::class))
+            ->willReturn([$invoice]);
+        
+        $result = $controller($request);
+        
+        $decoded_result = json_decode($result->getContent(), true);
+        $this->assertcount(1, $decoded_result);
+        $result_invoice = $decoded_result[0];
+        $this->assertEquals($result_invoice['invoice_number'], self::INVOICE_NUMBER);
+    }
 
     private function getController(): GetInvoicesController
     {
@@ -68,5 +97,24 @@ class GetInvoicesControllerTest extends AuthorizedControllerTest
             $this->userRepository->reveal(),
             $this->usecase->reveal(),
         );
+    }
+
+    private function buildInvoice(): InvoiceAggregate
+    {
+        $invoice = new Invoice(
+            new Id(1),
+            new InvoiceNumber(self::INVOICE_NUMBER),
+            new Id(244),
+            new Id(255),
+            new \DateTime()
+        );
+        return new InvoiceAggregate($invoice, [
+           new InvoiceLine(
+               self::PRODUCT,
+               self::QUANTITY,
+               new Money(self::PRICE),
+               new Percentage(self::VAT)
+           ) 
+        ]);
     }
 }
