@@ -23,7 +23,7 @@ class GetInvoicesController extends AuthorizedController
     {
         $this->auth($request);
         $command = new GetInvoicesCommand(
-            $this->authUser->id()
+            $this->authUser->accountId()
         );
         
         $result = ($this->getInvoicesUseCase)($command);

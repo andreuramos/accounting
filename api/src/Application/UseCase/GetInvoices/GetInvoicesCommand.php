@@ -6,7 +6,7 @@ use App\Domain\ValueObject\Id;
 
 class GetInvoicesCommand
 {
-    public function __construct(public readonly Id $userId)
+    public function __construct(public readonly Id $accountId)
     {
     }
 }
