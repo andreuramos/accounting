@@ -2,7 +2,7 @@
 
 namespace Test\Unit\Infrastructure\Controller;
 
-use App\Application\UseCase\GetInvoices\ExposableInvoices;
+use App\Application\DTO\ExposableInvoices;
 use App\Application\UseCase\GetInvoices\GetInvoicesCommand;
 use App\Application\UseCase\GetInvoices\GetInvoicesUseCase;
 use App\Domain\Entities\Invoice;

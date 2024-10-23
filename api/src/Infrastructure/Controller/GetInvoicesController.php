@@ -29,7 +29,7 @@ class GetInvoicesController extends AuthorizedController
         );
 
         $result = ($this->getInvoicesUseCase)($command);
-        
+
         return new ApiResponse($result->__toArray());
     }
 }

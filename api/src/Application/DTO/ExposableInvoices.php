@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Application\UseCase\GetInvoices;
+namespace App\Application\DTO;
 
 use App\Domain\Entities\InvoiceAggregate;
 
 class ExposableInvoices
 {
     private array $exposableInvoices = [];
-    
+
     public function __construct(array $invoices)
     {
         /** @var InvoiceAggregate $invoice */
@@ -17,7 +17,7 @@ class ExposableInvoices
             ];
         }
     }
-    
+
     public function __toArray(): array
     {
         return $this->exposableInvoices;

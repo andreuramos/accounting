@@ -24,7 +24,7 @@ class InvoiceAggregate
     {
         return $this->invoice->id;
     }
-    
+
     public function invoiceNumber(): InvoiceNumber
     {
         return $this->invoice->invoiceNumber;
