@@ -4,8 +4,8 @@ namespace App\Application\UseCase\GetInvoices;
 
 class GetInvoicesUseCase
 {
-    public function __invoke(GetInvoicesCommand $command): array
+    public function __invoke(GetInvoicesCommand $command): ExposableInvoices
     {
-        return [];
+        return new ExposableInvoices([]);
     }
 }

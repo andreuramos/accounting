@@ -2,6 +2,7 @@
 
 namespace Test\Unit\Infrastructure\Controller;
 
+use App\Application\UseCase\GetInvoices\ExposableInvoices;
 use App\Application\UseCase\GetInvoices\GetInvoicesCommand;
 use App\Application\UseCase\GetInvoices\GetInvoicesUseCase;
 use App\Domain\Entities\Invoice;
@@ -53,7 +54,7 @@ class GetInvoicesControllerTest extends AuthorizedControllerTest
         $expectedCommand = new GetInvoicesCommand($this->user->accountId());
         $this->usecase->__invoke($expectedCommand)
             ->shouldBeCalled()
-            ->willReturn([]);
+            ->willReturn(new ExposableInvoices([]));
         
         $controller($request);
     }
@@ -65,7 +66,7 @@ class GetInvoicesControllerTest extends AuthorizedControllerTest
         $controller = $this->getController();
         $this->usecase->__invoke(Argument::type(GetInvoicesCommand::class))
             ->shouldBeCalled()
-            ->willReturn([]);
+            ->willReturn(new ExposableInvoices([]));
 
         $response = $controller($request);
 
@@ -80,7 +81,7 @@ class GetInvoicesControllerTest extends AuthorizedControllerTest
         $controller = $this->getController();
         $invoice = $this->buildInvoice();
         $this->usecase->__invoke(Argument::type(GetInvoicesCommand::class))
-            ->willReturn([$invoice]);
+            ->willReturn(new ExposableInvoices([$invoice]));
         
         $result = $controller($request);
         

@@ -29,11 +29,7 @@ class GetInvoicesController extends AuthorizedController
         );
 
         $result = ($this->getInvoicesUseCase)($command);
-
-        $invocies = array_map(fn(InvoiceAggregate $invoice) => [
-            'invoice_number' => (string) $invoice->invoiceNumber(),
-        ]
-            , $result);
-        return new ApiResponse($invocies);
+        
+        return new ApiResponse($result->__toArray());
     }
 }
