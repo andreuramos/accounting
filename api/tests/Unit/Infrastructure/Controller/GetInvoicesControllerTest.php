@@ -45,7 +45,7 @@ class GetInvoicesControllerTest extends AuthorizedControllerTest
         $controller($request);
     }
 
-    public function test_builds_command(): void
+    public function test_builds_command_with_no_filters(): void
     {
         $request = new Request();
         $request->headers->set('Authorization', 'Bearer ' . self::TOKEN);
@@ -56,6 +56,24 @@ class GetInvoicesControllerTest extends AuthorizedControllerTest
             ->shouldBeCalled()
             ->willReturn(new ExposableInvoices([]));
         
+        $controller($request);
+    }
+
+    public function test_builds_command_with_from_date(): void
+    {
+        $request = new Request();
+        $request->headers->set('Authorization', 'Bearer ' . self::TOKEN);
+        $request->query->set('from', '2024-01-01');
+
+        $controller = $this->getController();
+        $expectedCommand = new GetInvoicesCommand(
+            accountId: $this->user->accountId(),
+            fromDate: new \DateTime('2024-01-01'),
+        );
+        $this->usecase->__invoke($expectedCommand)
+            ->shouldBeCalled()
+            ->willReturn(new ExposableInvoices([]));
+
         $controller($request);
     }
 

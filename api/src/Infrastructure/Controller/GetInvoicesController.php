@@ -24,8 +24,13 @@ class GetInvoicesController extends AuthorizedController
     public function __invoke(Request $request): ApiResponse
     {
         $this->auth($request);
+        
+        $from = $request->query->get('from') ?
+            new \DateTime($request->query->get('from')) : null;
+        
         $command = new GetInvoicesCommand(
-            $this->authUser->accountId()
+            $this->authUser->accountId(),
+            $from,
         );
 
         $result = ($this->getInvoicesUseCase)($command);
