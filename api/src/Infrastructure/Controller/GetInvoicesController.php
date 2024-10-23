@@ -27,10 +27,12 @@ class GetInvoicesController extends AuthorizedController
         
         $from = $request->query->get('from') ?
             new \DateTime($request->query->get('from')) : null;
-        
+        $to = $request->query->get('to') ?
+            new \DateTime($request->query->get('to')) : null;
         $command = new GetInvoicesCommand(
             $this->authUser->accountId(),
             $from,
+            $to,
         );
 
         $result = ($this->getInvoicesUseCase)($command);
