@@ -104,7 +104,7 @@ class GetInvoicesControllerTest extends AuthorizedControllerTest
         $controller = $this->getController();
         $expectedCommand = new GetInvoicesCommand(
             accountId: $this->user->accountId(),
-            emitter_vat_number: '43186322G',
+            emitterTaxNumber: '43186322G',
         );
         $this->usecase->__invoke($expectedCommand)
             ->shouldBeCalled()
@@ -122,7 +122,7 @@ class GetInvoicesControllerTest extends AuthorizedControllerTest
         $controller = $this->getController();
         $expectedCommand = new GetInvoicesCommand(
             accountId: $this->user->accountId(),
-            receiver_vat_number: '43186322G',
+            receiverTaxNumber: '43186322G',
         );
         $this->usecase->__invoke($expectedCommand)
             ->shouldBeCalled()
@@ -161,6 +161,7 @@ class GetInvoicesControllerTest extends AuthorizedControllerTest
         $this->assertcount(1, $decoded_result);
         $result_invoice = $decoded_result[0];
         $this->assertEquals($result_invoice['invoice_number'], self::INVOICE_NUMBER);
+        //$this->assertEquals($result_invoice['emitter_tax_number'], self::INVOICE_NUMBER);
     }
 
     private function getController(): GetInvoicesController
