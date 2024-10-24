@@ -55,6 +55,8 @@ class EmitInvoiceUseCase
         $invoiceAggregate = new InvoiceAggregate(
             $invoice,
             $invoiceLines,
+            $emitterBusiness,
+            $receiverBusiness,
         );
         $invoiceId = $this->invoiceAggregateRepository->save($invoiceAggregate);
 

@@ -5,9 +5,11 @@ namespace Test\Unit\Infrastructure\Controller;
 use App\Application\DTO\ExposableInvoices;
 use App\Application\UseCase\GetInvoices\GetInvoicesCommand;
 use App\Application\UseCase\GetInvoices\GetInvoicesUseCase;
+use App\Domain\Entities\Business;
 use App\Domain\Entities\Invoice;
 use App\Domain\Entities\InvoiceAggregate;
 use App\Domain\Exception\InvalidCredentialsException;
+use App\Domain\ValueObject\Address;
 use App\Domain\ValueObject\Id;
 use App\Domain\ValueObject\InvoiceLine;
 use App\Domain\ValueObject\InvoiceNumber;
@@ -55,7 +57,7 @@ class GetInvoicesControllerTest extends AuthorizedControllerTest
         $this->usecase->__invoke($expectedCommand)
             ->shouldBeCalled()
             ->willReturn(new ExposableInvoices([]));
-        
+
         $controller($request);
     }
 
@@ -145,7 +147,7 @@ class GetInvoicesControllerTest extends AuthorizedControllerTest
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEmpty(json_decode($response->getContent(), true));
     }
-    
+
     public function test_returns_expected_format(): void
     {
         $request = new Request();
@@ -154,9 +156,9 @@ class GetInvoicesControllerTest extends AuthorizedControllerTest
         $invoice = $this->buildInvoice();
         $this->usecase->__invoke(Argument::type(GetInvoicesCommand::class))
             ->willReturn(new ExposableInvoices([$invoice]));
-        
+
         $result = $controller($request);
-        
+
         $decoded_result = json_decode($result->getContent(), true);
         $this->assertcount(1, $decoded_result);
         $result_invoice = $decoded_result[0];
@@ -182,13 +184,30 @@ class GetInvoicesControllerTest extends AuthorizedControllerTest
             new Id(255),
             new \DateTime()
         );
-        return new InvoiceAggregate($invoice, [
-           new InvoiceLine(
-               self::PRODUCT,
-               self::QUANTITY,
-               new Money(self::PRICE),
-               new Percentage(self::VAT)
-           ) 
-        ]);
+        return new InvoiceAggregate(
+            $invoice,
+            [
+                new InvoiceLine(
+                    self::PRODUCT,
+                    self::QUANTITY,
+                    new Money(self::PRICE),
+                    new Percentage(self::VAT)
+                )
+            ],
+            new Business(
+                new Id(244),
+                "EMITTER INFORMAL NAME",
+                "EMITTER TAX NAME SL",
+                "43186322G",
+                new Address("Emitter Street 1", "07001"),
+            ),
+            new Business(
+                new Id(255),
+                "RECEIVER INFORMAL NAME",
+                "RECEIVER TAX NAME SL",
+                "B071135688",
+                new Address("Reception Street 1", "07002"),
+            ),
+        );
     }
 }

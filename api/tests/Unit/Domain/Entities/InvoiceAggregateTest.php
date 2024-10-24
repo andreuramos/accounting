@@ -2,9 +2,11 @@
 
 namespace Test\Unit\Domain\Entities;
 
+use App\Domain\Entities\Business;
 use App\Domain\Entities\Invoice;
 use App\Domain\Entities\InvoiceAggregate;
 use App\Domain\Exception\InvalidArgumentException;
+use App\Domain\ValueObject\Address;
 use App\Domain\ValueObject\Id;
 use App\Domain\ValueObject\InvoiceLine;
 use App\Domain\ValueObject\InvoiceNumber;
@@ -26,18 +28,32 @@ class InvoiceAggregateTest extends TestCase
             new Id(44),
             new \DateTime()
         );
+        $this->emitterBusiness = new Business(
+            new Id(23),
+            "EMITTER",
+            "EMITTER SL",
+            "43186322G",
+            new Address("ONE STREET 123", "07013"),
+        );
+        $this->receiverBusiness = new Business(
+            new Id(44),
+            "RECEIVER",
+            "RECEIVER SL",
+            "B072556616",
+            new Address("OTHER STREET 321", "07001"),
+        );
     }
 
     public function test_no_lines_fails(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new InvoiceAggregate($this->invoice, []);
+        new InvoiceAggregate($this->invoice, [], $this->emitterBusiness, $this->receiverBusiness);
     }
 
     public function test_wrong_class_lines_fails(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new InvoiceAggregate($this->invoice, [new \stdClass()]);
+        new InvoiceAggregate($this->invoice, [new \stdClass()], $this->emitterBusiness, $this->receiverBusiness);
     }
 
     public function test_proxies_invoice_entity_id(): void
@@ -48,7 +64,12 @@ class InvoiceAggregateTest extends TestCase
             new Money(1600),
             new Percentage(21),
         );
-        $aggregate = new InvoiceAggregate($this->invoice, [$invoiceLine]);
+        $aggregate = new InvoiceAggregate(
+            $this->invoice,
+            [$invoiceLine],
+            $this->emitterBusiness,
+            $this->receiverBusiness
+        );
 
         self::assertEquals(self::INVOICE_ID, $aggregate->id()->getInt());
     }
@@ -61,8 +82,13 @@ class InvoiceAggregateTest extends TestCase
             new Money(1600),
             new Percentage(21),
         );
-        $aggregate = new InvoiceAggregate($this->invoice, [$invoiceLine]);
-        
+        $aggregate = new InvoiceAggregate(
+            $this->invoice,
+            [$invoiceLine],
+            $this->emitterBusiness,
+            $this->receiverBusiness
+        );
+
         self::assertEquals(self::INVOICE_NUMBER, $aggregate->invoiceNumber());
     }
 
@@ -78,6 +104,8 @@ class InvoiceAggregateTest extends TestCase
         $aggregate = new InvoiceAggregate(
             $this->invoice,
             [$invoiceLine],
+            $this->emitterBusiness,
+            $this->receiverBusiness,
         );
 
         self::assertEquals(2664, $aggregate->totalAmount()->amountCents);

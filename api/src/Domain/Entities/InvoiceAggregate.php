@@ -15,6 +15,8 @@ class InvoiceAggregate
     public function __construct(
         private readonly Invoice $invoice,
         private readonly array $invoiceLines,
+        private readonly Business $emitterBusiness,
+        private readonly Business $receiverBusiness,
     ) {
         $this->guardInvoiceLines($this->invoiceLines);
         $this->totalAmount = $this->aggregateLinesAmount($this->invoiceLines);

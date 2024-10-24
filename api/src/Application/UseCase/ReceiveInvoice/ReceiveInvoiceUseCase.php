@@ -45,7 +45,12 @@ class ReceiveInvoiceUseCase
             new Money($command->amount),
             $this->calculateTaxPercentage($command),
         );
-        $invoiceAggregate = new InvoiceAggregate($invoice, [$invoice_line]);
+        $invoiceAggregate = new InvoiceAggregate(
+            $invoice,
+            [$invoice_line],
+            $emitter_business,
+            $receiver_business,
+        );
         $invoice_id = $this->invoiceAggregateRepository->save($invoiceAggregate);
 
         $expense = new Expense(

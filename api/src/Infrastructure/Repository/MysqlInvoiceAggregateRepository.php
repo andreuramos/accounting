@@ -7,6 +7,7 @@ use App\Domain\Entities\Invoice;
 use App\Domain\Entities\InvoiceAggregate;
 use App\Domain\Exception\InvoiceNotFoundException;
 use App\Domain\Repository\InvoiceAggregateRepositoryInterface;
+use App\Domain\ValueObject\Address;
 use App\Domain\ValueObject\Id;
 use App\Domain\ValueObject\InvoiceLine;
 use App\Domain\ValueObject\InvoiceNumber;
@@ -40,8 +41,20 @@ class MysqlInvoiceAggregateRepository implements InvoiceAggregateRepositoryInter
         InvoiceNumber $invoiceNumber
     ): ?InvoiceAggregate {
         $stmt = $this->pdo->prepare(
-            'SELECT invoice.* FROM invoice ' .
-            'LEFT JOIN business emitter ON emitter.id = invoice.emitter_id ' .
+            'SELECT invoice.*, 
+       emitter.name as emitter_name, 
+       emitter.tax_name as emitter_tax_name,
+       emitter.tax_id as emitter_tax_id,
+       emitter.tax_address as emitter_tax_address,
+       emitter.tax_zip_code as emitter_tax_zip_code,
+       receiver.name as receiver_name,
+       receiver.tax_name as receiver_tax_name,
+       receiver.tax_id as receiver_tax_id,
+       receiver.tax_address as receiver_tax_address,
+       receiver.tax_zip_code as receiver_tax_zip_code
+                FROM invoice ' .
+            'LEFT JOIN business AS emitter ON emitter.id = invoice.emitter_id ' .
+            'LEFT JOIN business AS receiver ON receiver.id = invoice.receiver_id ' .
             'WHERE invoice.number = :number AND emitter.tax_id = :emitter_tax_id;'
         );
         $number = $invoiceNumber->number;
@@ -57,8 +70,9 @@ class MysqlInvoiceAggregateRepository implements InvoiceAggregateRepositoryInter
 
         $invoice = $this->buildInvoice($result[0]);
         $invoiceLines = $this->getInvoiceLines($invoice);
+        [$emitter, $receiver] = $this->buildBusinesses($result[0]);
 
-        return new InvoiceAggregate($invoice, $invoiceLines);
+        return new InvoiceAggregate($invoice, $invoiceLines, $emitter, $receiver);
     }
 
     public function getLastEmittedByBusiness(Business $business): ?Invoice
@@ -159,5 +173,24 @@ class MysqlInvoiceAggregateRepository implements InvoiceAggregateRepositoryInter
         }
 
         return $lines;
+    }
+
+    private function buildBusinesses(mixed $result): array
+    {
+        $emitter = new Business(
+            new Id($result['emitter_id']),
+            $result['emitter_name'],
+            $result['emitter_tax_name'],
+            $result['emitter_tax_id'],
+            new Address($result['emitter_tax_address'], $result['emitter_tax_zip_code']),
+        );
+        $receiver = new Business(
+            new Id($result['receiver_id']),
+            $result['receiver_name'],
+            $result['receiver_tax_name'],
+            $result['receiver_tax_id'],
+            new Address($result['receiver_tax_address'], $result['receiver_tax_zip_code']),
+        );
+        return [$emitter, $receiver];
     }
 }
