@@ -25,12 +25,13 @@ class GetInvoicesController extends AuthorizedController
     {
         $this->auth($request);
 
-        list($from, $to, $emitted_by) = $this->extractFilters($request);
+        list($from, $to, $emittedBy, $receivedBy) = $this->extractFilters($request);
         $command = new GetInvoicesCommand(
             $this->authUser->accountId(),
             $from,
             $to,
-            $emitted_by,
+            $emittedBy,
+            $receivedBy,
         );
 
         $result = ($this->getInvoicesUseCase)($command);
@@ -44,8 +45,9 @@ class GetInvoicesController extends AuthorizedController
             new \DateTime($request->query->get('from')) : null;
         $to = $request->query->get('to') ?
             new \DateTime($request->query->get('to')) : null;
-        $emitted_by = $request->query->get('emitted_by');
-        
-        return array($from, $to, $emitted_by);
+        $emittedBy = $request->query->get('emitted_by');
+        $receivedBy = $request->query->get('received_by');
+
+        return array($from, $to, $emittedBy, $receivedBy);
     }
 }
