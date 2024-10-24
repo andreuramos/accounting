@@ -24,19 +24,28 @@ class GetInvoicesController extends AuthorizedController
     public function __invoke(Request $request): ApiResponse
     {
         $this->auth($request);
-        
-        $from = $request->query->get('from') ?
-            new \DateTime($request->query->get('from')) : null;
-        $to = $request->query->get('to') ?
-            new \DateTime($request->query->get('to')) : null;
+
+        list($from, $to, $emitted_by) = $this->extractFilters($request);
         $command = new GetInvoicesCommand(
             $this->authUser->accountId(),
             $from,
             $to,
+            $emitted_by,
         );
 
         $result = ($this->getInvoicesUseCase)($command);
 
         return new ApiResponse($result->__toArray());
+    }
+
+    private function extractFilters(Request $request): array
+    {
+        $from = $request->query->get('from') ?
+            new \DateTime($request->query->get('from')) : null;
+        $to = $request->query->get('to') ?
+            new \DateTime($request->query->get('to')) : null;
+        $emitted_by = $request->query->get('emitted_by');
+        
+        return array($from, $to, $emitted_by);
     }
 }

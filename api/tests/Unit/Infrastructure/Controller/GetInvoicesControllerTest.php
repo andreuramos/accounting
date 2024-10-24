@@ -95,6 +95,24 @@ class GetInvoicesControllerTest extends AuthorizedControllerTest
         $controller($request);
     }
 
+    public function test_builds_command_with_emitted_by(): void
+    {
+        $request = new Request();
+        $request->headers->set('Authorization', 'Bearer ' . self::TOKEN);
+        $request->query->set('emitted_by', '43186322G');
+
+        $controller = $this->getController();
+        $expectedCommand = new GetInvoicesCommand(
+            accountId: $this->user->accountId(),
+            emitter_vat_number: '43186322G',
+        );
+        $this->usecase->__invoke($expectedCommand)
+            ->shouldBeCalled()
+            ->willReturn(new ExposableInvoices([]));
+
+        $controller($request);
+    }
+
     public function test_succeeds_with_no_results(): void
     {
         $request = new Request();
