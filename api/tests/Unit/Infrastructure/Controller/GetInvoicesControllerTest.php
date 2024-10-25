@@ -168,13 +168,13 @@ class GetInvoicesControllerTest extends AuthorizedControllerTest
         $decoded_result = json_decode($result->getContent(), true);
         $this->assertcount(1, $decoded_result);
         $result_invoice = $decoded_result[0];
-        $this->assertEquals($result_invoice['invoice_number'], self::INVOICE_NUMBER);
-        $this->assertEquals($result_invoice['emitter_tax_name'], self::EMITTER_TAXNAME);
-        $this->assertEquals($result_invoice['emitter_tax_number'], self::EMITTER_TAXNUMBER);
-        $this->assertEquals($result_invoice['emitter_tax_address'], self::EMITTER_RENDERED_TAXADDR);
-        $this->assertEquals($result_invoice['receiver_tax_name'], self::RECEIVER_TAXNAME);
-        $this->assertEquals($result_invoice['receiver_tax_number'], self::RECEIVER_TAXNUMBER);
-        $this->assertEquals($result_invoice['receiver_tax_address'], self::RECEIVER_RENDERED_TAXADDR);
+        $this->assertEquals(self::INVOICE_NUMBER, $result_invoice['invoice_number']);
+        $this->assertEquals(self::EMITTER_TAXNAME, $result_invoice['emitter_tax_name']);
+        $this->assertEquals(self::EMITTER_TAXNUMBER, $result_invoice['emitter_tax_number']);
+        $this->assertEquals(self::EMITTER_RENDERED_TAXADDR, $result_invoice['emitter_tax_address']);
+        $this->assertEquals(self::RECEIVER_TAXNAME, $result_invoice['receiver_tax_name']);
+        $this->assertEquals(self::RECEIVER_TAXNUMBER, $result_invoice['receiver_tax_number']);
+        $this->assertEquals(self::RECEIVER_RENDERED_TAXADDR, $result_invoice['receiver_tax_address']);
     }
 
     private function getController(): GetInvoicesController
