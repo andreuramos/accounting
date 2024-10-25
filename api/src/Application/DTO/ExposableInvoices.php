@@ -17,6 +17,9 @@ class ExposableInvoices
                 "emitter_tax_name" => $invoice->emitterTaxName(),
                 "emitter_tax_number" => $invoice->emitterTaxNumber(),
                 "emitter_tax_address" => $invoice->emitterTaxAddress(),
+                "receiver_tax_name" => $invoice->receiverTaxName(),
+                "receiver_tax_number" => $invoice->receiverTaxNumber(),
+                "receiver_tax_address" => $invoice->receiverTaxAddress(),
             ];
         }
     }

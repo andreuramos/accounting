@@ -46,6 +46,20 @@ class InvoiceAggregate
     {
         return (string)$this->emitterBusiness->taxAddress;
     }
+    public function receiverTaxName(): string
+    {
+        return $this->receiverBusiness->taxName;
+    }
+
+    public function receiverTaxNumber(): string
+    {
+        return $this->receiverBusiness->taxNumber;
+    }
+
+    public function receiverTaxAddress(): string
+    {
+        return (string)$this->receiverBusiness->taxAddress;
+    }
 
     public function invoice(): Invoice
     {
