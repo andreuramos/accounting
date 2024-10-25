@@ -9,4 +9,9 @@ class Address
         public readonly string $zip
     ) {
     }
+
+    public function __toString(): string
+    {
+        return $this->street . ', ' . $this->zip;
+    }
 }

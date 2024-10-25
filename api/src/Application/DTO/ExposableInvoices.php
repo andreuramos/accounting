@@ -6,20 +6,23 @@ use App\Domain\Entities\InvoiceAggregate;
 
 class ExposableInvoices
 {
-    private array $exposableInvoices = [];
+    private array $exposableInvoiceData = [];
 
     public function __construct(array $invoices)
     {
         /** @var InvoiceAggregate $invoice */
         foreach ($invoices as $invoice) {
-            $this->exposableInvoices[] = [
+            $this->exposableInvoiceData[] = [
                 "invoice_number" => $invoice->invoiceNumber()->number,
+                "emitter_tax_name" => $invoice->emitterTaxName(),
+                "emitter_tax_number" => $invoice->emitterTaxNumber(),
+                "emitter_tax_address" => $invoice->emitterTaxAddress(),
             ];
         }
     }
 
     public function __toArray(): array
     {
-        return $this->exposableInvoices;
+        return $this->exposableInvoiceData;
     }
 }

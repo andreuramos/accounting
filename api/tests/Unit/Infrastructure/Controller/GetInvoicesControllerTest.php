@@ -28,7 +28,10 @@ class GetInvoicesControllerTest extends AuthorizedControllerTest
     private const QUANTITY = 2;
     private const PRICE = 25;
     private const VAT = 21;
-    const INVOICE_NUMBER = "2024/001";
+    private const INVOICE_NUMBER = "2024/001";
+    private const EMITTER_TAXNUMBER = "43186322G";
+    private const EMITTER_TAXNAME = "EMITTER TAX NAME SL";
+    private const EMITTER_RENDERED_TAXADDR = "Emitter Street 1, 07001";
     private $usecase;
 
     public function setUp(): void
@@ -163,7 +166,9 @@ class GetInvoicesControllerTest extends AuthorizedControllerTest
         $this->assertcount(1, $decoded_result);
         $result_invoice = $decoded_result[0];
         $this->assertEquals($result_invoice['invoice_number'], self::INVOICE_NUMBER);
-        //$this->assertEquals($result_invoice['emitter_tax_number'], self::INVOICE_NUMBER);
+        $this->assertEquals($result_invoice['emitter_tax_name'], self::EMITTER_TAXNAME);
+        $this->assertEquals($result_invoice['emitter_tax_number'], self::EMITTER_TAXNUMBER);
+        $this->assertEquals($result_invoice['emitter_tax_address'], self::EMITTER_RENDERED_TAXADDR);
     }
 
     private function getController(): GetInvoicesController
@@ -197,8 +202,8 @@ class GetInvoicesControllerTest extends AuthorizedControllerTest
             new Business(
                 new Id(244),
                 "EMITTER INFORMAL NAME",
-                "EMITTER TAX NAME SL",
-                "43186322G",
+                self::EMITTER_TAXNAME,
+                self::EMITTER_TAXNUMBER,
                 new Address("Emitter Street 1", "07001"),
             ),
             new Business(
