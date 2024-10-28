@@ -26,8 +26,8 @@ class GetInvoicesControllerTest extends AuthorizedControllerTest
 
     private const PRODUCT = "Capsa 12 Moixa Feresta";
     private const QUANTITY = 2;
-    private const PRICE = 25;
-    private const VAT = 21;
+    private const PRICE_IN_CENTS = 2500;
+    private const VAT_PERCENT = 21;
     private const INVOICE_NUMBER = "2024/001";
     private const EMITTER_TAXNUMBER = "43186322G";
     private const EMITTER_TAXNAME = "EMITTER TAX NAME SL";
@@ -175,6 +175,10 @@ class GetInvoicesControllerTest extends AuthorizedControllerTest
         $this->assertEquals(self::RECEIVER_TAXNAME, $result_invoice['receiver_tax_name']);
         $this->assertEquals(self::RECEIVER_TAXNUMBER, $result_invoice['receiver_tax_number']);
         $this->assertEquals(self::RECEIVER_RENDERED_TAXADDR, $result_invoice['receiver_tax_address']);
+        $this->assertEquals((self::PRICE_IN_CENTS / 100) . " €", $result_invoice['base_amount']);
+        $vat = self::PRICE_IN_CENTS * self::VAT_PERCENT / 100 / 100;
+        $this->assertEquals($vat . " €", $result_invoice['vat_amount']);
+        $this->assertEquals((self::PRICE_IN_CENTS / 100) + $vat . " €", $result_invoice['total_amount']);
     }
 
     private function getController(): GetInvoicesController
@@ -201,8 +205,8 @@ class GetInvoicesControllerTest extends AuthorizedControllerTest
                 new InvoiceLine(
                     self::PRODUCT,
                     self::QUANTITY,
-                    new Money(self::PRICE),
-                    new Percentage(self::VAT)
+                    new Money(self::PRICE_IN_CENTS),
+                    new Percentage(self::VAT_PERCENT)
                 )
             ],
             new Business(

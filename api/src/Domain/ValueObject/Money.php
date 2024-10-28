@@ -19,4 +19,14 @@ class Money
             throw new \InvalidArgumentException("invalid currency " . $currency);
         }
     }
+
+    public function __toString(): string
+    {
+        return ($this->amountCents / 100) . " " . $this->currencySymbol();
+    }
+
+    private function currencySymbol(): string
+    {
+        return "€";
+    }
 }

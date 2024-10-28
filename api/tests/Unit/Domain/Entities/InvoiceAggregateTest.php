@@ -92,7 +92,7 @@ class InvoiceAggregateTest extends TestCase
         self::assertEquals(self::INVOICE_NUMBER, $aggregate->invoiceNumber());
     }
 
-    public function test_total_amount_from_lines(): void
+    public function test_base_amount_from_lines(): void
     {
         $invoiceLine = new InvoiceLine(
             "Capsa 12 Moixa Amber Ale",
@@ -108,6 +108,50 @@ class InvoiceAggregateTest extends TestCase
             $this->receiverBusiness,
         );
 
-        self::assertEquals(2664, $aggregate->totalAmount()->amountCents);
+        self::assertEquals(2664, $aggregate->baseAmount()->amountCents);
+    }
+    
+    public function test_vat_amount_from_lines(): void
+    {
+        $invoiceLine = new InvoiceLine(
+            "Capsa 12 Moixa Feresta",
+            1,
+            new Money(2664),
+            new Percentage(21),
+        );
+        $otherLine = new InvoiceLine(
+            "Capsa 12 Moixa Amber Ale",
+            1,
+            new Money(2200),
+            new Percentage(21),
+        );
+        
+        $aggregate = new InvoiceAggregate(
+            $this->invoice,
+            [$invoiceLine, $otherLine],
+            $this->emitterBusiness,
+            $this->receiverBusiness,
+        );
+        
+        $this->assertEquals(new Money(1021), $aggregate->vatAmount());
+    }
+    
+    public function test_total_amount_from_lines(): void
+    {
+        $invoiceLine = new InvoiceLine(
+            "Capsa 12 Moixa Feresta",
+            1,
+            new Money(2800),
+            new Percentage(21),
+        );
+        
+        $aggregate = new InvoiceAggregate(
+            $this->invoice,
+            [$invoiceLine],
+            $this->emitterBusiness,
+            $this->receiverBusiness,
+        );
+        
+        $this->assertEquals(new Money(3388), $aggregate->totalAmount());
     }
 }

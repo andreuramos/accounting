@@ -10,7 +10,8 @@ use App\Domain\ValueObject\Money;
 
 class InvoiceAggregate
 {
-    private Money $totalAmount;
+    private Money $baseAmount;
+    private Money $vatAmount;
 
     public function __construct(
         private readonly Invoice $invoice,
@@ -19,7 +20,7 @@ class InvoiceAggregate
         private readonly Business $receiverBusiness,
     ) {
         $this->guardInvoiceLines($this->invoiceLines);
-        $this->totalAmount = $this->aggregateLinesAmount($this->invoiceLines);
+        [$this->baseAmount, $this->vatAmount] = $this->aggregateLinesAmount($this->invoiceLines);
     }
 
     public function id(): Id
@@ -30,6 +31,24 @@ class InvoiceAggregate
     public function invoiceNumber(): InvoiceNumber
     {
         return $this->invoice->invoiceNumber;
+    }
+
+    public function baseAmount(): Money
+    {
+        return $this->baseAmount;
+    }
+
+    public function vatAmount(): Money
+    {
+        return $this->vatAmount;
+    }
+
+    public function totalAmount(): Money
+    {
+        return new Money(
+            $this->baseAmount->amountCents +
+            $this->vatAmount->amountCents
+        );
     }
 
     public function emitterTaxName(): string
@@ -46,6 +65,7 @@ class InvoiceAggregate
     {
         return (string)$this->emitterBusiness->taxAddress;
     }
+
     public function receiverTaxName(): string
     {
         return $this->receiverBusiness->taxName;
@@ -71,11 +91,6 @@ class InvoiceAggregate
         return $this->invoiceLines;
     }
 
-    public function totalAmount(): Money
-    {
-        return $this->totalAmount;
-    }
-
     private function guardInvoiceLines(array $invoiceLines): void
     {
         if (empty($invoiceLines)) {
@@ -91,12 +106,17 @@ class InvoiceAggregate
         }
     }
 
-    private function aggregateLinesAmount(array $invoiceLines): Money
+    private function aggregateLinesAmount(array $invoiceLines): array
     {
-        $totalAmountCents = array_reduce($invoiceLines, function ($accumulated, InvoiceLine $invoiceLine) {
-            return $accumulated + $invoiceLine->amount->amountCents;
-        });
+        $baseAmount = array_reduce($invoiceLines, function ($accumulated, InvoiceLine $invoiceLine) {
+            $accumulated['base'] += $invoiceLine->amount->amountCents;
+            $accumulated['vat'] += round($invoiceLine->amount->amountCents * $invoiceLine->vat_percentage->value / 100);
+            return $accumulated;
+        }, ['base' => 0, 'vat' => 0]);
 
-        return new Money($totalAmountCents);
+        return [
+            new Money($baseAmount['base']),
+            new Money($baseAmount['vat']),
+        ];
     }
 }

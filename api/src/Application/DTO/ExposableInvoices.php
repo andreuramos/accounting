@@ -20,6 +20,9 @@ class ExposableInvoices
                 "receiver_tax_name" => $invoice->receiverTaxName(),
                 "receiver_tax_number" => $invoice->receiverTaxNumber(),
                 "receiver_tax_address" => $invoice->receiverTaxAddress(),
+                "base_amount" => (string) $invoice->baseAmount(),
+                "vat_amount" => (string) $invoice->vatAmount(),
+                "total_amount" => (string) $invoice->totalAmount(),
             ];
         }
     }
