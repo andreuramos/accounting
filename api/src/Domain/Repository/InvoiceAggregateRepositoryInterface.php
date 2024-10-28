@@ -2,6 +2,7 @@
 
 namespace App\Domain\Repository;
 
+use App\Domain\Criteria\InvoiceCriteria;
 use App\Domain\Entities\Business;
 use App\Domain\Entities\Invoice;
 use App\Domain\Entities\InvoiceAggregate;
@@ -19,4 +20,6 @@ interface InvoiceAggregateRepositoryInterface
         InvoiceNumber $invoiceNumber
     ): ?InvoiceAggregate;
     public function findLastEmittedByBusiness(Business $business): ?Invoice;
+    
+    public function getByCriteria(InvoiceCriteria $criteria): array;
 }
