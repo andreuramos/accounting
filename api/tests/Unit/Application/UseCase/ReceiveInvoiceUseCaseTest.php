@@ -6,7 +6,6 @@ use App\Application\UseCase\ReceiveInvoice\ReceiveInvoiceCommand;
 use App\Application\UseCase\ReceiveInvoice\ReceiveInvoiceUseCase;
 use App\Domain\Entities\Business;
 use App\Domain\Entities\Expense;
-use App\Domain\Entities\Invoice;
 use App\Domain\Entities\InvoiceAggregate;
 use App\Domain\Entities\User;
 use App\Domain\Exception\BusinessNotFoundException;
