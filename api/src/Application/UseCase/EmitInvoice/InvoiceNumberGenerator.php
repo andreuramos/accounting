@@ -28,7 +28,7 @@ class InvoiceNumberGenerator
 
     private function getNextInvoiceNumber(Business $business): int
     {
-        $lastInvoice = $this->invoiceAggregateRepository->getLastEmittedByBusiness($business);
+        $lastInvoice = $this->invoiceAggregateRepository->findLastEmittedByBusiness($business);
 
         if (null === $lastInvoice) {
             return 1;

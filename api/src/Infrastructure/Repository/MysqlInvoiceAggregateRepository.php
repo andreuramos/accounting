@@ -75,7 +75,7 @@ class MysqlInvoiceAggregateRepository implements InvoiceAggregateRepositoryInter
         return new InvoiceAggregate($invoice, $invoiceLines, $emitter, $receiver);
     }
 
-    public function getLastEmittedByBusiness(Business $business): ?Invoice
+    public function findLastEmittedByBusiness(Business $business): ?Invoice
     {
         $stmt = $this->pdo->prepare(
             'SELECT * FROM invoice ' .
