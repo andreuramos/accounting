@@ -26,6 +26,12 @@ class GetInvoicesUseCase
     {
         $criteria = new InvoiceCriteria();
         $criteria->filterByAccountId($command->accountId);
+        if ($command->emitterTaxNumber !== null) {
+            $criteria->filterByEmitterTaxNumber($command->emitterTaxNumber);
+        }
+        if ($command->receiverTaxNumber !== null) {
+            $criteria->filterByReceiverTaxNumber($command->receiverTaxNumber);
+        }
         
         return $criteria;
     }
