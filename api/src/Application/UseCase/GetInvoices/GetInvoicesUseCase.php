@@ -25,7 +25,7 @@ class GetInvoicesUseCase
     private function buildCriteria(GetInvoicesCommand $command): InvoiceCriteria
     {
         $criteria = new InvoiceCriteria();
-        $criteria->filterBy("account_id", $command->accountId);
+        $criteria->filterByAccountId($command->accountId);
         
         return $criteria;
     }

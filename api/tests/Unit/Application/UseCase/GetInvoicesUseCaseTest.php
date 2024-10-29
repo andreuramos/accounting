@@ -25,8 +25,8 @@ class GetInvoicesUseCaseTest extends TestCase
     {
         $command = new GetInvoicesCommand(new Id(1));
         $expectedCriteria = new InvoiceCriteria();
-        $expectedCriteria->filterBy("account_id", new Id(1));
-        
+        $expectedCriteria->filterByAccountId(new Id(1));
+
         $this->invoiceAggregateRepository
             ->getByCriteria($expectedCriteria)
             ->shouldBeCalled();

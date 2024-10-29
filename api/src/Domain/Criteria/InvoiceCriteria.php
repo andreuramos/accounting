@@ -2,13 +2,15 @@
 
 namespace App\Domain\Criteria;
 
+use App\Domain\ValueObject\Id;
+
 class InvoiceCriteria
 {
-    private $criteria = [];
+    private ?Id $accountIdFilter = null;
     
-    public function filterBy(string $field, mixed $value): InvoiceCriteria
+    public function filterByAccountId(Id $accountId): InvoiceCriteria
     {
-        $this->criteria[$field] = $value;
+        $this->accountIdFilter = $accountId;
         return $this;
     }
 }
