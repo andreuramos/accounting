@@ -73,6 +73,40 @@ class GetInvoicesUseCaseTest extends TestCase
         
         $useCase($command);
     }
+    
+    public function test_calls_repo_with_from_filter(): void
+    {
+        $command = new GetInvoicesCommand(
+            accountId: new Id(1),
+            fromDate: new \DateTime('2024-01-01'),
+        );
+        $expectedCriteria = new InvoiceCriteria();
+        $expectedCriteria->filterByAccountId(new Id(1))
+            ->filterByFromDate(new \DateTime('2024-01-01'));
+        $useCase = $this->buildUseCase();
+
+        $this->invoiceAggregateRepository->getByCriteria($expectedCriteria)
+            ->shouldBeCalled();
+
+        $useCase($command);
+    }
+    
+    public function test_calls_repo_with_to_date_filter(): void
+    {
+        $command = new GetInvoicesCommand(
+            accountId: new Id(1),
+            toDate: new \DateTime('2024-09-30'),
+        );
+        $expectedCriteria = new InvoiceCriteria();
+        $expectedCriteria->filterByAccountId(new Id(1))
+            ->filterByToDate(new \DateTime('2024-09-30'));
+        $useCase = $this->buildUseCase();
+        
+        $this->invoiceAggregateRepository->getByCriteria($expectedCriteria)
+            ->shouldBeCalled();
+        
+        $useCase($command);
+    }
 
     private function buildUseCase(): GetInvoicesUseCase
     {

@@ -32,6 +32,12 @@ class GetInvoicesUseCase
         if ($command->receiverTaxNumber !== null) {
             $criteria->filterByReceiverTaxNumber($command->receiverTaxNumber);
         }
+        if ($command->fromDate !== null) {
+            $criteria->filterByFromDate($command->fromDate);
+        }
+        if ($command->toDate !== null) {
+            $criteria->filterByToDate($command->toDate);
+        }
         
         return $criteria;
     }
