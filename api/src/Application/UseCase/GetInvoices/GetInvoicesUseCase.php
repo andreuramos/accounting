@@ -12,13 +12,13 @@ class GetInvoicesUseCase
         private readonly InvoiceAggregateRepositoryInterface $invoiceAggregateRepository,
     ) {
     }
-    
+
     public function __invoke(GetInvoicesCommand $command): ExposableInvoices
     {
         $criteria = $this->buildCriteria($command);
-        
+
         $invoices = $this->invoiceAggregateRepository->getByCriteria($criteria);
-        
+
         return new ExposableInvoices($invoices);
     }
 
@@ -38,7 +38,7 @@ class GetInvoicesUseCase
         if ($command->toDate !== null) {
             $criteria->filterByToDate($command->toDate);
         }
-        
+
         return $criteria;
     }
 }

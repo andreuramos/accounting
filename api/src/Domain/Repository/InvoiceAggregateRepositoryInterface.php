@@ -19,7 +19,8 @@ interface InvoiceAggregateRepositoryInterface
         string $emitterTaxId,
         InvoiceNumber $invoiceNumber
     ): ?InvoiceAggregate;
+
     public function findLastEmittedByBusiness(Business $business): ?Invoice;
-    
+
     public function getByCriteria(InvoiceCriteria $criteria): array;
 }

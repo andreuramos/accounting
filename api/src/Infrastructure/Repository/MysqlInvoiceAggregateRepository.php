@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Repository;
 
+use App\Domain\Criteria\InvoiceCriteria;
 use App\Domain\Entities\Business;
 use App\Domain\Entities\Invoice;
 use App\Domain\Entities\InvoiceAggregate;
@@ -192,5 +193,10 @@ class MysqlInvoiceAggregateRepository implements InvoiceAggregateRepositoryInter
             new Address($result['receiver_tax_address'], $result['receiver_tax_zip_code']),
         );
         return [$emitter, $receiver];
+    }
+
+    public function getByCriteria(InvoiceCriteria $criteria): array
+    {
+        return [];
     }
 }

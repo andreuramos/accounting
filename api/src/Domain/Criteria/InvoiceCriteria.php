@@ -18,25 +18,25 @@ class InvoiceCriteria
         $this->accountIdFilter = $accountId;
         return $this;
     }
-    
+
     public function filterByEmitterTaxNumber(string $emitterTaxNumber): InvoiceCriteria
     {
         $this->emitterTaxNumberFilter = $emitterTaxNumber;
         return $this;
     }
-    
+
     public function filterByReceiverTaxNumber(string $receiverTaxNumber): InvoiceCriteria
     {
         $this->receiverTaxNumberFilter = $receiverTaxNumber;
         return $this;
     }
-    
+
     public function filterByFromDate(DateTime $fromDate): InvoiceCriteria
     {
         $this->fromDateFilter = $fromDate;
         return $this;
     }
-    
+
     public function filterByToDate(DateTime $toDate): InvoiceCriteria
     {
         $this->toDateFilter = $toDate;

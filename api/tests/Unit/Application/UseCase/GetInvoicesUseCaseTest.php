@@ -2,12 +2,14 @@
 
 namespace Test\Unit\Application\UseCase;
 
+use App\Application\DTO\ExposableInvoices;
 use App\Application\UseCase\GetInvoices\GetInvoicesCommand;
 use App\Application\UseCase\GetInvoices\GetInvoicesUseCase;
 use App\Domain\Criteria\InvoiceCriteria;
 use App\Domain\Repository\InvoiceAggregateRepositoryInterface;
 use App\Domain\ValueObject\Id;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 class GetInvoicesUseCaseTest extends TestCase
@@ -106,6 +108,18 @@ class GetInvoicesUseCaseTest extends TestCase
             ->shouldBeCalled();
         
         $useCase($command);
+    }
+    
+    public function test_returns_exposable_invocies(): void
+    {
+        $command = new GetInvoicesCommand(new Id(1));
+        $this->invoiceAggregateRepository->getByCriteria(Argument::any())
+            ->willReturn([]);
+        $useCase = $this->buildUseCase();
+        
+        $result = $useCase($command);
+        
+        self::assertInstanceOf(ExposableInvoices::class, $result);
     }
 
     private function buildUseCase(): GetInvoicesUseCase
