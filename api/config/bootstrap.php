@@ -41,6 +41,9 @@ try {
     {$exception->getTraceAsString()}
     EOF;
     $status = $exception->getCode() ?? Response::HTTP_INTERNAL_SERVER_ERROR;
+    if (!in_array($status, Response::$statusTexts)) {
+        $status = Response::HTTP_INTERNAL_SERVER_ERROR;
+    }
     $response = new Response($errorText, $status, [
         'Content-Type' => 'text/plain',
     ]);
