@@ -197,6 +197,50 @@ class MysqlInvoiceAggregateRepository implements InvoiceAggregateRepositoryInter
 
     public function getByCriteria(InvoiceCriteria $criteria): array
     {
-        return [];
+
+        $query = 'SELECT invoice.*, 
+            emitter.name as emitter_name, 
+            emitter.tax_name as emitter_tax_name,
+            emitter.tax_id as emitter_tax_id,
+            emitter.tax_address as emitter_tax_address,
+            emitter.tax_zip_code as emitter_tax_zip_code,
+            receiver.name as receiver_name,
+            receiver.tax_name as receiver_tax_name,
+            receiver.tax_id as receiver_tax_id,
+            receiver.tax_address as receiver_tax_address,
+            receiver.tax_zip_code as receiver_tax_zip_code           
+            FROM invoice ' .
+            'LEFT JOIN business AS emitter ON emitter.id = invoice.emitter_id ' .
+            'LEFT JOIN business AS receiver ON receiver.id = invoice.receiver_id ';
+
+        if ($criteria->emitterTaxNumber() !== null) {
+            $query .= 'WHERE emitter.tax_id = :emitter_tax_id ';
+        }
+
+        $stmt = $this->pdo->prepare($query);
+
+        if ($criteria->emitterTaxNumber() !== null) {
+            $taxnumber = $criteria->emitterTaxNumber();
+            $stmt->bindParam(':emitter_tax_id', $taxnumber);
+        }
+
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+
+        $invoices = [];
+        foreach ($results as $result) {
+            $invoice = $this->buildInvoice($result);
+            [$emitter, $receiver] = $this->buildBusinesses($result);
+            $lines = $this->getInvoiceLines($invoice);
+
+            $invoices[] = new InvoiceAggregate(
+                $invoice,
+                $lines,
+                $emitter,
+                $receiver,
+            );
+        }
+
+        return $invoices;
     }
 }

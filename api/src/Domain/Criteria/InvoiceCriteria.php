@@ -42,4 +42,9 @@ class InvoiceCriteria
         $this->toDateFilter = $toDate;
         return $this;
     }
+
+    public function emitterTaxNumber(): ?string
+    {
+        return $this->emitterTaxNumberFilter;
+    }
 }
