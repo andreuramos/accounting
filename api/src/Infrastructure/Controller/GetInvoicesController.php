@@ -25,7 +25,7 @@ class GetInvoicesController extends AuthorizedController
     {
         $this->auth($request);
 
-        list($from, $to, $emittedBy, $receivedBy) = $this->extractFilters($request);
+        [$from, $to, $emittedBy, $receivedBy] = $this->extractFilters($request);
         $command = new GetInvoicesCommand(
             $this->authUser->accountId(),
             $from,
