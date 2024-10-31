@@ -11,7 +11,7 @@ class InvoiceCriteria
     private ?string $emitterTaxNumberFilter = null;
     private ?string $receiverTaxNumberFilter = null;
     private ?DateTime $fromDateFilter = null;
-    private ?DateTime $toDateFilter;
+    private ?DateTime $toDateFilter = null;
 
     public function filterByAccountId(Id $accountId): InvoiceCriteria
     {
@@ -51,5 +51,15 @@ class InvoiceCriteria
     public function receiverTaxNumber(): ?string
     {
         return $this->receiverTaxNumberFilter;
+    }
+
+    public function fromDate(): ?DateTime
+    {
+        return $this->fromDateFilter;
+    }
+
+    public function toDate(): ?DateTime
+    {
+        return $this->toDateFilter;
     }
 }

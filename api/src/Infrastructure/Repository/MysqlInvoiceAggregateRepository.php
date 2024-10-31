@@ -260,6 +260,12 @@ class MysqlInvoiceAggregateRepository implements InvoiceAggregateRepositoryInter
         if ($criteria->receiverTaxNumber() !== null) {
             $filters[] = 'receiver.tax_id = :receiver_tax_id ';
         }
+        if ($criteria->fromDate() !== null) {
+            $filters[] = 'invoice.date >= :from_date ';
+        }
+        if ($criteria->toDate() !== null) {
+            $filters[] = 'invoice.date <= :to_date ';
+        }
 
         if (count($filters)) {
             $query .= ' WHERE ' . implode(' AND ', $filters);
@@ -274,6 +280,14 @@ class MysqlInvoiceAggregateRepository implements InvoiceAggregateRepositoryInter
         if ($criteria->receiverTaxNumber() !== null) {
             $receiver_taxnumber = $criteria->receiverTaxNumber();
             $stmt->bindParam(':receiver_tax_id', $receiver_taxnumber);
+        }
+        if ($criteria->fromDate() !== null) {
+            $from_date = date_format($criteria->fromDate(), "Y-m-d");
+            $stmt->bindParam(':from_date', $from_date);
+        }
+        if ($criteria->toDate() !== null) {
+            $to_date = date_format($criteria->toDate(), "Y-m-d");
+            $stmt->bindParam(':to_date', $to_date);
         }
 
         return $stmt;
