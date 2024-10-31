@@ -7,6 +7,7 @@ use App\Domain\ValueObject\Id;
 use App\Domain\ValueObject\InvoiceLine;
 use App\Domain\ValueObject\InvoiceNumber;
 use App\Domain\ValueObject\Money;
+use DateTime;
 
 class InvoiceAggregate
 {
@@ -31,6 +32,11 @@ class InvoiceAggregate
     public function invoiceNumber(): InvoiceNumber
     {
         return $this->invoice->invoiceNumber;
+    }
+    
+    public function invoiceDate(): DateTime
+    {
+        return $this->invoice->dateTime;
     }
 
     public function baseAmount(): Money

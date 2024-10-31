@@ -14,6 +14,7 @@ class ExposableInvoices
         foreach ($invoices as $invoice) {
             $this->exposableInvoiceData[] = [
                 "invoice_number" => $invoice->invoiceNumber()->number,
+                "invoice_date" => $invoice->invoiceDate()->format("Y-m-d"),
                 "emitter_tax_name" => $invoice->emitterTaxName(),
                 "emitter_tax_number" => $invoice->emitterTaxNumber(),
                 "emitter_tax_address" => $invoice->emitterTaxAddress(),

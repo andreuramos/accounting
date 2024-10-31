@@ -16,6 +16,7 @@ use App\Domain\ValueObject\InvoiceNumber;
 use App\Domain\ValueObject\Money;
 use App\Domain\ValueObject\Percentage;
 use App\Infrastructure\Controller\GetInvoicesController;
+use DateTime;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,6 +36,7 @@ class GetInvoicesControllerTest extends AuthorizedControllerTest
     private const RECEIVER_TAXNAME = "RECEIVER TAX NAME SL";
     private const RECEIVER_TAXNUMBER = "B071135688";
     private const RECEIVER_RENDERED_TAXADDR = "Reception Street 1, 07002";
+    private const INVOICE_DATE = '2024-10-31';
     private $usecase;
 
     public function setUp(): void
@@ -76,7 +78,7 @@ class GetInvoicesControllerTest extends AuthorizedControllerTest
         $controller = $this->getController();
         $expectedCommand = new GetInvoicesCommand(
             accountId: $this->user->accountId(),
-            fromDate: new \DateTime('2024-01-01'),
+            fromDate: new DateTime('2024-01-01'),
         );
         $this->usecase->__invoke($expectedCommand)
             ->shouldBeCalled()
@@ -94,7 +96,7 @@ class GetInvoicesControllerTest extends AuthorizedControllerTest
         $controller = $this->getController();
         $expectedCommand = new GetInvoicesCommand(
             accountId: $this->user->accountId(),
-            toDate: new \DateTime('2024-01-01'),
+            toDate: new DateTime('2024-01-01'),
         );
         $this->usecase->__invoke($expectedCommand)
             ->shouldBeCalled()
@@ -169,6 +171,7 @@ class GetInvoicesControllerTest extends AuthorizedControllerTest
         $this->assertcount(1, $decoded_result);
         $result_invoice = $decoded_result[0];
         $this->assertEquals(self::INVOICE_NUMBER, $result_invoice['invoice_number']);
+        $this->assertEquals(self::INVOICE_DATE, $result_invoice['invoice_date']);
         $this->assertEquals(self::EMITTER_TAXNAME, $result_invoice['emitter_tax_name']);
         $this->assertEquals(self::EMITTER_TAXNUMBER, $result_invoice['emitter_tax_number']);
         $this->assertEquals(self::EMITTER_RENDERED_TAXADDR, $result_invoice['emitter_tax_address']);
@@ -197,7 +200,7 @@ class GetInvoicesControllerTest extends AuthorizedControllerTest
             new InvoiceNumber(self::INVOICE_NUMBER),
             new Id(244),
             new Id(255),
-            new \DateTime()
+            new DateTime(self::INVOICE_DATE),
         );
         return new InvoiceAggregate(
             $invoice,
