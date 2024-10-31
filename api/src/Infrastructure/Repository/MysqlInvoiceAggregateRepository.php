@@ -14,6 +14,7 @@ use App\Domain\ValueObject\InvoiceLine;
 use App\Domain\ValueObject\InvoiceNumber;
 use App\Domain\ValueObject\Money;
 use App\Domain\ValueObject\Percentage;
+use PDOStatement;
 
 class MysqlInvoiceAggregateRepository implements InvoiceAggregateRepositoryInterface
 {
@@ -197,7 +198,6 @@ class MysqlInvoiceAggregateRepository implements InvoiceAggregateRepositoryInter
 
     public function getByCriteria(InvoiceCriteria $criteria): array
     {
-
         $query = 'SELECT invoice.*, 
             emitter.name as emitter_name, 
             emitter.tax_name as emitter_tax_name,
@@ -213,20 +213,10 @@ class MysqlInvoiceAggregateRepository implements InvoiceAggregateRepositoryInter
             'LEFT JOIN business AS emitter ON emitter.id = invoice.emitter_id ' .
             'LEFT JOIN business AS receiver ON receiver.id = invoice.receiver_id ';
 
-        if ($criteria->emitterTaxNumber() !== null) {
-            $query .= 'WHERE emitter.tax_id = :emitter_tax_id ';
-        }
-
-        $stmt = $this->pdo->prepare($query);
-
-        if ($criteria->emitterTaxNumber() !== null) {
-            $taxnumber = $criteria->emitterTaxNumber();
-            $stmt->bindParam(':emitter_tax_id', $taxnumber);
-        }
+        $stmt = $this->prepareStatement($criteria, $query);
 
         $stmt->execute();
         $results = $stmt->fetchAll();
-
         $invoices = [];
         foreach ($results as $result) {
             $invoice = $this->buildInvoice($result);
@@ -242,5 +232,50 @@ class MysqlInvoiceAggregateRepository implements InvoiceAggregateRepositoryInter
         }
 
         return $invoices;
+    }
+
+    private function setQueryFilters(InvoiceCriteria $criteria, string $query): string
+    {
+        $filters = [];
+        if ($criteria->emitterTaxNumber() !== null) {
+            $filters[] = 'emitter.tax_id = :emitter_tax_id ';
+        }
+        if ($criteria->receiverTaxNumber() !== null) {
+            $filters[] = 'receiver.tax_id = :receiver_tax_id ';
+        }
+
+        if (count($filters)) {
+            $query .= ' WHERE ' . implode(' AND ', $filters);
+        }
+
+        return $query;
+    }
+
+    private function prepareStatement(InvoiceCriteria $criteria, string $query): PDOStatement
+    {
+        $filters = [];
+        if ($criteria->emitterTaxNumber() !== null) {
+            $filters[] = 'emitter.tax_id = :emitter_tax_id ';
+        }
+        if ($criteria->receiverTaxNumber() !== null) {
+            $filters[] = 'receiver.tax_id = :receiver_tax_id ';
+        }
+
+        if (count($filters)) {
+            $query .= ' WHERE ' . implode(' AND ', $filters);
+        }
+
+        $stmt = $this->pdo->prepare($query);
+
+        if ($criteria->emitterTaxNumber() !== null) {
+            $emitter_taxnumber = $criteria->emitterTaxNumber();
+            $stmt->bindParam(':emitter_tax_id', $emitter_taxnumber);
+        }
+        if ($criteria->receiverTaxNumber() !== null) {
+            $receiver_taxnumber = $criteria->receiverTaxNumber();
+            $stmt->bindParam(':receiver_tax_id', $receiver_taxnumber);
+        }
+
+        return $stmt;
     }
 }

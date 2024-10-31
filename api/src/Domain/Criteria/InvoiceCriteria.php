@@ -47,4 +47,9 @@ class InvoiceCriteria
     {
         return $this->emitterTaxNumberFilter;
     }
+
+    public function receiverTaxNumber(): ?string
+    {
+        return $this->receiverTaxNumberFilter;
+    }
 }

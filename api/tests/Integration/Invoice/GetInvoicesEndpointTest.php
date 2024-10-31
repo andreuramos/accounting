@@ -26,4 +26,9 @@ class GetInvoicesEndpointTest extends EndpointTest
 
         $this->assertEquals(200, $response->getStatusCode());
     }
+    
+    public function test_authorized_with_filters_returns_200(): void
+    {
+        $this->markTestSkipped("Unimplemented");
+    }
 }
