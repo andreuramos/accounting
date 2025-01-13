@@ -33,7 +33,7 @@ class InvoiceAggregate
     {
         return $this->invoice->invoiceNumber;
     }
-    
+
     public function invoiceDate(): DateTime
     {
         return $this->invoice->dateTime;
