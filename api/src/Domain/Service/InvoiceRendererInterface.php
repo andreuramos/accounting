@@ -6,5 +6,5 @@ use App\Domain\Entities\InvoiceAggregate;
 
 interface InvoiceRendererInterface
 {
-    public function __invoke(InvoiceAggregate $invoiceAggregate): void;
+    public function __invoke(InvoiceAggregate $invoiceAggregate): string;
 }
