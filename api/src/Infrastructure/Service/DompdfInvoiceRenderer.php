@@ -13,7 +13,7 @@ class DompdfInvoiceRenderer implements InvoiceRendererInterface
         $pdf = new Dompdf();
         $pdf->loadHtml("Invoice " . $invoiceAggregate->invoiceNumber());
         $pdf->render();
-        
+
         return $pdf->output();
     }
 }
