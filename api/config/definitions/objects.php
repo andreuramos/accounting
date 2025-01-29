@@ -3,6 +3,7 @@
 use App\Infrastructure\Auth\JWTDecoder;
 use App\Infrastructure\Auth\JWTGenerator;
 use App\Infrastructure\Auth\JWTRefreshTokenGenerator;
+use App\Infrastructure\Service\LocalFileSaver;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__.'/../..');
@@ -30,5 +31,8 @@ return [
     JWTRefreshTokenGenerator::class => new JWTRefreshTokenGenerator(
         env('JWT_SIGNATURE_KEY'),
         env('JWT_REFRESH_TTL')
-    )
+    ),
+    LocalFileSaver::class => new LocalFileSaver(
+        env('FILE_DIRECTORY')
+    ),
 ];
