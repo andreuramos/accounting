@@ -16,4 +16,9 @@ class Invoice
         public readonly DateTime $dateTime,
     ) {
     }
+
+    public function wasEmittedInYear(int $currentYear): bool
+    {
+        return (int) $this->dateTime->format('Y') === $currentYear;
+    }
 }

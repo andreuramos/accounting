@@ -10,6 +10,7 @@ use App\Domain\Repository\InvoiceAggregateRepositoryInterface;
 use App\Domain\ValueObject\Address;
 use App\Domain\ValueObject\Id;
 use App\Domain\ValueObject\InvoiceNumber;
+use DateTime;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -65,7 +66,7 @@ class InvoiceNumberGeneratorTest extends TestCase
             new InvoiceNumber('202300000001'),
             $this->business->id,
             new Id(23),
-            new \DateTime(),
+            new \DateTime('2023-05-24'),
         );
         $this->invoiceAggregateRepository->findLastEmittedByBusiness(Argument::type(Business::class))
             ->willReturn($lastInvoice);
@@ -76,6 +77,27 @@ class InvoiceNumberGeneratorTest extends TestCase
 
         $correlativeValue = (int) substr($result->number, 4);
         $this->assertEquals(2, $correlativeValue);
+    }
+    
+    public function test_starts_over_numeration_if_last_invoice_is_in_previous_year(): void
+    {
+        $invoiceDate = (new \DateTime())->sub(new \DateInterval('P1Y'));
+        $lastInvoice = new Invoice(
+            new Id(1),
+            new InvoiceNumber('202300000005'),
+            $this->business->id,
+            new Id(23),
+            $invoiceDate,
+        );
+        $this->invoiceAggregateRepository->findLastEmittedByBusiness(Argument::type(Business::class))
+            ->willReturn($lastInvoice);
+        $this->timestamper->__invoke()->willReturn(new \DateTime());
+        $service = $this->buildService();
+
+        $result = $service($this->business);
+
+        $correlativeValue = (int) substr($result->number, 4);
+        $this->assertEquals(1, $correlativeValue);
     }
 
     private function buildService(): InvoiceNumberGenerator
