@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class LocalFileSaverTest extends TestCase
 {
-    const TEST_BASE_PATH = 'tmp/';
+    private const TEST_BASE_PATH = 'tmp/';
 
     public function test_saves_file_with_contents(): void
     {
