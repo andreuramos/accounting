@@ -41,7 +41,7 @@ class RenderInvoiceCommand extends Command
             return Command::FAILURE;
         }
 
-        $output->write("Rendering Invoice $invoiceNumber of account $accountId");
+        $output->write("Rendering Invoice $invoiceNumber of account $accountId\n");
         return Command::SUCCESS;
     }
 }

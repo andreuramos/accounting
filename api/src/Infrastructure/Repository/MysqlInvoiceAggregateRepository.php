@@ -35,7 +35,42 @@ class MysqlInvoiceAggregateRepository implements InvoiceAggregateRepositoryInter
 
     public function findByAccountIdAndNumber(Id $accountId, InvoiceNumber $invoiceNumber): InvoiceAggregate
     {
-        throw new InvoiceNotFoundException((string)$invoiceNumber);
+        $stmt = $this->pdo->prepare(
+            'SELECT invoice.*,
+               emitter.name as emitter_name, 
+               emitter.tax_name as emitter_tax_name,
+               emitter.tax_id as emitter_tax_id,
+               emitter.tax_address as emitter_tax_address,
+               emitter.tax_zip_code as emitter_tax_zip_code,
+               receiver.name as receiver_name,
+               receiver.tax_name as receiver_tax_name,
+               receiver.tax_id as receiver_tax_id,
+               receiver.tax_address as receiver_tax_address,
+               receiver.tax_zip_code as receiver_tax_zip_code
+            FROM invoice 
+            LEFT JOIN business AS emitter ON emitter.id = invoice.emitter_id 
+            LEFT JOIN business AS receiver ON receiver.id = invoice.receiver_id
+            LEFT JOIN user ON emitter.id = user.business_id
+            WHERE invoice.number = :number AND user.account_id = :account_id;'
+        );
+
+        $number = $invoiceNumber->number;
+        $account = $accountId->getInt();
+        $stmt->bindParam(':number', $number);
+        $stmt->bindParam(':account_id', $account);
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+        if (!count($result)) {
+            throw new InvoiceNotFoundException((string)$invoiceNumber);
+        }
+
+        $invoice = $this->buildInvoice($result[0]);
+        $invoiceLines = $this->getInvoiceLines($invoice);
+        [$emitter, $receiver] = $this->buildBusinesses($result[0]);
+
+        return new InvoiceAggregate($invoice, $invoiceLines, $emitter, $receiver);
     }
 
     public function findByEmitterTaxNumberAndInvoiceNumber(
