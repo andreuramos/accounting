@@ -13,7 +13,7 @@ interface InvoiceAggregateRepositoryInterface
 {
     public function save(InvoiceAggregate $invoiceAggregate): Id;
 
-    public function findByBusinessIdAndNumber(Id $businessId, InvoiceNumber $invoiceNumber): InvoiceAggregate;
+    public function findByAccountIdAndNumber(Id $accountId, InvoiceNumber $invoiceNumber): InvoiceAggregate;
 
     public function findByEmitterTaxNumberAndInvoiceNumber(
         string $emitterTaxId,

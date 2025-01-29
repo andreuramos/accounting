@@ -34,7 +34,7 @@ class RenderInvoiceUseCaseTest extends TestCase
     public function test_throws_exception_when_invoice_not_found(): void
     {
         $command = new RenderInvoiceCommand(1,"2023001");
-        $this->invoiceAggregateRepository->findByBusinessIdAndNumber(Argument::cetera())
+        $this->invoiceAggregateRepository->findByAccountIdAndNumber(Argument::cetera())
             ->willThrow(InvoiceNotFoundException::class);
         $useCase = $this->buildUseCase();
 
@@ -48,7 +48,7 @@ class RenderInvoiceUseCaseTest extends TestCase
         $command = new RenderInvoiceCommand(1,"2023001");
         $invoiceAggregate = $this->createMock(InvoiceAggregate::class);
         $this->invoiceAggregateRepository
-            ->findByBusinessIdAndNumber(Argument::cetera())
+            ->findByAccountIdAndNumber(Argument::cetera())
             ->willReturn($invoiceAggregate);
         $this->fileSaver->__invoke(Argument::cetera())
             ->willReturn("file/url.pdf");
@@ -66,7 +66,7 @@ class RenderInvoiceUseCaseTest extends TestCase
         $command = new RenderInvoiceCommand(1,"2025001");
         $invoiceAggregate = $this->createMock(InvoiceAggregate::class);
         $fileContents = "filecontent";
-        $this->invoiceAggregateRepository->findByBusinessIdAndNumber(Argument::cetera())
+        $this->invoiceAggregateRepository->findByAccountIdAndNumber(Argument::cetera())
             ->willReturn($invoiceAggregate);
         $this->invoiceRenderer->__invoke(Argument::cetera())
             ->willReturn($fileContents);

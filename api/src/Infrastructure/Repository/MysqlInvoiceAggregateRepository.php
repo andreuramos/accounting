@@ -33,7 +33,7 @@ class MysqlInvoiceAggregateRepository implements InvoiceAggregateRepositoryInter
         return $invoiceId;
     }
 
-    public function findByBusinessIdAndNumber(Id $businessId, InvoiceNumber $invoiceNumber): InvoiceAggregate
+    public function findByAccountIdAndNumber(Id $accountId, InvoiceNumber $invoiceNumber): InvoiceAggregate
     {
         throw new InvoiceNotFoundException((string)$invoiceNumber);
     }

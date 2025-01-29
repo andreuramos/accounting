@@ -19,8 +19,8 @@ class RenderInvoiceUseCase
 
     public function __invoke(RenderInvoiceCommand $command): void
     {
-        $invoice = $this->invoiceRepository->findByBusinessIdAndNumber(
-            new Id(1),
+        $invoice = $this->invoiceRepository->findByAccountIdAndNumber(
+            new Id($command->accountId),
             new InvoiceNumber($command->invoiceNumber),
         );
 
