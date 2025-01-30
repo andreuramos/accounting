@@ -26,4 +26,13 @@ class PercentageTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         new Percentage(100.1);
     }
+    
+    public function test_converts_to_string(): void
+    {
+        $percentage = new Percentage(1);
+        
+        $string = (string) $percentage;
+        
+        self::assertEquals("1.00 %", $string);
+    }
 }
