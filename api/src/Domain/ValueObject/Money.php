@@ -22,7 +22,7 @@ class Money
 
     public function __toString(): string
     {
-        return ($this->amountCents / 100) . " " . $this->currencySymbol();
+        return number_format($this->amountCents / 100, 2) . " " . $this->currencySymbol();
     }
 
     private function currencySymbol(): string

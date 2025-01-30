@@ -178,7 +178,7 @@ class GetInvoicesControllerTest extends AuthorizedControllerTest
         $this->assertEquals(self::RECEIVER_TAXNAME, $result_invoice['receiver_tax_name']);
         $this->assertEquals(self::RECEIVER_TAXNUMBER, $result_invoice['receiver_tax_number']);
         $this->assertEquals(self::RECEIVER_RENDERED_TAXADDR, $result_invoice['receiver_tax_address']);
-        $this->assertEquals((self::PRICE_IN_CENTS / 100) . " €", $result_invoice['base_amount']);
+        $this->assertEquals("25.00 €", $result_invoice['base_amount']);
         $vat = self::PRICE_IN_CENTS * self::VAT_PERCENT / 100 / 100;
         $this->assertEquals($vat . " €", $result_invoice['vat_amount']);
         $this->assertEquals((self::PRICE_IN_CENTS / 100) + $vat . " €", $result_invoice['total_amount']);
