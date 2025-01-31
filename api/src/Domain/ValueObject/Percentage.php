@@ -17,8 +17,9 @@ class Percentage
             throw new InvalidArgumentException('value', 'Percentage must be between 0 and 100');
         }
     }
-    
-    public function __toString(): string {
+
+    public function __toString(): string
+    {
         return number_format($this->value, 2, '.', '') . " %";
     }
 }

@@ -27,7 +27,7 @@ class DompdfInvoiceRenderer implements InvoiceRendererInterface
     private function renderTemplate(InvoiceAggregate $invoiceAggregate): string
     {
         $template = new Engine(__DIR__ . '/InvoiceTemplate');
-        
+
         $invoice_lines = [];
         /** @var InvoiceLine $invoice_line */
         foreach ($invoiceAggregate->invoiceLines() as $invoice_line) {
@@ -40,9 +40,9 @@ class DompdfInvoiceRenderer implements InvoiceRendererInterface
                 'line_total' => $invoice_line->totalAmount(),
             ];
         }
-        
+
         return $template->render('invoice', [
-            'invoiceNumber' => (string) $invoiceAggregate->invoiceNumber(),
+            'invoiceNumber' => (string)$invoiceAggregate->invoiceNumber(),
             'date' => $invoiceAggregate->invoiceDate()->format('d-m-Y'),
             'emitter' => [
                 'tax_name' => $invoiceAggregate->emitterTaxName(),
@@ -59,6 +59,5 @@ class DompdfInvoiceRenderer implements InvoiceRendererInterface
             'vatAmount' => $invoiceAggregate->vatAmount(),
             'totalAmount' => $invoiceAggregate->totalAmount(),
         ]);
-        
     }
 }

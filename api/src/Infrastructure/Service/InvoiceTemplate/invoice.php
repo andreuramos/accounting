@@ -47,7 +47,7 @@
             width: 48%;
             margin-bottom: 10px;
         }
-        
+
         .business-info p {
             margin: 0;
         }
@@ -138,7 +138,8 @@
         </tr>
         </thead>
         <tbody>
-        <?php foreach ($lines as $line): ?>
+        <?php
+        foreach ($lines as $line) : ?>
             <tr>
                 <td><?= $line['concept'] ?></td>
                 <td><?= $line['price'] ?></td>
@@ -146,7 +147,8 @@
                 <td><?= $line['vat'] ?> (<?= $line['vat_percent'] ?>)</td>
                 <td><?= $line['line_total'] ?></td>
             </tr>
-        <?php endforeach; ?>
+            <?php
+        endforeach; ?>
         </tbody>
     </table>
 
