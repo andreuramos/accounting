@@ -20,7 +20,8 @@
     "firebase/php-jwt": "^6.4",
     "symfony/console": "^6.3",
     "hugochinchilla/botanist": "^0.2",
-    "dompdf/dompdf": "^3.0"
+    "dompdf/dompdf": "^3.0",
+    "league/plates": "^3.6"
   },
   "require-dev": {
     "phpunit/phpunit": "^9.5",
