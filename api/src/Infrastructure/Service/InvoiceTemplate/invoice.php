@@ -1,164 +1,146 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invoice #<?= $invoiceNumber ?></title>
+    <title>Factura <?= $invoiceNumber ?></title>
     <style>
-        /* Print-friendly settings */
-        @page {
-            size: A4;
-            margin: 20mm;
-        }
-
         body {
-            font-family: 'Arial', sans-serif;
-            color: #333;
-            background-color: #fff;
+            font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
-        }
-
-        .invoice-container {
-            width: 100%;
-            max-width: 800px;
-            margin: auto;
             padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
         }
-
-        .invoice-header {
-            text-align: center;
-            font-size: 22px;
-            font-weight: bold;
-            margin-bottom: 20px;
+        .invoice-container {
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+            background-color: #f9f9f9;
         }
-
-        .business-info {
+        .header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #ddd;
-        }
-
-        .business-info div {
-            width: 48%;
-            margin-bottom: 10px;
-        }
-
-        .business-info p {
-            margin: 0;
-        }
-
-        .business-info h3 {
-            margin-bottom: 2px;
-            font-size: 16px;
-            color: #222;
-        }
-
-        .invoice-details {
+            align-items: flex-start;
             margin-bottom: 20px;
-            text-align: right;
-            font-size: 16px;
         }
-
-        /* Invoice table */
-        .invoice-table {
+        .header .logo {
+            max-width: 150px;
+        }
+        .header .invoice-info {
+            text-align: right;
+        }
+        .details {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Two equal columns */
+            gap: 20px; /* Space between columns */
+            margin-bottom: 20px;
+        }
+        .details .emitter, .details .receiver {
+            box-sizing: border-box; /* Prevents overflow */
+        }
+        .details .emitter p, .details .receiver p {
+            margin: 5px 0; /* Reduces spacing between lines */
+        }
+        .invoice-lines {
+            margin-bottom: 20px;
+        }
+        .invoice-lines table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
         }
-
-        .invoice-table th, .invoice-table td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: center;
+        .invoice-lines th, .invoice-lines td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
         }
-
-        .invoice-table th {
-            background: #FFC71D;
-            color: black;
-            font-weight: bold;
+        .invoice-lines th {
+            background-color: #f1f1f1;
         }
-
         .totals {
-            margin-top: 20px;
             text-align: right;
+            margin-top: 20px;
         }
-
-        .totals p {
-            font-size: 16px;
-            margin: 5px 0;
-        }
-
-        .totals strong {
-            font-size: 18px;
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #555;
         }
     </style>
 </head>
 <body>
-
 <div class="invoice-container">
-    <div class="invoice-header">
-        Factura #<?= $invoiceNumber ?>
-    </div>
-
-    <!-- Business Information -->
-    <div class="business-info">
-        <div>
-            <h3>Facturado por:</h3>
-            <p><strong>NIF:</strong> <?= $emitter['tax_id'] ?></p>
-            <p><strong>Nombre:</strong> <?= $emitter['tax_name'] ?></p>
-            <p><strong>Dirección:</strong> <?= $emitter['address'] ?></p>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">
+            <img src="<?= $logo ?>" alt="Logo" style="max-width: 100%; height: auto;">
         </div>
-        <div>
-            <h3>Facturado a:</h3>
-            <p><strong>NIF:</strong> <?= $receiver['tax_id'] ?></p>
-            <p><strong>Nombre:</strong> <?= $receiver['tax_name'] ?></p>
-            <p><strong>Dirección:</strong> <?= $receiver['address'] ?></p>
+        <div class="invoice-info">
+            <h1>Factura</h1>
+            <p><strong>Número de Factura:</strong> <?= $invoiceNumber ?></p>
+            <p><strong>Fecha:</strong> <?= $date ?></p>
         </div>
     </div>
 
-    <!-- Invoice Details -->
-    <div class="invoice-details">
-        <p><strong>Fecha:</strong> <?= $date ?></p>
-    </div>
-
-    <!-- Invoice Items Table -->
-    <table class="invoice-table">
-        <thead>
-        <tr>
-            <th>Concepto</th>
-            <th>Precio</th>
-            <th>Cantidad</th>
-            <th>IVA</th>
-            <th>Subtotal</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php
-        foreach ($lines as $line) : ?>
+    <!-- Emitter and Receiver Details -->
+    <div class="details">
+        <table>
             <tr>
-                <td><?= $line['concept'] ?></td>
-                <td><?= $line['price'] ?></td>
-                <td><?= $line['quantity'] ?></td>
-                <td><?= $line['vat'] ?> (<?= $line['vat_percent'] ?>)</td>
-                <td><?= $line['line_total'] ?></td>
+                <td class="emitter">
+                    <h2>Emisor</h2>
+                    <p><strong>Nombre:</strong> <?= $emitter['tax_name'] ?></p>
+                    <p><strong>NIF:</strong> <?= $emitter['tax_id'] ?></p>
+                    <p><strong>Dirección:</strong> <?= $emitter['address'] ?></p>
+                </td>
+                <td></td> <!-- Spacer column -->
+                <td class="receiver">
+                    <h2>Receptor</h2>
+                    <p><strong>Nombre:</strong> <?= $receiver['tax_name'] ?></p>
+                    <p><strong>NIF:</strong> <?= $receiver['tax_id'] ?></p>
+                    <p><strong>Dirección:</strong> <?= $receiver['address'] ?></p>
+                </td>
             </tr>
-            <?php
-        endforeach; ?>
-        </tbody>
-    </table>
+        </table>
+    </div>
 
-    <!-- Invoice Totals -->
+    <!-- Invoice Lines -->
+    <div class="invoice-lines">
+        <h2>Líneas de Factura</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Concepto</th>
+                <th>Precio Unitario</th>
+                <th>Cantidad</th>
+                <th>IVA (%)</th>
+                <th>Total Línea</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($lines as $line): ?>
+                <tr>
+                    <td><?= $line['concept'] ?></td>
+                    <td><?= $line['price'] ?></td>
+                    <td><?= $line['quantity'] ?></td>
+                    <td><?= $line['vat_percent'] ?>%</td>
+                    <td><?= $line['line_total'] ?></td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Totals -->
     <div class="totals">
         <p><strong>Base Imponible:</strong> <?= $baseAmount ?></p>
         <p><strong>IVA:</strong> <?= $vatAmount ?></p>
-        <p><strong>Total:</strong> <span style="color:#FFC71D;"><?= $totalAmount ?></span></p>
+        <p><strong>Total Factura:</strong> <?= $totalAmount ?></p>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>Gracias por su confianza.</p>
     </div>
 </div>
-
 </body>
 </html>
