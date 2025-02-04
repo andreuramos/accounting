@@ -73,11 +73,11 @@
     <!-- Header -->
     <div class="header">
         <div class="logo">
-            <img src="<?= $logo ?>" alt="Logo" style="max-width: 100%; height: auto;">
+            <img src="" alt="Moixa" style="max-width: 100%; height: auto;">
         </div>
         <div class="invoice-info">
             <h1>Factura</h1>
-            <p><strong>Número de Factura:</strong> <?= $invoiceNumber ?></p>
+            <p><strong>Número:</strong> <?= $invoiceNumber ?></p>
             <p><strong>Fecha:</strong> <?= $date ?></p>
         </div>
     </div>
@@ -113,7 +113,7 @@
                 <th>Precio Unitario</th>
                 <th>Cantidad</th>
                 <th>IVA (%)</th>
-                <th>Total Línea</th>
+                <th>Subtotal</th>
             </tr>
             </thead>
             <tbody>
@@ -122,7 +122,7 @@
                     <td><?= $line['concept'] ?></td>
                     <td><?= $line['price'] ?></td>
                     <td><?= $line['quantity'] ?></td>
-                    <td><?= $line['vat_percent'] ?>%</td>
+                    <td><?= $line['vat_percent'] ?></td>
                     <td><?= $line['line_total'] ?></td>
                 </tr>
             <?php endforeach; ?>
