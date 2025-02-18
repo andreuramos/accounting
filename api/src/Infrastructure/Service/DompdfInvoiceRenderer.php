@@ -6,13 +6,17 @@ use App\Domain\Entities\InvoiceAggregate;
 use App\Domain\Service\InvoiceRendererInterface;
 use App\Domain\ValueObject\InvoiceLine;
 use Dompdf\Dompdf;
+use Dompdf\Options;
 use League\Plates\Engine;
 
 class DompdfInvoiceRenderer implements InvoiceRendererInterface
 {
     public function __invoke(InvoiceAggregate $invoiceAggregate): string
     {
-        $pdf = new Dompdf();
+        $options = new Options();
+        $options->setIsRemoteEnabled(true);
+
+        $pdf = new Dompdf($options);
         $pdf->loadHtml($this->renderTemplate($invoiceAggregate));
         $pdf->setPaper('A4');
         $pdf->render();
@@ -20,10 +24,6 @@ class DompdfInvoiceRenderer implements InvoiceRendererInterface
         return $pdf->output();
     }
 
-    /**
-     * @param InvoiceAggregate $invoiceAggregate
-     * @return string
-     */
     private function renderTemplate(InvoiceAggregate $invoiceAggregate): string
     {
         $template = new Engine(__DIR__ . '/InvoiceTemplate');
@@ -58,7 +58,16 @@ class DompdfInvoiceRenderer implements InvoiceRendererInterface
             'baseAmount' => $invoiceAggregate->baseAmount(),
             'vatAmount' => $invoiceAggregate->vatAmount(),
             'totalAmount' => $invoiceAggregate->totalAmount(),
-            'bankAccount' => "ES9701280581210100059701"
+            'bankAccount' => "ES9701280581210100059701",
+            'logo' => $this->getLogoContents(),
         ]);
+    }
+
+    private function getLogoContents(): string
+    {
+        $image = base64_encode(file_get_contents(__DIR__ . "/../../../uploads/moixa.png"));
+        
+        return "data:image/png;base64," . $image;
+        
     }
 }

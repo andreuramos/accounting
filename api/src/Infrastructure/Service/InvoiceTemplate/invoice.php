@@ -24,7 +24,7 @@
             margin-bottom: 20px;
         }
         .header .logo {
-            max-width: 150px;
+            max-width: 250px;
         }
         .header .invoice-info {
             text-align: right;
@@ -73,7 +73,7 @@
     <!-- Header -->
     <div class="header">
         <div class="logo">
-            <img src="" alt="Moixa" style="max-width: 100%; height: auto;">
+            <img src="<?= $logo ?>" alt="Moixa" style="max-width: 100%; height: auto;">
         </div>
         <div class="invoice-info">
             <h1>Factura</h1>

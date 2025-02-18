@@ -4,9 +4,12 @@ RUN apt-get update \
     && apt-get install -y \
     libzip-dev \
     libfcgi-bin \
+    libpng-dev  libjpeg-dev libfreetype6-dev \
     && rm -rf /var/lib/apt/lists/*
 
-RUN docker-php-ext-install zip mysqli pdo pdo_mysql
+RUN docker-php-ext-install zip mysqli pdo pdo_mysql \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd
 
 WORKDIR /api
 
