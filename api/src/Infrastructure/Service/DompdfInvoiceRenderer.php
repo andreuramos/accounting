@@ -58,6 +58,7 @@ class DompdfInvoiceRenderer implements InvoiceRendererInterface
             'baseAmount' => $invoiceAggregate->baseAmount(),
             'vatAmount' => $invoiceAggregate->vatAmount(),
             'totalAmount' => $invoiceAggregate->totalAmount(),
+            'bankAccount' => "ES9701280581210100059701"
         ]);
     }
 }

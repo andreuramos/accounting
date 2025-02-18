@@ -2,6 +2,7 @@
 .DS_Store
 api/config/definitions/shared-values.json
 api/tmp/
+api/uploads/
 api/vendor/
 api/.env
 web/node_modules/*

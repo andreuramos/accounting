@@ -139,7 +139,7 @@
 
     <!-- Footer -->
     <div class="footer">
-        <p>Gracias por su confianza.</p>
+        <p>IBAN: <?= $bankAccount ?></p>
     </div>
 </div>
 </body>
