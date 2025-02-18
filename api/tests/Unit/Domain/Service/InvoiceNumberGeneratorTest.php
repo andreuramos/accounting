@@ -45,7 +45,7 @@ class InvoiceNumberGeneratorTest extends TestCase
         $this->assertStringStartsWith('2023', $result->number);
     }
 
-    public function test_suffix_is_8_characters_long()
+    public function test_suffix_is_5_characters_long()
     {
         $this->invoiceAggregateRepository->findLastEmittedByBusiness(Argument::type(Business::class))
             ->willReturn(null);
@@ -55,15 +55,15 @@ class InvoiceNumberGeneratorTest extends TestCase
         $result = $service($this->business);
 
         $number = $result->number;
-        $suffix = substr($number, 4);
-        $this->assertEquals(8, strlen($suffix));
+        $suffix = substr($number, 5);
+        $this->assertEquals(5, strlen($suffix));
     }
 
     public function test_generates_correlative_to_the_last_one()
     {
         $lastInvoice = new Invoice(
             new Id(1),
-            new InvoiceNumber('202300000001'),
+            new InvoiceNumber('2023-00001'),
             $this->business->id,
             new Id(23),
             new \DateTime('2023-05-24'),
@@ -75,7 +75,7 @@ class InvoiceNumberGeneratorTest extends TestCase
 
         $result = $service($this->business);
 
-        $correlativeValue = (int) substr($result->number, 4);
+        $correlativeValue = (int) substr($result->number, 5);
         $this->assertEquals(2, $correlativeValue);
     }
     
@@ -84,7 +84,7 @@ class InvoiceNumberGeneratorTest extends TestCase
         $invoiceDate = (new \DateTime())->sub(new \DateInterval('P1Y'));
         $lastInvoice = new Invoice(
             new Id(1),
-            new InvoiceNumber('202300000005'),
+            new InvoiceNumber('2023-00005'),
             $this->business->id,
             new Id(23),
             $invoiceDate,
@@ -96,7 +96,7 @@ class InvoiceNumberGeneratorTest extends TestCase
 
         $result = $service($this->business);
 
-        $correlativeValue = (int) substr($result->number, 4);
+        $correlativeValue = (int) substr($result->number, 5);
         $this->assertEquals(1, $correlativeValue);
     }
 

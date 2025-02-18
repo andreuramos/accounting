@@ -21,9 +21,9 @@ class InvoiceNumberGenerator
         $yearSuffix = $timestamp->format('Y');
 
         $correlativeNumber = $this->getNextInvoiceNumber($business, (int) $yearSuffix);
-        $eightDigits = sprintf("%08d", $correlativeNumber);
+        $eightDigits = sprintf("%05d", $correlativeNumber);
 
-        return new InvoiceNumber($yearSuffix . $eightDigits);
+        return new InvoiceNumber($yearSuffix . '-' . $eightDigits);
     }
 
     private function getNextInvoiceNumber(
@@ -36,7 +36,7 @@ class InvoiceNumberGenerator
             return 1;
         }
 
-        $correlativeValue = (int) substr($lastInvoice->invoiceNumber->number, 4);
+        $correlativeValue = (int) substr($lastInvoice->invoiceNumber->number, 5);
         return $correlativeValue + 1;
     }
 }
