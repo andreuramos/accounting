@@ -18,28 +18,34 @@
             background-color: #f9f9f9;
         }
         .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 20px;
+            display: inline-block;
+            margin-bottom: 30px;
+            width: 100%;
         }
         .header .logo {
             max-width: 250px;
+            float: left;
         }
         .header .invoice-info {
             text-align: right;
+            float: right;
         }
         .details {
-            display: grid;
-            grid-template-columns: 1fr 1fr; /* Two equal columns */
-            gap: 20px; /* Space between columns */
+            width: 100%;
             margin-bottom: 20px;
+            margin-top: 20%;
+            vertical-align: top;
         }
         .details .emitter, .details .receiver {
+            width: 50%;
             box-sizing: border-box; /* Prevents overflow */
         }
         .details .emitter p, .details .receiver p {
             margin: 5px 0; /* Reduces spacing between lines */
+        }
+        .details-content {
+            margin-right: 15px;
+            margin-left: 15px;
         }
         .invoice-lines {
             margin-bottom: 20px;
@@ -76,8 +82,8 @@
             <img src="<?= $logo ?>" alt="Moixa" style="max-width: 100%; height: auto;">
         </div>
         <div class="invoice-info">
-            <h1>Factura</h1>
-            <p><strong>Número:</strong> <?= $invoiceNumber ?></p>
+            <h1>FACTURA</h1>
+            <p><strong>Nº:</strong> <?= $invoiceNumber ?></p>
             <p><strong>Fecha:</strong> <?= $date ?></p>
         </div>
     </div>
@@ -87,17 +93,21 @@
         <table>
             <tr>
                 <td class="emitter">
-                    <h2>Emisor</h2>
-                    <p><strong>Nombre:</strong> <?= $emitter['tax_name'] ?></p>
-                    <p><strong>NIF:</strong> <?= $emitter['tax_id'] ?></p>
-                    <p><strong>Dirección:</strong> <?= $emitter['address'] ?></p>
+                    <div class="details-content">
+                        <h2>Emisor</h2>
+                        <p><strong>Nombre:</strong> <?= $emitter['tax_name'] ?></p>
+                        <p><strong>NIF:</strong> <?= $emitter['tax_id'] ?></p>
+                        <p><strong>Dirección:</strong> <?= $emitter['address'] ?></p>
+                    </div>
                 </td>
-                <td></td> <!-- Spacer column -->
+                <!--<td></td>  Spacer column -->
                 <td class="receiver">
-                    <h2>Receptor</h2>
-                    <p><strong>Nombre:</strong> <?= $receiver['tax_name'] ?></p>
-                    <p><strong>NIF:</strong> <?= $receiver['tax_id'] ?></p>
-                    <p><strong>Dirección:</strong> <?= $receiver['address'] ?></p>
+                    <div class="details-content">
+                        <h2>Receptor</h2>
+                        <p><strong>Nombre:</strong> <?= $receiver['tax_name'] ?></p>
+                        <p><strong>NIF:</strong> <?= $receiver['tax_id'] ?></p>
+                        <p><strong>Dirección:</strong> <?= $receiver['address'] ?></p>
+                    </div>
                 </td>
             </tr>
         </table>
@@ -105,7 +115,6 @@
 
     <!-- Invoice Lines -->
     <div class="invoice-lines">
-        <h2>Líneas de Factura</h2>
         <table>
             <thead>
             <tr>
