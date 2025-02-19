@@ -91,7 +91,8 @@ class EmitInvoiceUseCase
             )
         );
         $this->businessRepository->save($business);
-
-        return $business;
+        return $this->businessRepository->getByTaxNumber(
+            $command->customerTaxNumber,
+        );
     }
 }

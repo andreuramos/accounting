@@ -129,8 +129,11 @@ class EmitInvoiceUseCaseTest extends TestCase
         );
         $this->incomeRepository->save(Argument::type(Income::class))
             ->willReturn($incomeId);
+        $receiverBusiness = new Business(
+            new Id(2), "whatever", ...$this->generateTaxData()
+        );
         $this->businessRepository->getByTaxNumber($taxNumber)
-            ->willReturn(null);
+            ->willReturn(null, $receiverBusiness);
         $this->businessRepository->getByUserIdOrFail($this->user->id())
             ->willReturn(new Business(
                 new Id(1), "company", ...$this->generateTaxData()
