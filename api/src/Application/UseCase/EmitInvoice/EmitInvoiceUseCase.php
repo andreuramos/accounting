@@ -43,7 +43,7 @@ class EmitInvoiceUseCase
         $invoiceLines = [];
         foreach ($command->invoiceLines as $invoiceLine) {
             $product = $invoiceLine['concept'];
-            $quantity = 1;
+            $quantity = $invoiceLine['quantity'];
             $amount = $invoiceLine['amount'];
             $invoiceLines[] = new InvoiceLine(
                 $product,
