@@ -18,7 +18,7 @@ class EmitInvoiceController extends AuthorizedController
         'customer_tax_zip_code', 'date', 'lines',
     ];
     private const LINE_PARAMETERS = [
-        'amount', 'concept', 'vat_percent',
+        'amount', 'concept', 'quantity', 'vat_percent',
     ];
 
     public function __construct(
