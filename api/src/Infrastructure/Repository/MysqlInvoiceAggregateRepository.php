@@ -203,7 +203,7 @@ class MysqlInvoiceAggregateRepository implements InvoiceAggregateRepositoryInter
         foreach ($result as $line) {
             $lines[] = new InvoiceLine(
                 $line['product'],
-                1,
+                $line['quantity'],
                 new Money($line['amount_cents']),
                 new Percentage($line['vat_percent']),
             );
