@@ -20,6 +20,9 @@ enter-be: # execs shell inside php container
 enter-db:
 	docker-compose exec mysql mysql -u$(DB_USER) -p$(DB_PWD) $(DB_NAME)
 
+enter-redis:
+	docker-compose exec redis redis-cli
+
 test: test-static test-unit test-integration
 
 test-integration: # runs all tests
