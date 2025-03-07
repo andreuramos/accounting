@@ -1,5 +1,4 @@
 #!/bin/bash
-DB_CONTAINER := accounting_mysql
 CURRENT_USER := $(shell id -u):$(shell id -g)
 include api/.env
 
