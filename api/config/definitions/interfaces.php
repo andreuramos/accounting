@@ -2,6 +2,7 @@
 
 use App\Application\Auth\AuthTokenDecoderInterface;
 use App\Application\Auth\AuthTokenGeneratorInterface;
+use App\Application\Service\EventPublisherInterface;
 use App\Application\UseCase\RefreshToken\RefreshTokenGeneratorInterface;
 use App\Domain\Repository\AccountRepositoryInterface;
 use App\Domain\Repository\BusinessRepositoryInterface;
@@ -24,6 +25,7 @@ use App\Infrastructure\Repository\MysqlTaxDataAggregateRepository;
 use App\Infrastructure\Repository\MysqlUserRepository;
 use App\Infrastructure\Service\DompdfInvoiceRenderer;
 use App\Infrastructure\Service\LocalFileSaver;
+use App\Infrastructure\Service\RedisEventPublisher;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -32,6 +34,7 @@ return [
     AuthTokenDecoderInterface::class => DI\get(JWTDecoder::class),
     AuthTokenGeneratorInterface::class => DI\get(JWTGenerator::class),
     BusinessRepositoryInterface::class => DI\get(MysqlBusinessRepository::class),
+    EventPublisherInterface::class => DI\get(RedisEventPublisher::class),
     ExpenseRepositoryInterface::class => DI\get(MysqlExpenseRepository::class),
     FileSaverInterface::class => DI\get(LocalFileSaver::class),
     IncomeRepositoryInterface::class => DI\get(MysqlIncomeRepository::class),

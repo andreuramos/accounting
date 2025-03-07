@@ -2,6 +2,7 @@
 
 namespace Test\Unit\Application\UseCase;
 
+use App\Application\Service\EventPublisherInterface;
 use App\Application\UseCase\EmitInvoice\EmitInvoiceCommand;
 use App\Application\UseCase\EmitInvoice\EmitInvoiceUseCase;
 use App\Application\UseCase\EmitInvoice\InvoiceNumberGenerator;
@@ -9,6 +10,7 @@ use App\Domain\Entities\Business;
 use App\Domain\Entities\Income;
 use App\Domain\Entities\InvoiceAggregate;
 use App\Domain\Entities\User;
+use App\Domain\Events\InvoiceEmittedEvent;
 use App\Domain\Exception\BusinessNotFoundException;
 use App\Domain\Repository\BusinessRepositoryInterface;
 use App\Domain\Repository\IncomeRepositoryInterface;
@@ -31,6 +33,7 @@ class EmitInvoiceUseCaseTest extends TestCase
     private $taxDataAggregateRepository;
     private $invoiceAggregateRepository;
     private $invoiceNumberGenerator;
+    private $eventPublisher;
     private User $user;
 
     public function setUp(): void
@@ -41,6 +44,7 @@ class EmitInvoiceUseCaseTest extends TestCase
         $this->taxDataAggregateRepository = $this->prophesize(TaxDataAggregateRepositoryInterface::class);
         $this->invoiceAggregateRepository = $this->prophesize(InvoiceAggregateRepositoryInterface::class);
         $this->invoiceNumberGenerator = $this->prophesize(InvoiceNumberGenerator::class);
+        $this->eventPublisher = $this->prophesize(EventPublisherInterface::class);
         $this->user = new User(new Id(1), new Email('a@b.com'), "");
         $this->user->setAccountId(new Id(2));
     }
@@ -195,6 +199,51 @@ class EmitInvoiceUseCaseTest extends TestCase
 
         $this->assertEquals($invoiceNumber, $response);
     }
+    
+    public function test_event_published(): void
+    {
+        $useCase = $this->buildUseCase();
+        $incomeId = new Id(123);
+        $taxNumber = "B071892093";
+        $command = new EmitInvoiceCommand(
+            $this->user,
+            "My Business",
+            "My Business SL",
+            $taxNumber,
+            "Fake st 123",
+            "07001",
+            date_create('2023-06-29'),
+            [['amount' => 10, 'quantity' => 2, 'concept' => "this", 'vat_percent' => 21]],
+        );
+        $this->incomeRepository->save(Argument::type(Income::class))
+            ->willReturn($incomeId);
+        $receiverBusiness = new Business(
+            new Id(1),
+            "Receiver Company",
+            ...$this->generateTaxData(),
+        );
+        $userBusiness = new Business(
+            new Id(2),
+            "Emitter Company",
+            ...$this->generateTaxData(),
+        );
+        $invoiceNumber = new InvoiceNumber('20230001');
+        $this->businessRepository->getByTaxNumber($taxNumber)
+            ->willReturn($receiverBusiness);
+        $this->businessRepository->save(Argument::type(Business::class))
+            ->shouldNotBeCalled();
+        $this->businessRepository->getByUserIdOrFail($this->user->id())
+            ->willReturn($userBusiness);
+        $this->invoiceNumberGenerator->__invoke($userBusiness)
+            ->willReturn($invoiceNumber);
+        $this->invoiceAggregateRepository->save(Argument::any())
+            ->willReturn(new Id(7));
+        
+        $this->eventPublisher->publish(Argument::type(InvoiceEmittedEvent::class))
+            ->shouldBeCalled();
+        
+        $useCase($command);
+    }
 
     private function buildUseCase(): EmitInvoiceUseCase
     {
@@ -203,6 +252,7 @@ class EmitInvoiceUseCaseTest extends TestCase
             $this->businessRepository->reveal(),
             $this->invoiceNumberGenerator->reveal(),
             $this->invoiceAggregateRepository->reveal(),
+            $this->eventPublisher->reveal(),
         );
     }
 

@@ -2,10 +2,12 @@
 
 namespace App\Application\UseCase\EmitInvoice;
 
+use App\Application\Service\EventPublisherInterface;
 use App\Domain\Entities\Business;
 use App\Domain\Entities\Income;
 use App\Domain\Entities\Invoice;
 use App\Domain\Entities\InvoiceAggregate;
+use App\Domain\Events\InvoiceEmittedEvent;
 use App\Domain\Repository\BusinessRepositoryInterface;
 use App\Domain\Repository\IncomeRepositoryInterface;
 use App\Domain\Repository\InvoiceAggregateRepositoryInterface;
@@ -23,6 +25,7 @@ class EmitInvoiceUseCase
         private readonly BusinessRepositoryInterface $businessRepository,
         private readonly InvoiceNumberGenerator $invoiceNumberGenerator,
         private readonly InvoiceAggregateRepositoryInterface $invoiceAggregateRepository,
+        private readonly EventPublisherInterface $eventPublisher,
     ) {
     }
 
@@ -69,6 +72,8 @@ class EmitInvoiceUseCase
             $invoiceId,
         );
         $this->incomeRepository->save($income);
+        
+        $this->publishEvent($invoiceAggregate, $command->user->accountId());
 
         return $invoiceNumber;
     }
@@ -94,5 +99,18 @@ class EmitInvoiceUseCase
         return $this->businessRepository->getByTaxNumber(
             $command->customerTaxNumber,
         );
+    }
+
+    private function publishEvent(
+        InvoiceAggregate $invoiceAggregate,
+        Id $accountId,
+    ): void {
+        $event = new InvoiceEmittedEvent(
+            $accountId,
+            date_create(),
+            $invoiceAggregate->invoiceNumber()
+        );
+        
+        $this->eventPublisher->publish($event);
     }
 }
