@@ -18,6 +18,6 @@ class RedisEventPublisher implements EventPublisherInterface
             'port' => 6379,
         ]);
 
-        $redis->publish(self::EVENTS_CHANNEL, $event->jsonSerialize());
+        $redis->publish(self::EVENTS_CHANNEL, json_encode($event->jsonSerialize()));
     }
 }
