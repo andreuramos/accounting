@@ -9,7 +9,7 @@ use Predis\Client;
 class RedisEventPublisher implements EventPublisherInterface
 {
     private const EVENTS_CHANNEL = 'events';
-    
+
     public function publish(Event $event): void
     {
         $redis = new Client([

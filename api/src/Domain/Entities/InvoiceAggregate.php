@@ -117,7 +117,7 @@ class InvoiceAggregate
         $baseAmount = array_reduce($invoiceLines, function ($accumulated, InvoiceLine $invoiceLine) {
             $accumulated['base'] += $invoiceLine->amount->amountCents * $invoiceLine->quantity;
             $accumulated['vat'] += round(
-                $invoiceLine->amount->amountCents * 
+                $invoiceLine->amount->amountCents *
                 $invoiceLine->vat_percentage->value *
                 $invoiceLine->quantity
                 / 100

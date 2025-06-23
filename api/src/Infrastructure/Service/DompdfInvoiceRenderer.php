@@ -66,8 +66,7 @@ class DompdfInvoiceRenderer implements InvoiceRendererInterface
     private function getLogoContents(): string
     {
         $image = base64_encode(file_get_contents(__DIR__ . "/../../../uploads/moixa.png"));
-        
+
         return "data:image/png;base64," . $image;
-        
     }
 }

@@ -19,9 +19,9 @@ class InvoiceEmittedEvent extends Event
     {
         return [
             'name' => $this->name,
-            'accountId' => (string) $this->accountId,
+            'accountId' => (string)$this->accountId,
             'timestamp' => $this->timestamp->format('Y-m-d H:i:s'),
-            'invoiceNumber' => (string) $this->invoiceNumber,
+            'invoiceNumber' => (string)$this->invoiceNumber,
         ];
     }
 }

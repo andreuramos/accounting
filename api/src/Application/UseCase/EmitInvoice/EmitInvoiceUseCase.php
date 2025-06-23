@@ -72,7 +72,7 @@ class EmitInvoiceUseCase
             $invoiceId,
         );
         $this->incomeRepository->save($income);
-        
+
         $this->publishEvent($invoiceAggregate, $command->user->accountId());
 
         return $invoiceNumber;
@@ -110,7 +110,7 @@ class EmitInvoiceUseCase
             date_create(),
             $invoiceAggregate->invoiceNumber()
         );
-        
+
         $this->eventPublisher->publish($event);
     }
 }

@@ -10,6 +10,7 @@
             margin: 0;
             padding: 20px;
         }
+
         .invoice-container {
             max-width: 800px;
             margin: 0 auto;
@@ -17,55 +18,68 @@
             padding: 20px;
             background-color: #f9f9f9;
         }
+
         .header {
             display: inline-block;
             margin-bottom: 30px;
             width: 100%;
         }
+
         .header .logo {
             max-width: 250px;
             float: left;
         }
+
         .header .invoice-info {
             text-align: right;
             float: right;
         }
+
         .details {
             width: 100%;
             margin-bottom: 20px;
             margin-top: 20%;
             vertical-align: top;
         }
+
         .details .emitter, .details .receiver {
             width: 50%;
             box-sizing: border-box; /* Prevents overflow */
         }
+
         .details .emitter p, .details .receiver p {
             margin: 5px 0; /* Reduces spacing between lines */
         }
+
         .details-content {
             margin-right: 15px;
             margin-left: 15px;
         }
+
         .invoice-lines {
             margin-bottom: 20px;
         }
+
         .invoice-lines table {
             width: 100%;
             border-collapse: collapse;
         }
+
         .invoice-lines th, .invoice-lines td {
             border: 1px solid #ccc;
             padding: 8px;
             text-align: left;
         }
+
         .invoice-lines th {
             background-color: #f1f1f1;
         }
+
         .totals {
             text-align: right;
             margin-top: 20px;
         }
+
         .footer {
             text-align: center;
             margin-top: 20px;
@@ -126,7 +140,7 @@
             </tr>
             </thead>
             <tbody>
-            <?php foreach ($lines as $line): ?>
+            <?php foreach ($lines as $line) : ?>
                 <tr>
                     <td><?= $line['concept'] ?></td>
                     <td><?= $line['price'] ?></td>
