@@ -51,20 +51,29 @@ services:
       DB_HOST: "mysql"
       PHINX_DB_HOST: "mysql"
 
-  frontend:
-    image: node:16-alpine
-    working_dir: /code
+#  frontend:
+#    image: node:16-alpine
+#    working_dir: /code
+#    volumes:
+#      - ./front:/code
+#    ports:
+#      - 5173:5173
+#    networks:
+#      - backend-network
+#    command: ["sh", "-c", "npm i && npm run dev -- --host=0.0.0.0"]
+#    healthcheck:
+#      test: ["CMD", "wget", "-S", "--spider", "http://localhost:5173/index.html"]
+#      interval: 3s
+#      timeout: 1s
+  
+  ui:
+    build: ./ui
     volumes:
-      - ./front:/code
+      - ./ui:/app
+      - /app/node_modules
     ports:
-      - 5173:5173
-    networks:
-      - backend-network
-    command: ["sh", "-c", "npm i && npm run dev -- --host=0.0.0.0"]
-    healthcheck:
-      test: ["CMD", "wget", "-S", "--spider", "http://localhost:5173/index.html"]
-      interval: 3s
-      timeout: 1s
+      - "5173:5173"
+    
   
   redis:
     image: redis:alpine
