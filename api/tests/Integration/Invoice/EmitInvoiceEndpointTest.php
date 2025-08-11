@@ -85,6 +85,7 @@ class EmitInvoiceEndpointTest extends EndpointTest
                     [
                         'amount' => 1000,
                         'concept' => 'Capsa de 12 Moixes',
+                        'quantity' => 1,
                         'vat_percent' => 21,
                     ],
                 ],
