@@ -23,6 +23,9 @@ enter-db:
 enter-redis:
 	docker-compose exec redis redis-cli
 
+render/%:
+	docker-compose exec api php config/console.php invoice:render 22 $*
+
 test: test-static test-unit test-integration
 
 test-integration: # runs all tests
